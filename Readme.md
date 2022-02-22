@@ -1,4 +1,4 @@
-# Auto Kimai
+# Auto Kimai Diego
 
 Auto Kimai is a tool which allows you to log your hours automatically on a server that uses [Kimai](https://github.com/kevinpapst/kimai2)
 
@@ -6,7 +6,9 @@ Auto Kimai is a tool which allows you to log your hours automatically on a serve
 
 ![Arquitectura](./doc/EsquemaArquitectura.PNG)
 
+## Prototype Design
 
+![Prototipo](./doc/primerPrototipoScheduleX.PNG)
 ## Topics to review
 
 Client
