@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import Usuario from '../components/Usuario';
 import classes from './InterfazInput.module.css';
 
 function InterfazInput () {
@@ -14,6 +15,9 @@ function InterfazInput () {
 
     return (
             <form className={classes.form} onSubmit={confirmarFechas}>
+                <div className={classes.tablaContenido}>
+                    <Usuario />
+                </div>
                 <div className={classes.control}>
                     <label htmlFor="fechaInicio">Introduce la fecha de inicio: </label>
                     <input type="date" required id="fechaInicio" ref={fechaInicio}></input>
