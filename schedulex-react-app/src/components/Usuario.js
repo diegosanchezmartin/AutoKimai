@@ -1,21 +1,41 @@
 import React from "react";
-import UserServices from "../services/UserServices";
+import UserServiceFetch from "../services/UserServiceFetch";
 
 class Usuario extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            users:[]
+            users:[],
+            errorBackend: false
         }
     }
 
+    /* Usando axios descomentar esta líneas:
     componentDidMount(){
         UserServices.getUsers().then((response) => {
             this.setState({ users: response.data})
         });
+    }*/
+
+    
+    componentDidMount(){
+        UserServiceFetch.getUsers().then((res) => {
+            this.setState({users: res, errorBackend:false});
+        }).catch(err => {
+            console.log(err.message + "\nEl backend está caido");
+            this.setState({errorBackend: true, users:[]});
+        });
     }
 
     render (){
+        if(this.state.errorBackend){
+            return (
+                <div>
+                    <h1>Error al ejecutar fetch()</h1>
+                    <h2>El backend está caído</h2>
+                </div>
+            )
+        }
         return (
             <div>
                 <h1 className="text"> Lista de usuarios: </h1>
