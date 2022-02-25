@@ -24,10 +24,10 @@ public class UserController {
     }
 
     //Post es para añadir nuevos usuarios a nuestra app
-    @PostMapping
+    /*@PostMapping
     public void registerNewUser(@RequestBody User usuario){
         userService.addNewUser(usuario);
-    }
+    }*/
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable ("userId") Long userId){
@@ -40,5 +40,10 @@ public class UserController {
             @RequestParam(required=true) LocalDate fechaInicio,
             @RequestParam(required=true) LocalDate fechaFin) {
         userService.updateUser(nombreDeUsuario, fechaInicio, fechaFin);
+    }
+
+    @PostMapping
+    public void registrarHorasUsuarioAPI(@RequestBody User TimeSheet){
+        userService.añadirHorasApi(TimeSheet);
     }
 }

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name="users")
 public class User {
+
     @Id
     @SequenceGenerator(
             name="usuarios_sequence",

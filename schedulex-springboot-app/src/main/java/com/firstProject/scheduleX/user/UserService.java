@@ -1,10 +1,24 @@
 package com.firstProject.scheduleX.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
+import reactor.core.publisher.Mono;
 
+import javax.print.attribute.standard.Media;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.Month;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +27,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private WebClient webClient = WebClient.create("http://localhost:8001");
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -62,4 +77,33 @@ public class UserService {
         }
     }
 
+    public void añadirHorasApi(User usuario) {
+        TimeSheet horarioNuevo =  new TimeSheet(
+                "2022-02-26T08:00:00",
+                "2022-02-26T16:00:00",
+                1,
+                1,
+                "string",
+                0,
+                0,
+                1,
+                true,
+                true,
+                "strings"
+        );
+
+        ResponseEntity<String> block = webClient.post()
+                .uri("/api/timesheets")
+                .header("X-AUTH-USER","admin@kimai.local")
+                .header("X-AUTH-TOKEN", "password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(horarioNuevo))
+                .retrieve()
+                .toEntity(String.class)
+                .block();
+
+        System.out.println(block.getStatusCode());
+        System.out.println(block.getBody());
+
+    }
 }
