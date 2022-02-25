@@ -1,6 +1,8 @@
-package com.firstProject.scheduleX.user;
+package com.firstProject.scheduleX.service;
 
-import com.firstProject.scheduleX.TimeSheet.TimeSheet;
+import com.firstProject.scheduleX.model.TimeSheet;
+import com.firstProject.scheduleX.model.User;
+import com.firstProject.scheduleX.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -67,20 +69,7 @@ public class UserService {
         }
     }
 
-    public void añadirHorasApi(User usuario) {
-        TimeSheet horarioNuevo =  new TimeSheet(
-                "2022-02-25T08:00:00",
-                "2022-02-25T16:00:00",
-                1,
-                1,
-                "string",
-                0,
-                0,
-                1,
-                true,
-                true,
-                "string"
-        );
+    public void añadirHorasApi(TimeSheet horarioNuevo) {
 
         ResponseEntity<String> block = webClient.post()
                 .uri("/api/timesheets")

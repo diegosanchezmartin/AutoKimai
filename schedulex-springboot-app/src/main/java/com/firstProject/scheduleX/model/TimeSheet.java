@@ -1,4 +1,4 @@
-package com.firstProject.scheduleX.TimeSheet;
+package com.firstProject.scheduleX.model;
 
 public class TimeSheet {
     private String begin;

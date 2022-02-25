@@ -1,5 +1,7 @@
-package com.firstProject.scheduleX.user;
+package com.firstProject.scheduleX.config;
 
+import com.firstProject.scheduleX.model.User;
+import com.firstProject.scheduleX.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -9,8 +9,41 @@ function InterfazInput () {
     function confirmarFechas(event) {
         event.preventDefault();
 
-        const fechaInicioIntroducida = fechaInicio.current.value;
-        const fechaFinIntroducida = fechaFin.current.value;
+        const begin = fechaInicio.current.value;
+        const end = fechaFin.current.value;
+        const project = 1;
+        const activity = 1;
+        const description = "string"
+        const fixedRate = 0
+        const hourlyRate = 0
+        const user = 1
+        const exported = true
+        const billable = true
+        const tags = "string"
+
+
+        const horario={
+            begin, 
+            end,
+            project,
+            activity,
+            description,
+            fixedRate,
+            hourlyRate,
+            user,
+            exported,
+            billable,
+            tags
+        }
+        console.log(horario);
+
+        fetch("http://localhost:8080/api/v1/user",{
+            method: "POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(horario)
+        }).then(() => {
+            console.log("Nuevo horario registrado")
+        })
     }
 
     return (
@@ -20,11 +53,11 @@ function InterfazInput () {
                 </div>
                 <div className={classes.control}>
                     <label htmlFor="fechaInicio">Introduce la fecha de inicio: </label>
-                    <input type="date" required id="fechaInicio" ref={fechaInicio}></input>
+                    <input type="datetime-local" required id="fechaInicio" ref={fechaInicio}></input>
                 </div>
                 <div className={classes.control}>
                     <label htmlFor="fechaFin">Introduce la fecha de fin: </label>
-                    <input type="date" required id="fechaFin" ref={fechaFin}></input>
+                    <input type="datetime-local" required id="fechaFin" ref={fechaFin}></input>
                 </div>
                 <div className={classes.actions}>
                     <button>Fichar horas</button>
