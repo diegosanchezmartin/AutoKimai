@@ -104,22 +104,39 @@ public class UserService {
             case 2:
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                this.añadirHorasApi(horarioNuevo);
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,10) + "T16:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,10) + "T16:15:00");
+                this.añadirHorasApi(horarioNuevo);
                 break;
             case 3:
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                this.añadirHorasApi(horarioNuevo);
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,11) + "T16:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,11) + "T16:15:00");
+                this.añadirHorasApi(horarioNuevo);
                 break;
             case 4:
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                this.añadirHorasApi(horarioNuevo);
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,11) + "T16:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,11) + "T16:15:00");
+                this.añadirHorasApi(horarioNuevo);
                 break;
             case 5:
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                this.añadirHorasApi(horarioNuevo);
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,11) + "T16:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,11) + "T16:15:00");
+                this.añadirHorasApi(horarioNuevo);
                 break;
             case 6:
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T15:00:00");
+                this.añadirHorasApi(horarioNuevo);
                 break;
             case 7:
                 throw new Exception ("Dia introcido incorrecto: El sábado no se trabaja");

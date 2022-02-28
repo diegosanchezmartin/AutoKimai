@@ -59,6 +59,5 @@ public class UserController {
             }
         }
         System.out.println(horarioNuevo);
-        userService.añadirHorasApi(horarioNuevo);
     }
 }
