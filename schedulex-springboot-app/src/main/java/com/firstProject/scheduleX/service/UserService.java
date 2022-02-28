@@ -90,6 +90,7 @@ public class UserService {
     public void comprobarUnDia(TimeSheet horarioNuevo) throws Exception {
         SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaInicio = null;
+
         try {
             fechaInicio = formatearFecha.parse(horarioNuevo.getBegin());
         } catch(ParseException e) {
@@ -113,24 +114,24 @@ public class UserService {
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
                 this.añadirHorasApi(horarioNuevo);
-                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,11) + "T16:00:00");
-                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,11) + "T16:15:00");
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,10) + "T16:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,10) + "T16:15:00");
                 this.añadirHorasApi(horarioNuevo);
                 break;
             case 4:
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
                 this.añadirHorasApi(horarioNuevo);
-                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,11) + "T16:00:00");
-                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,11) + "T16:15:00");
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,10) + "T16:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,10) + "T16:15:00");
                 this.añadirHorasApi(horarioNuevo);
                 break;
             case 5:
                 horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
                 this.añadirHorasApi(horarioNuevo);
-                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,11) + "T16:00:00");
-                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,11) + "T16:15:00");
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,10) + "T16:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getBegin().substring(0,10) + "T16:15:00");
                 this.añadirHorasApi(horarioNuevo);
                 break;
             case 6:
@@ -140,6 +141,46 @@ public class UserService {
                 break;
             case 7:
                 throw new Exception ("Dia introcido incorrecto: El sábado no se trabaja");
+        }
+    }
+
+    public void comprobarMasDeUnDia(TimeSheet horarioNuevo) throws Exception {
+        SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaInicio = null;
+        Date fechaFin = null;
+        int diasDeDiferencia;
+        int diaInicio;
+        String diaInicioString;
+        GregorianCalendar calendario = new GregorianCalendar();
+
+        try {
+            fechaInicio = formatearFecha.parse(horarioNuevo.getBegin());
+        } catch(ParseException e) {
+            System.out.println("No se ha podido formatear la fecha de inicio de la actividad");
+        }
+        try {
+            fechaFin = formatearFecha.parse(horarioNuevo.getEnd());
+        } catch(ParseException e) {
+            System.out.println("No se ha podido formatear la fecha de fin de la actividad");
+        }
+
+        diasDeDiferencia = (int)((fechaFin.getTime() - fechaInicio.getTime()) / 86400000);
+
+        calendario.setTime(fechaInicio);
+        //diaInicioString = horarioNuevo.getBegin().substring(9,10);
+        //diaInicio = Integer.parseInt(diaInicioString);
+        horarioNuevo.setEnd(horarioNuevo.getBegin());
+
+        for(int i=0; i<=diasDeDiferencia; i++){
+            this.comprobarUnDia(horarioNuevo);
+            calendario.add(Calendar.DAY_OF_YEAR, 1);
+            fechaInicio =  calendario.getTime();
+            diaInicioString = formatearFecha.format(fechaInicio).substring(8,10);
+            //diaInicioString = horarioNuevo.getBegin().substring(8,10);
+            //diaInicio+=1;
+            //diaInicioString = String.valueOf(diaInicio);
+            horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,8) + diaInicioString);
+            horarioNuevo.setEnd(horarioNuevo.getBegin());
         }
     }
 }

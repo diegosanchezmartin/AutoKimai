@@ -57,6 +57,12 @@ public class UserController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            try {
+                userService.comprobarMasDeUnDia(horarioNuevo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         System.out.println(horarioNuevo);
     }
