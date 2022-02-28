@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -84,5 +85,44 @@ public class UserService {
         System.out.println(block.getStatusCode());
         System.out.println(block.getBody());
 
+    }
+
+    public void comprobarUnDia(TimeSheet horarioNuevo) throws Exception {
+        SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaInicio = null;
+        try {
+            fechaInicio = formatearFecha.parse(horarioNuevo.getBegin());
+        } catch(ParseException e) {
+            System.out.println("No se ha podido formatear la fecha de inicio de la actividad");
+        }
+        GregorianCalendar calendario = new GregorianCalendar();
+        calendario.setTime(fechaInicio);
+        int diaDeLaSemana = calendario.get(Calendar.DAY_OF_WEEK);
+        switch(diaDeLaSemana) {
+            case 1:
+                throw new Exception ("Dia introcido incorrecto: El domingo no se trabaja");
+            case 2:
+                horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                break;
+            case 3:
+                horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                break;
+            case 4:
+                horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                break;
+            case 5:
+                horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
+                break;
+            case 6:
+                horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
+                horarioNuevo.setEnd(horarioNuevo.getEnd() + "T15:00:00");
+                break;
+            case 7:
+                throw new Exception ("Dia introcido incorrecto: El sábado no se trabaja");
+        }
     }
 }

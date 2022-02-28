@@ -53,11 +53,11 @@ function InterfazInput () {
                 </div>
                 <div className={classes.control}>
                     <label htmlFor="fechaInicio">Introduce la fecha de inicio: </label>
-                    <input type="datetime-local" required id="fechaInicio" ref={fechaInicio}></input>
+                    <input type="date" required id="fechaInicio" ref={fechaInicio}></input>
                 </div>
                 <div className={classes.control}>
                     <label htmlFor="fechaFin">Introduce la fecha de fin: </label>
-                    <input type="datetime-local" required id="fechaFin" ref={fechaFin}></input>
+                    <input type="date" required id="fechaFin" ref={fechaFin}></input>
                 </div>
                 <div className={classes.actions}>
                     <button>Fichar horas</button>

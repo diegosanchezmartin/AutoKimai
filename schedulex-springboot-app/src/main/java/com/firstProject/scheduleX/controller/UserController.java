@@ -6,6 +6,11 @@ import com.firstProject.scheduleX.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -45,22 +50,15 @@ public class UserController {
     }*/
 
     @PostMapping
-    public void registrarHorasUsuarioAPI(@RequestBody TimeSheet horarioNuevo1){
-        TimeSheet horarioNuevo =  new TimeSheet(
-                "2022-02-23T08:00:00",
-                "2022-02-23T16:00:00",
-                1,
-                1,
-                "string",
-                0,
-                0,
-                1,
-                true,
-                true,
-                "string"
-        );
-
-        System.out.println(horarioNuevo1);
-        userService.añadirHorasApi(horarioNuevo1);
+    public void registrarHorasUsuarioAPI(@RequestBody TimeSheet horarioNuevo){
+        if(horarioNuevo.getBegin().equals(horarioNuevo.getEnd())) {
+            try {
+                userService.comprobarUnDia(horarioNuevo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(horarioNuevo);
+        userService.añadirHorasApi(horarioNuevo);
     }
 }
