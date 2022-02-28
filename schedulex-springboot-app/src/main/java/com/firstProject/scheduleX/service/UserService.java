@@ -148,8 +148,7 @@ public class UserService {
         SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaInicio = null;
         Date fechaFin = null;
-        int diasDeDiferencia;
-        int diaInicio;
+        int diasDeDiferencia, diaDeLaSemana;
         String diaInicioString;
         GregorianCalendar calendario = new GregorianCalendar();
 
@@ -172,15 +171,41 @@ public class UserService {
         horarioNuevo.setEnd(horarioNuevo.getBegin());
 
         for(int i=0; i<=diasDeDiferencia; i++){
-            this.comprobarUnDia(horarioNuevo);
+            diaDeLaSemana = calendario.get(Calendar.DAY_OF_WEEK);
             calendario.add(Calendar.DAY_OF_YEAR, 1);
-            fechaInicio =  calendario.getTime();
-            diaInicioString = formatearFecha.format(fechaInicio).substring(8,10);
-            //diaInicioString = horarioNuevo.getBegin().substring(8,10);
-            //diaInicio+=1;
-            //diaInicioString = String.valueOf(diaInicio);
-            horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,8) + diaInicioString);
-            horarioNuevo.setEnd(horarioNuevo.getBegin());
+            if(diaDeLaSemana != 1 && diaDeLaSemana != 7) {
+                this.comprobarUnDia(horarioNuevo);
+                fechaInicio = calendario.getTime();
+                diaInicioString = formatearFecha.format(fechaInicio).substring(8, 10);
+                //diaInicioString = horarioNuevo.getBegin().substring(8,10);
+                //diaInicio+=1;
+                //diaInicioString = String.valueOf(diaInicio);
+                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0, 8) + diaInicioString);
+                horarioNuevo.setEnd(horarioNuevo.getBegin());
+            }
+            switch (diaDeLaSemana) {
+                case 1:
+                    System.out.println("Domingo: día de descanso");
+                    break;
+                case 2:
+                    System.out.println("Lunes: 8 horas y 15 minutos fichadas");
+                    break;
+                case 3:
+                    System.out.println("Martes: 8 horas y 15 minutos fichadas");
+                    break;
+                case 4:
+                    System.out.println("Miércoles: 8 horas y 15 minutos fichadas");
+                    break;
+                case 5:
+                    System.out.println("Jueves: 8 horas y 15 minutos fichadas");
+                    break;
+                case 6:
+                    System.out.println("Viernes: 7 horas fichadas");
+                    break;
+                case 7:
+                    System.out.println("Sábado: día de descanso");
+                    break;
+            }
         }
     }
 }
