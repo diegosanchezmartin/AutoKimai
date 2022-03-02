@@ -174,11 +174,11 @@ public class UserService {
             calendario.add(Calendar.DAY_OF_YEAR, 1);
             if(diaDeLaSemana != 1 && diaDeLaSemana != 7) {
                 this.comprobarUnDia(horarioNuevo);
-                fechaInicio = calendario.getTime();
-                diaInicioString = formatearFecha.format(fechaInicio).substring(8, 10);
-                horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0, 8) + diaInicioString);
-                horarioNuevo.setEnd(horarioNuevo.getBegin());
             }
+            fechaInicio = calendario.getTime();
+            diaInicioString = formatearFecha.format(fechaInicio).substring(8, 10);
+            horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0, 8) + diaInicioString);
+            horarioNuevo.setEnd(horarioNuevo.getBegin());
             switch (diaDeLaSemana) {
                 case 1:
                     System.out.println("Domingo: día de descanso");
