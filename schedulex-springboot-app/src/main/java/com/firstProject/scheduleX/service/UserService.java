@@ -167,8 +167,6 @@ public class UserService {
         diasDeDiferencia = (int)((fechaFin.getTime() - fechaInicio.getTime()) / 86400000);
 
         calendario.setTime(fechaInicio);
-        //diaInicioString = horarioNuevo.getBegin().substring(9,10);
-        //diaInicio = Integer.parseInt(diaInicioString);
         horarioNuevo.setEnd(horarioNuevo.getBegin());
 
         for(int i=0; i<=diasDeDiferencia; i++){
@@ -178,9 +176,6 @@ public class UserService {
                 this.comprobarUnDia(horarioNuevo);
                 fechaInicio = calendario.getTime();
                 diaInicioString = formatearFecha.format(fechaInicio).substring(8, 10);
-                //diaInicioString = horarioNuevo.getBegin().substring(8,10);
-                //diaInicio+=1;
-                //diaInicioString = String.valueOf(diaInicio);
                 horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0, 8) + diaInicioString);
                 horarioNuevo.setEnd(horarioNuevo.getBegin());
             }

@@ -30,7 +30,7 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping("api/timsheets")
+    @GetMapping("api/timesheets")
     public List<TimeSheetGet> getHorarios(){
         return userService.getHorarios();
     }
