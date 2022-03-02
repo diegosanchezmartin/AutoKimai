@@ -1,6 +1,7 @@
 package com.firstProject.scheduleX.controller;
 
 import com.firstProject.scheduleX.model.TimeSheet;
+import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.model.User;
 import com.firstProject.scheduleX.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(path = "api/v1/user")
 public class UserController {
 
     private final UserService userService;
@@ -25,9 +25,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("api/v1/user")
     public List<User> getUsers() {
         return userService.getUsers();
+    }
+
+    @GetMapping("api/timsheets")
+    public List<TimeSheetGet> getHorarios(){
+        return userService.getHorarios();
     }
 
     //Post es para añadir nuevos usuarios a nuestra app
@@ -49,7 +54,7 @@ public class UserController {
         userService.updateUser(nombreDeUsuario, fechaInicio, fechaFin);
     }*/
 
-    @PostMapping
+    @PostMapping("api/v1/user")
     public void registrarHorasUsuarioAPI(@RequestBody TimeSheet horarioNuevo){
         if(horarioNuevo.getBegin().equals(horarioNuevo.getEnd())) {
             try {
@@ -65,5 +70,6 @@ public class UserController {
             }
         }
         System.out.println(horarioNuevo);
+        System.out.println(getHorarios());
     }
 }

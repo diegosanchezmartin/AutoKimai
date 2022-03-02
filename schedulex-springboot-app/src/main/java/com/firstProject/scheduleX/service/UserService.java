@@ -1,6 +1,7 @@
 package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.TimeSheet;
+import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.model.User;
 import com.firstProject.scheduleX.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,5 +208,18 @@ public class UserService {
                     break;
             }
         }
+    }
+
+
+    public List<TimeSheetGet> getHorarios() {
+        return webClient.get()
+                .uri("/api/timesheets")
+                .header("X-AUTH-USER","admin@kimai.local")
+                .header("X-AUTH-TOKEN", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(TimeSheetGet.class)
+                .collectList()
+                .block();
     }
 }
