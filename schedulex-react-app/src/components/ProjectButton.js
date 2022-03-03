@@ -1,4 +1,4 @@
-
+import classes from "./ProjectButton.module.css";
 
 function DropButton () {
 
@@ -9,7 +9,7 @@ function DropButton () {
     }
 
     return (
-        <select onClick={getDataProject}>
+        <select className={classes.dropbton} onClick={getDataProject}>
             <option selected value="proyecto">Proyecto</option>
             <option value="grapefruit">Grapefruit</option>
             <option value="lime">Lime</option>
