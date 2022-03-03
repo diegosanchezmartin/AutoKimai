@@ -17,15 +17,20 @@ public class User {
             strategy = GenerationType.SEQUENCE,
             generator = "usuarios_sequen0pce"
     )
-    private Long id;
+    private Long idLong;
     private String nombreDeUsuario;
+    public int id;
+    public String username;
+    public String accountNumber;
+    public boolean enabled;
+    public String color;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
 
     public User() {
     }
 
-    public User(Long id, String nombreDeUsuario, LocalDate fechaInicio, LocalDate fechaFin) {
+    public User(Long idLong, String nombreDeUsuario, LocalDate fechaInicio, LocalDate fechaFin) {
         this.id = id;
         this.nombreDeUsuario = nombreDeUsuario;
         this.fechaInicio = fechaInicio;
@@ -38,12 +43,24 @@ public class User {
         this.fechaFin = fechaFin;
     }
 
+    public User(Long idLong, String nombreDeUsuario, int id, String username, String accountNumber, boolean enabled, String color, LocalDate fechaInicio, LocalDate fechaFin) {
+        this.idLong = idLong;
+        this.nombreDeUsuario = nombreDeUsuario;
+        this.id = id;
+        this.username = username;
+        this.accountNumber = accountNumber;
+        this.enabled = enabled;
+        this.color = color;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+    }
+
     public Long getId() {
-        return id;
+        return idLong;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idLong = idLong;
     }
 
     public String getnombreDeUsuario() {
@@ -73,8 +90,13 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", username='" + nombreDeUsuario + '\'' +
+                "idLong=" + idLong +
+                ", nombreDeUsuario='" + nombreDeUsuario + '\'' +
+                ", id=" + id +
+                ", username='" + username + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", enabled=" + enabled +
+                ", color='" + color + '\'' +
                 ", fechaInicio=" + fechaInicio +
                 ", fechaFin=" + fechaFin +
                 '}';

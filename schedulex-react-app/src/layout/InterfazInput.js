@@ -21,7 +21,6 @@ function InterfazInput () {
         const billable = true
         const tags = "string"
 
-
         const horario={
             begin, 
             end,
@@ -44,6 +43,8 @@ function InterfazInput () {
         }).then(() => {
             console.log("Nuevo horario registrado")
         })
+
+        console.log("Hey");
     }
 
     return (

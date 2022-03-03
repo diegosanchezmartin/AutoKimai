@@ -1,8 +1,6 @@
 package com.firstProject.scheduleX.controller;
 
-import com.firstProject.scheduleX.model.TimeSheet;
-import com.firstProject.scheduleX.model.TimeSheetGet;
-import com.firstProject.scheduleX.model.User;
+import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +26,16 @@ public class UserController {
     @GetMapping("api/v1/user")
     public List<User> getUsers() {
         return userService.getUsers();
+    }
+
+    @GetMapping("api/v1/projects")
+    public List<Projects> getProjects() {
+        return userService.getProjects();
+    }
+
+    @GetMapping("api/v1/activities")
+    public List<Activity> getActivities() {
+        return userService.getActivities();
     }
 
     @GetMapping("api/timesheets")

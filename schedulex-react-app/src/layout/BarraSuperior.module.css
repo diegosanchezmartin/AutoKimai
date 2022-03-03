@@ -1,8 +1,8 @@
 .header {
     display: flex;
-    flex-direction: row;
+    /*flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-around;*/
     background-color: black;
     border-radius: 30px;
     padding: 0px 30px 0px 30px;
@@ -11,12 +11,12 @@
 }
 
 .image {
-    width: 50%;
+    width: 100%;
     height: auto;
 }
   
 .image img {
-    width: 75%;
+    width: 45%;
     height: auto;
 }
 
@@ -28,7 +28,6 @@
     border: 4px solid white;
     border-radius: 4px;
     font-size: 11px;
-    width: 60%;
     height: auto;
 }
 
@@ -36,4 +35,27 @@
     margin: 5px 0px 0px 0px;
     width: 100%;
     height: auto;
+}
+
+.clock button {
+    cursor: pointer;
+    background-color: #3B4048;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border: 4px solid white;
+    border-radius: 4px;
+    font-size: 11px;
+    height: auto;
+}
+
+.clock img {
+    margin: 5px 0px 0px 0px;
+    width: 100%;
+    height: auto;
+}
+
+.section {
+    float: left;
+    margin: 0 1.5%;
+    width: 30%;
 }
