@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("api/v1/activities")
-    public List<Activity> getActivities() {
+    public List<Activities> getActivities() {
         return userService.getActivities();
     }
 

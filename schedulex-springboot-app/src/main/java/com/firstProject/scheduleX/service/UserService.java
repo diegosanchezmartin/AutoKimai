@@ -1,8 +1,6 @@
 package com.firstProject.scheduleX.service;
 
-import com.firstProject.scheduleX.model.TimeSheet;
-import com.firstProject.scheduleX.model.TimeSheetGet;
-import com.firstProject.scheduleX.model.User;
+import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -214,6 +212,30 @@ public class UserService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(TimeSheetGet.class)
+                .collectList()
+                .block();
+    }
+
+    public List<Projects> getProjects() {
+        return webClient.get()
+                .uri("/api/projects")
+                .header("X-AUTH-USER","admin@kimai.local")
+                .header("X-AUTH-TOKEN", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(Projects.class)
+                .collectList()
+                .block();
+    }
+
+    public List<Activities> getActivities() {
+        return webClient.get()
+                .uri("/api/activities")
+                .header("X-AUTH-USER","admin@kimai.local")
+                .header("X-AUTH-TOKEN", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(Activities.class)
                 .collectList()
                 .block();
     }
