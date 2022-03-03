@@ -8,7 +8,7 @@ Auto Kimai is a tool which allows you to log your hours automatically on a serve
 
 ## Prototype Design
 
-![Prototipo](./doc/Prototypes/segundoPrototipoScheduleX/secondPrototype.PNG)
+![Prototipo](./doc/Prototypes/segundoPrototipoScheduleX/secondPrototype.png)
 ## Topics to review
 
 Client
