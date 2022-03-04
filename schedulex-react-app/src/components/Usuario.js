@@ -9,14 +9,6 @@ class Usuario extends React.Component {
             errorBackend: false
         }
     }
-
-    /* Usando axios descomentar esta líneas:
-    componentDidMount(){
-        UserServices.getUsers().then((response) => {
-            this.setState({ users: response.data})
-        });
-    }*/
-
     
     componentDidMount(){
         UserServiceFetch.getUsers().then((res) => {
