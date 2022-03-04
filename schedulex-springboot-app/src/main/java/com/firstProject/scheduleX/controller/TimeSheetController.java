@@ -8,6 +8,8 @@ import com.firstProject.scheduleX.service.TimeSheetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -52,5 +54,14 @@ public class TimeSheetController {
         }
         System.out.println(horarioNuevo);
         System.out.println(getHorarios());
+
+        Long now = System.currentTimeMillis();
+        Date hoy = new Date(now);
+        System.out.println("Tiempo con date: "+hoy);
+        Instant ahora = hoy.toInstant();
+        System.out.println("Tiempo con ahora: "+ahora);
+        hoy = Date.from(ahora);
+        System.out.println("Tiempo de nuevo con date: "+hoy);
+
     }
 }

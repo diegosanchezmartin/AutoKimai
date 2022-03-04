@@ -2,8 +2,8 @@ package com.firstProject.scheduleX.model;
 
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Data
 public class TimeSheetGet{
@@ -12,8 +12,8 @@ public class TimeSheetGet{
     public int user;
     public ArrayList<Object> tags;
     public int id;
-    public Date begin;
-    public Date end;
+    public Instant begin;
+    public Instant end;
     public int duration;
     public Object description;
     public double rate;

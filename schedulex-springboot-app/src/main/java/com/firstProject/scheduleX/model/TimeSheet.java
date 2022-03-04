@@ -2,10 +2,12 @@ package com.firstProject.scheduleX.model;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class TimeSheet {
-    private String begin;
-    private String end;
+    private LocalDate begin;
+    private LocalDate end;
     private int project;
     private int activity;
     private String description;

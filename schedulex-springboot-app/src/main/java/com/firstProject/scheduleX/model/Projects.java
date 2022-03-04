@@ -2,8 +2,8 @@ package com.firstProject.scheduleX.model;
 
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Data
 public class Projects {
@@ -11,8 +11,8 @@ public class Projects {
     public int customer;
     public int id;
     public String name;
-    public Date start;
-    public Date end;
+    public Instant start;
+    public Instant end;
     public String comment;
     public boolean visible;
     public ArrayList<MetaField> metaFields;

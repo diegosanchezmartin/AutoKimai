@@ -1,5 +1,6 @@
 package com.firstProject.scheduleX.service;
 
+import ch.qos.logback.core.status.InfoStatus;
 import com.firstProject.scheduleX.model.Activities;
 import com.firstProject.scheduleX.model.Projects;
 import com.firstProject.scheduleX.model.TimeSheet;
@@ -12,6 +13,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -40,22 +44,15 @@ public class TimeSheetService {
     }
 
     public void comprobarUnDia(TimeSheet horarioNuevo) throws Exception {
-        SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy-MM-dd");
-        Date fechaInicio = null;
-
-        try {
-            fechaInicio = formatearFecha.parse(horarioNuevo.getBegin());
-        } catch(ParseException e) {
-            System.out.println("No se ha podido formatear la fecha de inicio de la actividad");
-        }
-        GregorianCalendar calendario = new GregorianCalendar();
-        calendario.setTime(fechaInicio);
-        int diaDeLaSemana = calendario.get(Calendar.DAY_OF_WEEK);
+        System.out.println(horarioNuevo.getBegin());
+        int diaDeLaSemana = horarioNuevo.getBegin().getDayOfWeek().getValue();
+        System.out.println(diaDeLaSemana);
+        String diaIntroducido = horarioNuevo.getBegin().toString();
         switch(diaDeLaSemana) {
             case 1:
                 throw new Exception ("Dia introcido incorrecto: El domingo no se trabaja");
             case 2:
-                horarioNuevo.setBegin(horarioNuevo.getBegin() + "T08:00:00");
+                horarioNuevo.setBegin(Instant.parse(diaIntroducido + "T08:00:00"));
                 horarioNuevo.setEnd(horarioNuevo.getEnd() + "T16:00:00");
                 this.añadirHorasApi(horarioNuevo);
                 horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0,10) + "T16:00:00");
@@ -104,7 +101,7 @@ public class TimeSheetService {
         String diaInicioString;
         GregorianCalendar calendario = new GregorianCalendar();
 
-        try {
+        /*try {
             fechaInicio = formatearFecha.parse(horarioNuevo.getBegin());
         } catch(ParseException e) {
             System.out.println("No se ha podido formatear la fecha de inicio de la actividad");
@@ -113,7 +110,7 @@ public class TimeSheetService {
             fechaFin = formatearFecha.parse(horarioNuevo.getEnd());
         } catch(ParseException e) {
             System.out.println("No se ha podido formatear la fecha de fin de la actividad");
-        }
+        }*/
 
         diasDeDiferencia = (int)((fechaFin.getTime() - fechaInicio.getTime()) / 86400000);
 
@@ -128,7 +125,7 @@ public class TimeSheetService {
             }
             fechaInicio = calendario.getTime();
             diaInicioString = formatearFecha.format(fechaInicio).substring(8, 10);
-            horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0, 8) + diaInicioString);
+    //        horarioNuevo.setBegin(horarioNuevo.getBegin().substring(0, 8) + diaInicioString);
             horarioNuevo.setEnd(horarioNuevo.getBegin());
             switch (diaDeLaSemana) {
                 case 1:
