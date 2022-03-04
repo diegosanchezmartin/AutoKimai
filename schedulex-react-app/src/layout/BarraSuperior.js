@@ -2,15 +2,15 @@ import { Link } from 'react-router-dom';
 import classes from './BarraSuperior.module.css';
 import logoScheduleX from '../assets/images/ScheduleXlogoHorizontal.png';
 import iconoPerfil from '../assets/images/iconoPerfil.png';
-import Proyecto from '../components/Proyecto';
-import Actividad from '../components/Actividad';
+import ProyectButton from '../components/ProyectButton';
+import ActivityButton from '../components/ActivityButton';
 
 function BarraSuperior () {
     return (
         <header className={classes.header}>
             <section className={classes.selectbtons}>
-                <Proyecto />
-                <Actividad />
+                <ProyectButton />
+                <ActivityButton />
             </section>
             <section className={classes.logo}>
                 <div className={classes.image}>

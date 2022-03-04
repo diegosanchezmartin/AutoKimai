@@ -1,14 +1,40 @@
+import React, {useEffect, useState} from "react";
+import UserServiceFetch from "../services/UserServiceFetch";
 import classes from "./ActivityButton.module.css";
 
-function ActivityButton() {
+const ActivityButton = () => {
+
+    const [actividades, setActividades] = useState([]);
+    const [errorBackend, setErrorBackend] = useState(false);
+
+    useEffect(() => {
+        UserServiceFetch.getActivities().then((actividades) => { 
+            setActividades(actividades);
+            setErrorBackend(false);
+        }).catch(err => {
+            console.log(err.message + "\n El backend está caido");
+            setActividades([]);
+            setErrorBackend(true);
+        });
+    });
+    
+    if(errorBackend){
+        return (
+             <select className={classes.actybton}>
+                <option selected value="error">Error</option>
+            </select>
+        )
+    }
+        
     return (
-        <select className={classes.actybton} onClick={getDataActivity}>
-            <option selected value="Actividad">Actividad</option>
-            <option value="grapefruit">Grapefruit</option>
-            <option value="lime">Lime</option>
-            <option value="mango">Mango</option>
+        <select defaultValue={'ValorPorDefecto'} className={classes.actybton} >
+            <option value="ValorPorDefecto" >Actividad</option>
+            {actividades.map(
+                actividad => 
+                <option value={actividad.parentTitle}>{actividad.name}</option>
+            )}
         </select>
-    );
+    )
 }
 
 export default ActivityButton;
