@@ -1,9 +1,6 @@
 package com.firstProject.scheduleX.controller;
 
-import com.firstProject.scheduleX.model.Activities;
-import com.firstProject.scheduleX.model.Projects;
-import com.firstProject.scheduleX.model.TimeSheet;
-import com.firstProject.scheduleX.model.TimeSheetGet;
+import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.service.TimeSheetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,14 +51,6 @@ public class TimeSheetController {
         }
         System.out.println(horarioNuevo);
         System.out.println(getHorarios());
-
-        Long now = System.currentTimeMillis();
-        Date hoy = new Date(now);
-        System.out.println("Tiempo con date: "+hoy);
-        Instant ahora = hoy.toInstant();
-        System.out.println("Tiempo con ahora: "+ahora);
-        hoy = Date.from(ahora);
-        System.out.println("Tiempo de nuevo con date: "+hoy);
 
     }
 }
