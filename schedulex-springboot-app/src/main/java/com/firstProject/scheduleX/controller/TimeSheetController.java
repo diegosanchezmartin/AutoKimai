@@ -1,12 +1,13 @@
 package com.firstProject.scheduleX.controller;
 
-import com.firstProject.scheduleX.model.*;
+import com.firstProject.scheduleX.model.Activities;
+import com.firstProject.scheduleX.model.Projects;
+import com.firstProject.scheduleX.model.TimeSheet;
+import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.service.TimeSheetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -51,6 +52,5 @@ public class TimeSheetController {
         }
         System.out.println(horarioNuevo);
         System.out.println(getHorarios());
-
     }
 }

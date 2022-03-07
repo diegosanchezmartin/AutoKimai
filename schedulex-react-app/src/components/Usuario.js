@@ -5,17 +5,17 @@ class Usuario extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            users:[],
+            timesheets:[],
             errorBackend: false
         }
     }
     
     componentDidMount(){
-        UserServiceFetch.getUsers().then((res) => {
-            this.setState({users: res, errorBackend:false});
+        UserServiceFetch.getTimeSheets().then((res) => {
+            this.setState({timesheets: res, errorBackend:false});
         }).catch(err => {
             console.log(err.message + "\nEl backend está caido");
-            this.setState({errorBackend: true, users:[]});
+            this.setState({errorBackend: true, timesheets:[]});
         });
     }
 
@@ -30,25 +30,21 @@ class Usuario extends React.Component {
         }
         return (
             <div>
-                <h1 className="text"> Lista de usuarios: </h1>
+                <h1 className="text"> Horas fichadas: </h1>
                 <table className="table table-striped">
                     <thead>
                         <tr>
-                            <td> Id de usuario: </td>
-                            <td> Nombre de usuario: </td>
                             <td> Fecha inicio: </td>
                             <td> Fecha fin: </td>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            this.state.users.map(
-                                user => 
-                                <tr key = {user.id}>
-                                    <td>{user.id}</td>
-                                    <td>{user.nombreDeUsuario}</td>
-                                    <td>{user.fechaInicio}</td>
-                                    <td>{user.fechaFin}</td>
+                            this.state.timesheets.map(
+                                timesheet => 
+                                <tr key = {timesheet.id}>
+                                    <td>{timesheet.begin}</td>
+                                    <td>{timesheet.end}</td>
                                 </tr>
                             )
                         }
