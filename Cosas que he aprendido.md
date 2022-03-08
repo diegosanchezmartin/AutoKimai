@@ -12,6 +12,12 @@ Testing
 Postman
 
 ------------------------¬
+| JUnit y Mockito       |
+-------------------------
+https://www.youtube.com/watch?v=chlG-gRC6bg
+______________________________________________________________________________________________________________________________________
+
+------------------------¬
 | Lombok                |
 -------------------------
 https://projectlombok.org/
@@ -87,4 +93,6 @@ https://www.baeldung.com/spring-boot
 https://www.youtube.com/watch?v=9SGDpanrc8U
 
 https://www.baeldung.com/spring-boot-h2-database
+
+https://www.arquitecturajava.com/el-patron-de-inyeccion-de-dependencia/
 ______________________________________________________________________________________________________________________________________

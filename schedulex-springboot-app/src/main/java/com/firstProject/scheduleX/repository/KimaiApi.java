@@ -2,10 +2,12 @@ package com.firstProject.scheduleX.repository;
 
 import com.firstProject.scheduleX.model.*;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.reactive.function.BodyInserters;
 
 import java.util.List;
 
-public interface TimeSheetInterface {
+public interface KimaiApi {
 
     void añadirHorasApi(TimeSheetPost horarioNuevo);
 
@@ -14,8 +16,4 @@ public interface TimeSheetInterface {
     List<Projects> getProjects();
 
     List<Activities> getActivities();
-
-    public TimeSheetPost crearDiaPorLaMañana(int diaDeLaSemana, TimeSheet horarioNuevo);
-
-    TimeSheetPost crearDiaPorLaTarde(TimeSheet horarioNuevo);
 }
