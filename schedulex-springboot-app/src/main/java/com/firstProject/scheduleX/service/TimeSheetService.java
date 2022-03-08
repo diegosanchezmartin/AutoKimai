@@ -1,6 +1,7 @@
 package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.*;
+import com.firstProject.scheduleX.repository.TimeSheetInterface;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
-public class TimeSheetService {
+public class TimeSheetService implements TimeSheetInterface {
 
     private WebClient webClient = WebClient.create("http://localhost:8001");
 
@@ -26,146 +27,76 @@ public class TimeSheetService {
                 .retrieve()
                 .toEntity(String.class)
                 .block();
+    }
 
-        System.out.println(block.getStatusCode());
-        System.out.println(block.getBody());
+    public TimeSheetPost crearDiaPorLaMañana(int diaDeLaSemana, TimeSheet horarioNuevo) {
+        TimeSheetPost horarioMañana;
+        if(diaDeLaSemana != 5){
+            horarioMañana = new TimeSheetPost(
+                    horarioNuevo.getBegin().toString() + "T08:00:00",
+                    horarioNuevo.getEnd().toString() + "T16:00:00",
+                    horarioNuevo.getProject(),
+                    horarioNuevo.getActivity(),
+                    horarioNuevo.getDescription(),
+                    horarioNuevo.getFixedRate(),
+                    horarioNuevo.getHourlyRate(),
+                    horarioNuevo.getUser(),
+                    horarioNuevo.isExported(),
+                    horarioNuevo.isBillable(),
+                    horarioNuevo.getTags());
+        } else {
+            horarioMañana = new TimeSheetPost(
+                    horarioNuevo.getBegin().toString() + "T08:00:00",
+                    horarioNuevo.getEnd().toString() + "T15:00:00",
+                    horarioNuevo.getProject(),
+                    horarioNuevo.getActivity(),
+                    horarioNuevo.getDescription(),
+                    horarioNuevo.getFixedRate(),
+                    horarioNuevo.getHourlyRate(),
+                    horarioNuevo.getUser(),
+                    horarioNuevo.isExported(),
+                    horarioNuevo.isBillable(),
+                    horarioNuevo.getTags());
+        }
+
+        return horarioMañana;
+    }
+
+    public TimeSheetPost crearDiaPorLaTarde(TimeSheet horarioNuevo) {
+        TimeSheetPost horarioMañana;
+        horarioMañana = new TimeSheetPost(
+                horarioNuevo.getBegin().toString() + "T16:00:00",
+                horarioNuevo.getEnd().toString() + "T16:15:00",
+                horarioNuevo.getProject(),
+                horarioNuevo.getActivity(),
+                horarioNuevo.getDescription(),
+                horarioNuevo.getFixedRate(),
+                horarioNuevo.getHourlyRate(),
+                horarioNuevo.getUser(),
+                horarioNuevo.isExported(),
+                horarioNuevo.isBillable(),
+                horarioNuevo.getTags());
+        return horarioMañana;
     }
 
     public void comprobarUnDia(TimeSheet horarioNuevo) throws Exception {
         TimeSheetPost diaRegistrado;
         int diaDeLaSemana = horarioNuevo.getBegin().getDayOfWeek().getValue();
         switch(diaDeLaSemana) {
-            case 1:
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T08:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:00:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T16:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:15:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                break;
-            case 2:
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T08:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:00:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T16:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:15:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                break;
-            case 3:
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T08:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:00:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T16:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:15:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                break;
-            case 4:
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T08:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:00:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T16:00:00",
-                        horarioNuevo.getEnd().toString() + "T16:15:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
-                this.añadirHorasApi(diaRegistrado);
-                break;
             case 5:
-                diaRegistrado = new TimeSheetPost(
-                        horarioNuevo.getBegin().toString() + "T08:00:00",
-                        horarioNuevo.getEnd().toString() + "T15:00:00",
-                        horarioNuevo.getProject(),
-                        horarioNuevo.getActivity(),
-                        horarioNuevo.getDescription(),
-                        horarioNuevo.getFixedRate(),
-                        horarioNuevo.getHourlyRate(),
-                        horarioNuevo.getUser(),
-                        horarioNuevo.isExported(),
-                        horarioNuevo.isBillable(),
-                        horarioNuevo.getTags());
+                diaRegistrado = crearDiaPorLaMañana(diaDeLaSemana, horarioNuevo);
                 this.añadirHorasApi(diaRegistrado);
                 break;
             case 6:
                 throw new Exception ("Dia introcido incorrecto: El sábado no se trabaja");
             case 7:
                 throw new Exception ("Dia introcido incorrecto: El domingo no se trabaja");
+            default:
+                diaRegistrado = crearDiaPorLaMañana(diaDeLaSemana, horarioNuevo);
+                this.añadirHorasApi(diaRegistrado);
+                diaRegistrado = crearDiaPorLaTarde(horarioNuevo);
+                this.añadirHorasApi(diaRegistrado);
+                break;
         }
     }
 
