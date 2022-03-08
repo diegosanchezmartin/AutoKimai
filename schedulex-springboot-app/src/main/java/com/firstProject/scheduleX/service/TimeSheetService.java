@@ -9,7 +9,7 @@ import java.util.List;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
-public class TimeSheetService implements KimaiApi {
+public class TimeSheetService {
 
     KimaiApi apiKimai;
 
@@ -123,17 +123,8 @@ public class TimeSheetService implements KimaiApi {
         }
     }
 
-
     public List<TimeSheetGet> getHorarios() {
-        return webClient.get()
-                .uri("/api/timesheets")
-                .header("X-AUTH-USER","admin@kimai.local")
-                .header("X-AUTH-TOKEN", "password")
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux(TimeSheetGet.class)
-                .collectList()
-                .block();
+        return apiKimai.getHorarios();
     }
 
     public List<Projects> getProjects(){
