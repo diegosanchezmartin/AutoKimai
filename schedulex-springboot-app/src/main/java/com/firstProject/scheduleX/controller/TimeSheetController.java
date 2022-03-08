@@ -39,13 +39,13 @@ public class TimeSheetController {
     public void registrarHorasUsuarioAPI(@RequestBody TimeSheet horarioNuevo){
         if(horarioNuevo.getBegin().equals(horarioNuevo.getEnd())) {
             try {
-                timeSheetService.comprobarUnDia(horarioNuevo);
+                timeSheetService.comprobeOneDay(horarioNuevo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                timeSheetService.comprobarMasDeUnDia(horarioNuevo);
+                timeSheetService.comprobeMoreThanOneDay(horarioNuevo);
             } catch (Exception e) {
                 e.printStackTrace();
             }

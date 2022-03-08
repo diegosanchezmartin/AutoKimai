@@ -10,6 +10,9 @@ class ExampleTest {
         assertEquals("Hello",new Example().hello());
     }
 
+    @Test
+    void sumaExample () { assertEquals( 3, new Example().suma(1,2));}
+
 
 
 }

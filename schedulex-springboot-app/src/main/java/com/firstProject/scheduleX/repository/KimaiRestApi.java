@@ -1,4 +1,4 @@
-package com.firstProject.scheduleX.service;
+package com.firstProject.scheduleX.repository;
 
 import com.firstProject.scheduleX.model.Activities;
 import com.firstProject.scheduleX.model.Projects;
@@ -18,7 +18,7 @@ public class KimaiRestApi implements KimaiApi {
 
     private WebClient webClient = WebClient.create("http://localhost:8001");
 
-    public void añadirHorasApi(TimeSheetPost horarioNuevo) {
+    public void addHoursAPi(TimeSheetPost horarioNuevo) {
         ResponseEntity<String> block = webClient.post()
                 .uri("/api/timesheets")
                 .header("X-AUTH-USER","admin@kimai.local")

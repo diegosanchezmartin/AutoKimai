@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface KimaiApi {
 
-    void añadirHorasApi(TimeSheetPost horarioNuevo);
+    void addHoursAPi(TimeSheetPost horarioNuevo);
 
     List<TimeSheetGet> getHorarios();
 

@@ -2,6 +2,7 @@ package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +12,10 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Service
 public class TimeSheetService {
 
+    @Autowired
     KimaiApi apiKimai;
 
-    public TimeSheetPost crearDiaPorLaMañana(int diaDeLaSemana, TimeSheet horarioNuevo) {
+    public TimeSheetPost createMorningDay(int diaDeLaSemana, TimeSheet horarioNuevo) {
         TimeSheetPost horarioMañana;
         if(diaDeLaSemana != 5){
             horarioMañana = new TimeSheetPost(
@@ -46,7 +48,7 @@ public class TimeSheetService {
         return horarioMañana;
     }
 
-    public TimeSheetPost crearDiaPorLaTarde(TimeSheet horarioNuevo) {
+    public TimeSheetPost createAfternoonDay(TimeSheet horarioNuevo) {
         TimeSheetPost horarioMañana;
         horarioMañana = new TimeSheetPost(
                 horarioNuevo.getBegin().toString() + "T16:00:00",
@@ -63,28 +65,28 @@ public class TimeSheetService {
         return horarioMañana;
     }
 
-    public void comprobarUnDia(TimeSheet horarioNuevo) throws Exception {
+    public void comprobeOneDay(TimeSheet horarioNuevo) throws Exception {
         TimeSheetPost diaRegistrado;
         int diaDeLaSemana = horarioNuevo.getBegin().getDayOfWeek().getValue();
         switch(diaDeLaSemana) {
             case 5:
-                diaRegistrado = crearDiaPorLaMañana(diaDeLaSemana, horarioNuevo);
-                apiKimai.añadirHorasApi(diaRegistrado);
+                diaRegistrado = createMorningDay(diaDeLaSemana, horarioNuevo);
+                apiKimai.addHoursAPi(diaRegistrado);
                 break;
             case 6:
                 throw new Exception ("Dia introcido incorrecto: El sábado no se trabaja");
             case 7:
                 throw new Exception ("Dia introcido incorrecto: El domingo no se trabaja");
             default:
-                diaRegistrado = crearDiaPorLaMañana(diaDeLaSemana, horarioNuevo);
-                apiKimai.añadirHorasApi(diaRegistrado);
-                diaRegistrado = crearDiaPorLaTarde(horarioNuevo);
-                apiKimai.añadirHorasApi(diaRegistrado);
+                diaRegistrado = createMorningDay(diaDeLaSemana, horarioNuevo);
+                apiKimai.addHoursAPi(diaRegistrado);
+                diaRegistrado = createAfternoonDay(horarioNuevo);
+                apiKimai.addHoursAPi(diaRegistrado);
                 break;
         }
     }
 
-    public void comprobarMasDeUnDia(TimeSheet horarioNuevo) throws Exception {
+    public void comprobeMoreThanOneDay(TimeSheet horarioNuevo) throws Exception {
         long diasDeDiferencia;
         int diaDeLaSemana;
         diasDeDiferencia = DAYS.between(horarioNuevo.getBegin(), horarioNuevo.getEnd());
@@ -93,7 +95,7 @@ public class TimeSheetService {
         for(int i=0; i<=diasDeDiferencia; i++){
             diaDeLaSemana = horarioNuevo.getBegin().getDayOfWeek().getValue();
             if(diaDeLaSemana != 6 && diaDeLaSemana != 7) {
-                this.comprobarUnDia(horarioNuevo);
+                this.comprobeOneDay(horarioNuevo);
             }
             horarioNuevo.setBegin(horarioNuevo.getBegin().plusDays(1));
             horarioNuevo.setEnd(horarioNuevo.getEnd().plusDays(1));
