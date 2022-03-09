@@ -66,7 +66,7 @@ public class TimeSheetService {
         return afternoonSchedule;
     }
 
-    private void checkOneDay(TimeSheet newSchedule) throws Exception {
+    private void checkOneDay(TimeSheet newSchedule){
         TimeSheetPost registeredDay;
         int dayOfTheWeek = newSchedule.getBegin().getDayOfWeek().getValue();
         switch(dayOfTheWeek) {
@@ -75,9 +75,11 @@ public class TimeSheetService {
                 apiKimai.addHoursAPi(registeredDay);
                 break;
             case 6:
-                throw new Exception ("Dia introcido incorrecto: El sábado no se trabaja");
+                System.out.println("Dia introcido incorrecto: El sábado no se trabaja");
+                break;
             case 7:
-                throw new Exception ("Dia introcido incorrecto: El domingo no se trabaja");
+                System.out.println("Dia introcido incorrecto: El domingo no se trabaja");
+                break;
             default:
                 registeredDay = createMorningDay(dayOfTheWeek, newSchedule);
                 apiKimai.addHoursAPi(registeredDay);
