@@ -126,7 +126,7 @@ public class TimeSheetService {
         }
     }
 
-    public void checkdays(TimeSheet newSchedule) {
+    public void checkDays(TimeSheet newSchedule) {
         if(newSchedule.getBegin().equals(newSchedule.getEnd())) {
             try {
                 checkOneDay(newSchedule);

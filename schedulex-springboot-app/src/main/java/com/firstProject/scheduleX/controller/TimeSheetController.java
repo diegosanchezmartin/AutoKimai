@@ -36,7 +36,7 @@ public class TimeSheetController {
     }
     @PostMapping("api/v1/user")
     public void registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
-        timeSheetService.checkdays(newSchedule);
+        timeSheetService.checkDays(newSchedule);
     }
 
 }

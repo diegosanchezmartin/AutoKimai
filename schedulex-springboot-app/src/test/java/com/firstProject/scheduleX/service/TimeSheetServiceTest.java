@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TimeSheetServiceTest {
 
     @Test
-    void comprobarUnDia() throws Exception {
+    void checkOneDay() throws Exception {
         TimeSheetService timeSheetService = new TimeSheetService();
         List<TimeSheetPost> lista = new ArrayList<>();
         timeSheetService.apiKimai = new KimaiApi() {
@@ -42,7 +42,7 @@ class TimeSheetServiceTest {
         TimeSheet horarioNuevo = new TimeSheet();
         horarioNuevo.setBegin(LocalDate.now());
         horarioNuevo.setEnd(LocalDate.now());
-        timeSheetService.checkdays(horarioNuevo);
+        timeSheetService.checkDays(horarioNuevo);
         System.out.println(lista);
         assertEquals(Collections.emptyList(), lista);
     }
