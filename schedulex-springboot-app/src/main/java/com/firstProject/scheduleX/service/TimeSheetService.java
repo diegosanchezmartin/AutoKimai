@@ -15,91 +15,91 @@ public class TimeSheetService {
     @Autowired
     KimaiApi apiKimai;
 
-    public TimeSheetPost createMorningDay(int diaDeLaSemana, TimeSheet horarioNuevo) {
-        TimeSheetPost horarioMañana;
-        if(diaDeLaSemana != 5){
-            horarioMañana = new TimeSheetPost(
-                    horarioNuevo.getBegin().toString() + "T08:00:00",
-                    horarioNuevo.getEnd().toString() + "T16:00:00",
-                    horarioNuevo.getProject(),
-                    horarioNuevo.getActivity(),
-                    horarioNuevo.getDescription(),
-                    horarioNuevo.getFixedRate(),
-                    horarioNuevo.getHourlyRate(),
-                    horarioNuevo.getUser(),
-                    horarioNuevo.isExported(),
-                    horarioNuevo.isBillable(),
-                    horarioNuevo.getTags());
+    public TimeSheetPost createMorningDay(int dayOfTheWeek, TimeSheet newSchedule) {
+        TimeSheetPost morningSchedule;
+        if(dayOfTheWeek != 5){
+            morningSchedule = new TimeSheetPost(
+                    newSchedule.getBegin().toString() + "T08:00:00",
+                    newSchedule.getEnd().toString() + "T16:00:00",
+                    newSchedule.getProject(),
+                    newSchedule.getActivity(),
+                    newSchedule.getDescription(),
+                    newSchedule.getFixedRate(),
+                    newSchedule.getHourlyRate(),
+                    newSchedule.getUser(),
+                    newSchedule.isExported(),
+                    newSchedule.isBillable(),
+                    newSchedule.getTags());
         } else {
-            horarioMañana = new TimeSheetPost(
-                    horarioNuevo.getBegin().toString() + "T08:00:00",
-                    horarioNuevo.getEnd().toString() + "T15:00:00",
-                    horarioNuevo.getProject(),
-                    horarioNuevo.getActivity(),
-                    horarioNuevo.getDescription(),
-                    horarioNuevo.getFixedRate(),
-                    horarioNuevo.getHourlyRate(),
-                    horarioNuevo.getUser(),
-                    horarioNuevo.isExported(),
-                    horarioNuevo.isBillable(),
-                    horarioNuevo.getTags());
+            morningSchedule = new TimeSheetPost(
+                    newSchedule.getBegin().toString() + "T08:00:00",
+                    newSchedule.getEnd().toString() + "T15:00:00",
+                    newSchedule.getProject(),
+                    newSchedule.getActivity(),
+                    newSchedule.getDescription(),
+                    newSchedule.getFixedRate(),
+                    newSchedule.getHourlyRate(),
+                    newSchedule.getUser(),
+                    newSchedule.isExported(),
+                    newSchedule.isBillable(),
+                    newSchedule.getTags());
         }
 
-        return horarioMañana;
+        return morningSchedule;
     }
 
-    public TimeSheetPost createAfternoonDay(TimeSheet horarioNuevo) {
-        TimeSheetPost horarioMañana;
-        horarioMañana = new TimeSheetPost(
-                horarioNuevo.getBegin().toString() + "T16:00:00",
-                horarioNuevo.getEnd().toString() + "T16:15:00",
-                horarioNuevo.getProject(),
-                horarioNuevo.getActivity(),
-                horarioNuevo.getDescription(),
-                horarioNuevo.getFixedRate(),
-                horarioNuevo.getHourlyRate(),
-                horarioNuevo.getUser(),
-                horarioNuevo.isExported(),
-                horarioNuevo.isBillable(),
-                horarioNuevo.getTags());
-        return horarioMañana;
+    public TimeSheetPost createAfternoonDay(TimeSheet newSchedule) {
+        TimeSheetPost afternoonSchedule;
+        afternoonSchedule = new TimeSheetPost(
+                newSchedule.getBegin().toString() + "T16:00:00",
+                newSchedule.getEnd().toString() + "T16:15:00",
+                newSchedule.getProject(),
+                newSchedule.getActivity(),
+                newSchedule.getDescription(),
+                newSchedule.getFixedRate(),
+                newSchedule.getHourlyRate(),
+                newSchedule.getUser(),
+                newSchedule.isExported(),
+                newSchedule.isBillable(),
+                newSchedule.getTags());
+        return afternoonSchedule;
     }
 
-    public void comprobeOneDay(TimeSheet horarioNuevo) throws Exception {
-        TimeSheetPost diaRegistrado;
-        int diaDeLaSemana = horarioNuevo.getBegin().getDayOfWeek().getValue();
-        switch(diaDeLaSemana) {
+    public void checkOneDay(TimeSheet newSchedule) throws Exception {
+        TimeSheetPost registeredDay;
+        int dayOfTheWeek = newSchedule.getBegin().getDayOfWeek().getValue();
+        switch(dayOfTheWeek) {
             case 5:
-                diaRegistrado = createMorningDay(diaDeLaSemana, horarioNuevo);
-                apiKimai.addHoursAPi(diaRegistrado);
+                registeredDay = createMorningDay(dayOfTheWeek, newSchedule);
+                apiKimai.addHoursAPi(registeredDay);
                 break;
             case 6:
                 throw new Exception ("Dia introcido incorrecto: El sábado no se trabaja");
             case 7:
                 throw new Exception ("Dia introcido incorrecto: El domingo no se trabaja");
             default:
-                diaRegistrado = createMorningDay(diaDeLaSemana, horarioNuevo);
-                apiKimai.addHoursAPi(diaRegistrado);
-                diaRegistrado = createAfternoonDay(horarioNuevo);
-                apiKimai.addHoursAPi(diaRegistrado);
+                registeredDay = createMorningDay(dayOfTheWeek, newSchedule);
+                apiKimai.addHoursAPi(registeredDay);
+                registeredDay = createAfternoonDay(newSchedule);
+                apiKimai.addHoursAPi(registeredDay);
                 break;
         }
     }
 
-    public void comprobeMoreThanOneDay(TimeSheet horarioNuevo) throws Exception {
-        long diasDeDiferencia;
-        int diaDeLaSemana;
-        diasDeDiferencia = DAYS.between(horarioNuevo.getBegin(), horarioNuevo.getEnd());
-        horarioNuevo.setEnd(horarioNuevo.getBegin());
+    public void checkMoreThanOneDay(TimeSheet newSchedule) throws Exception {
+        long daysOfDifference;
+        int dayOfTheWeek;
+        daysOfDifference = DAYS.between(newSchedule.getBegin(), newSchedule.getEnd());
+        newSchedule.setEnd(newSchedule.getBegin());
 
-        for(int i=0; i<=diasDeDiferencia; i++){
-            diaDeLaSemana = horarioNuevo.getBegin().getDayOfWeek().getValue();
-            if(diaDeLaSemana != 6 && diaDeLaSemana != 7) {
-                this.comprobeOneDay(horarioNuevo);
+        for(int i=0; i<=daysOfDifference; i++){
+            dayOfTheWeek = newSchedule.getBegin().getDayOfWeek().getValue();
+            if(dayOfTheWeek != 6 && dayOfTheWeek != 7) {
+                this.checkOneDay(newSchedule);
             }
-            horarioNuevo.setBegin(horarioNuevo.getBegin().plusDays(1));
-            horarioNuevo.setEnd(horarioNuevo.getEnd().plusDays(1));
-            switch (diaDeLaSemana) {
+            newSchedule.setBegin(newSchedule.getBegin().plusDays(1));
+            newSchedule.setEnd(newSchedule.getEnd().plusDays(1));
+            switch (dayOfTheWeek) {
                 case 1:
                     System.out.println("Lunes: 8 horas y 15 minutos fichadas");
                     break;
@@ -125,7 +125,7 @@ public class TimeSheetService {
         }
     }
 
-    public List<TimeSheetGet> getHorarios() {
+    public List<TimeSheetGet> getSchedules() {
         return apiKimai.getHorarios();
     }
 

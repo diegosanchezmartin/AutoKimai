@@ -42,7 +42,7 @@ class TimeSheetServiceTest {
         TimeSheet horarioNuevo = new TimeSheet();
         horarioNuevo.setBegin(LocalDate.now());
         horarioNuevo.setEnd(LocalDate.now());
-        timeSheetService.comprobeOneDay(horarioNuevo);
+        timeSheetService.checkOneDay(horarioNuevo);
         System.out.println(lista);
         assertEquals(Collections.emptyList(), lista);
     }

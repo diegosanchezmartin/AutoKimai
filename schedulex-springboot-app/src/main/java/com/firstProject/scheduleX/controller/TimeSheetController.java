@@ -32,25 +32,25 @@ public class TimeSheetController {
 
     @GetMapping("api/timesheets")
     public List<TimeSheetGet> getHorarios(){
-        return timeSheetService.getHorarios();
+        return timeSheetService.getSchedules();
     }
 
     @PostMapping("api/v1/user")
-    public void registrarHorasUsuarioAPI(@RequestBody TimeSheet horarioNuevo){
-        if(horarioNuevo.getBegin().equals(horarioNuevo.getEnd())) {
+    public void registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
+        if(newSchedule.getBegin().equals(newSchedule.getEnd())) {
             try {
-                timeSheetService.comprobeOneDay(horarioNuevo);
+                timeSheetService.checkOneDay(newSchedule);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                timeSheetService.comprobeMoreThanOneDay(horarioNuevo);
+                timeSheetService.checkMoreThanOneDay(newSchedule);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(horarioNuevo);
+        System.out.println(newSchedule);
         System.out.println(getHorarios());
     }
 }
