@@ -16,7 +16,7 @@ const ActivityButton = () => {
             setActividades([]);
             setErrorBackend(true);
         });
-    });
+    }, []);
     
     if(errorBackend){
         return (

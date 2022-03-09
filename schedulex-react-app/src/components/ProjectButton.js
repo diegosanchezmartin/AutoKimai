@@ -16,7 +16,7 @@ const ProjectButton = () => {
             setProyectos([]);
             setErrorBackend(true);
         });
-    });
+    }, []);
 
     if(errorBackend){
         return (
