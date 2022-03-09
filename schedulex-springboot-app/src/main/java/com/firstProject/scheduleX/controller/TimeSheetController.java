@@ -34,23 +34,9 @@ public class TimeSheetController {
     public List<TimeSheetGet> getHorarios(){
         return timeSheetService.getSchedules();
     }
-
     @PostMapping("api/v1/user")
     public void registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
-        if(newSchedule.getBegin().equals(newSchedule.getEnd())) {
-            try {
-                timeSheetService.checkOneDay(newSchedule);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                timeSheetService.checkMoreThanOneDay(newSchedule);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(newSchedule);
-        System.out.println(getHorarios());
+        timeSheetService.checkdays(newSchedule);
     }
+
 }

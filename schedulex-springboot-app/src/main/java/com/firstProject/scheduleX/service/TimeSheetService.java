@@ -1,5 +1,6 @@
 package com.firstProject.scheduleX.service;
 
+import com.firstProject.scheduleX.controller.TimeSheetController;
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class TimeSheetService {
     @Autowired
     KimaiApi apiKimai;
 
-    public TimeSheetPost createMorningDay(int dayOfTheWeek, TimeSheet newSchedule) {
+    private TimeSheetPost createMorningDay(int dayOfTheWeek, TimeSheet newSchedule) {
         TimeSheetPost morningSchedule;
         if(dayOfTheWeek != 5){
             morningSchedule = new TimeSheetPost(
@@ -48,7 +49,7 @@ public class TimeSheetService {
         return morningSchedule;
     }
 
-    public TimeSheetPost createAfternoonDay(TimeSheet newSchedule) {
+    private TimeSheetPost createAfternoonDay(TimeSheet newSchedule) {
         TimeSheetPost afternoonSchedule;
         afternoonSchedule = new TimeSheetPost(
                 newSchedule.getBegin().toString() + "T16:00:00",
@@ -65,7 +66,7 @@ public class TimeSheetService {
         return afternoonSchedule;
     }
 
-    public void checkOneDay(TimeSheet newSchedule) throws Exception {
+    private void checkOneDay(TimeSheet newSchedule) throws Exception {
         TimeSheetPost registeredDay;
         int dayOfTheWeek = newSchedule.getBegin().getDayOfWeek().getValue();
         switch(dayOfTheWeek) {
@@ -86,7 +87,7 @@ public class TimeSheetService {
         }
     }
 
-    public void checkMoreThanOneDay(TimeSheet newSchedule) throws Exception {
+    private void checkMoreThanOneDay(TimeSheet newSchedule) throws Exception {
         long daysOfDifference;
         int dayOfTheWeek;
         daysOfDifference = DAYS.between(newSchedule.getBegin(), newSchedule.getEnd());
@@ -125,6 +126,22 @@ public class TimeSheetService {
         }
     }
 
+    public void checkdays(TimeSheet newSchedule) {
+        if(newSchedule.getBegin().equals(newSchedule.getEnd())) {
+            try {
+                checkOneDay(newSchedule);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                checkMoreThanOneDay(newSchedule);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public List<TimeSheetGet> getSchedules() {
         return apiKimai.getHorarios();
     }
@@ -136,4 +153,5 @@ public class TimeSheetService {
     public List<Activities> getActivities(){
         return apiKimai.getActivities();
     }
+
 }

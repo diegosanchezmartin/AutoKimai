@@ -4,7 +4,6 @@ import com.firstProject.scheduleX.model.Activities;
 import com.firstProject.scheduleX.model.Projects;
 import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.model.TimeSheetPost;
-import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
