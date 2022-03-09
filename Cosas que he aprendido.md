@@ -95,4 +95,6 @@ https://www.youtube.com/watch?v=9SGDpanrc8U
 https://www.baeldung.com/spring-boot-h2-database
 
 https://www.arquitecturajava.com/el-patron-de-inyeccion-de-dependencia/
+
+https://howtodoinjava.com/best-practices/java-exception-handling-best-practices/
 ______________________________________________________________________________________________________________________________________

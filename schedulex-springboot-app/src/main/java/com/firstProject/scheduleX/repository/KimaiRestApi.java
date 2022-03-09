@@ -29,7 +29,7 @@ public class KimaiRestApi implements KimaiApi {
                 .block();
     }
 
-    public List<TimeSheetGet> getHorarios() {
+    public List<TimeSheetGet> getSchedules() {
         return webClient.get()
                 .uri("/api/timesheets")
                 .header("X-AUTH-USER","admin@kimai.local")

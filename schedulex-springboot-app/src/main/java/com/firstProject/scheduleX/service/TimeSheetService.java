@@ -145,7 +145,7 @@ public class TimeSheetService {
     }
 
     public List<TimeSheetGet> getSchedules() {
-        return apiKimai.getHorarios();
+        return apiKimai.getSchedules();
     }
 
     public List<Projects> getProjects(){

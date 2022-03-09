@@ -15,17 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class TimeSheetServiceTest {
 
     @Test
-    void checkOneDay() throws Exception {
+    void checkDays() {
         TimeSheetService timeSheetService = new TimeSheetService();
-        List<TimeSheetPost> lista = new ArrayList<>();
+        List<TimeSheetPost> list = new ArrayList<>();
         timeSheetService.apiKimai = new KimaiApi() {
             @Override
             public void addHoursAPi(TimeSheetPost horarioNuevo) {
-                lista.add(horarioNuevo);
+                list.add(horarioNuevo);
             }
 
             @Override
-            public List<TimeSheetGet> getHorarios() {
+            public List<TimeSheetGet> getSchedules() {
                 return null;
             }
 
@@ -39,11 +39,27 @@ class TimeSheetServiceTest {
                 return null;
             }
         };
-        TimeSheet horarioNuevo = new TimeSheet();
-        horarioNuevo.setBegin(LocalDate.now());
-        horarioNuevo.setEnd(LocalDate.now());
-        timeSheetService.checkDays(horarioNuevo);
-        System.out.println(lista);
-        assertEquals(Collections.emptyList(), lista);
+
+        TimeSheet newSchedule = new TimeSheet();
+        newSchedule.setBegin(LocalDate.now());
+        newSchedule.setEnd(LocalDate.now());
+        timeSheetService.checkDays(newSchedule);
+        System.out.println(list);
+        assertEquals(Collections.emptyList(), list);
+    }
+
+    @Test
+    void getSchedules() {
+
+    }
+
+    @Test
+    void getProjects() {
+
+    }
+
+    @Test
+    void getActivities() {
+
     }
 }

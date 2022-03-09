@@ -11,7 +11,7 @@ public interface KimaiApi {
 
     void addHoursAPi(TimeSheetPost horarioNuevo);
 
-    List<TimeSheetGet> getHorarios();
+    List<TimeSheetGet> getSchedules();
 
     List<Projects> getProjects();
 
