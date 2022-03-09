@@ -83,6 +83,10 @@ https://es.reactjs.org/docs/forms.html#the-select-tag
 https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Using_Fetch
 
 https://lenguajejs.com/javascript/peticiones-http/fetch/
+
+Loop infinito elementos con useEffect:
+
+https://stackoverflow.com/questions/53070970/infinite-loop-in-useeffect
 ______________________________________________________________________________________________________________________________________
 
 ------------------------¬
@@ -96,5 +100,16 @@ https://www.baeldung.com/spring-boot-h2-database
 
 https://www.arquitecturajava.com/el-patron-de-inyeccion-de-dependencia/
 
+Buenas prácticas con excepciones en Java
+
 https://howtodoinjava.com/best-practices/java-exception-handling-best-practices/
+
+https://dzone.com/articles/9-best-practices-to-handle-exceptions-in-java
+
+Escribir en octal, hexadecimal o binario en Java:
+
+https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.10.1
+
+@Autowired vs Constructor
+
 ______________________________________________________________________________________________________________________________________
