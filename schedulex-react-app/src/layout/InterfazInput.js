@@ -10,12 +10,11 @@ function InterfazInput (props) {
     const [selectedProject, setSelectedProject] = useContext(ProjectContext);
     const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
     
-    
     function confirmarFechas(event) {
         event.preventDefault();
 
         const begin = fechaInicio.current.value;
-        const end = fechaFin.current.value;
+        const end = fechaFin.current.value; 
         const project = selectedProject;
         const activity = selectedActivity;
         const description = "string"
@@ -41,15 +40,27 @@ function InterfazInput (props) {
         }
         console.log(horario);
 
-        fetch("http://localhost:8080/api/v1/user",{
-            method: "POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(horario)
-        }).then(() => {
-            console.log("Nuevo horario registrado")
-        })
-
-        console.log("Hey");
+        if(horario.activity != null && horario.project != null){
+            fetch("http://localhost:8080/api/v1/user",{
+                method: "POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(horario)
+            }).then(() => {
+                console.log("Nuevo horario registrado")
+            })
+        }else{
+            if(horario.activity == null){
+                if(horario.project == null){
+                    alert("Debes elegir un proyecto y una actividad para el nuevo horario");
+                }else{
+                    alert("Debes elegir una actividad para el nuevo horario");
+                }
+            }else{
+                if(horario.project == null){
+                    alert("Debes elegir un proyecto para el nuevo horario");
+                }
+            }
+        }
     }
 
     return (

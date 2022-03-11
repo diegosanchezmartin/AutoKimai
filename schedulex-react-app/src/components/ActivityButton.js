@@ -5,7 +5,7 @@ import { ActivityContext } from "../App";
 
 const ActivityButton = () => {
 
-    const [actividades, setActividades] = useState([]);
+    const [actividades, setActividades] = useState([]); 
     const [errorBackend, setErrorBackend] = useState(false);
     const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
 
