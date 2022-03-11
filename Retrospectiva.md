@@ -1,12 +1,50 @@
 # Retrospectiva Diego
+------------------------¬
+| Viernes 18/03/2022: |
+-------------------------
 
+    - Cosas que pueden mejorar:
+
+    * Como se va a mejorar:
+
+    - Cosas que han salido bien:
+
+    * Por qué han salido bien:
 ______________________________________________________________________________________________________________________________________
 
 ------------------------¬
 | Viernes 11/03/2022: |
 -------------------------
 
+    - Cosas que pueden mejorar:
++ Informarse mejor de como hacer el testing del código implementado.
++ Aprender como funcionan las interfaces en Java, que implican, como usarlas.
++ Crear todo el código en inglés.
++ Coger confianza a la hora de probar nuevas cosas, como con useContext de React, las interfaces, el testing.
++ Pulir algunos aspectos en el proyecto, comprobar cuando está cargando la información del backend,
+cuando debe refrescarse la página, no fichar días repetidos.
 
+    * Como se va a mejorar:
++ Consultando más documentación y vídeos sobre temas desconocidos.
++ No escribir nada en español.
++ Terminando un componente ya empezado, como el caso del ProjectButton y ActivityButton que estaban medio hechos
+y me han llevado más tiempo del que pensaba.
++ Comprobar el código antes de hacer commit, para evitar cosas innecesarias (imports, funciones, excepciones, atributos).
+
+    - Cosas que han salido bien:
++ Conseguir fichar las horas con los botones implementados, mostrando errores por pantalla en caso de falta de información.
++ Ir poco a poco acostumbrandome a usar el inglés en todo.
++ Ya tengo un poco más de idea de como se implementa el testing y para que es útil.
++ Creación del fichero "Cosas que he aprendido" para tener un historial de material para un futuro
++ Manejo de atajos de teclado para manejar código creado (crear una función con ese código, bajar/subir código en archivo,
+arreglar imports ...). 
+
+    * Por qué han salido bien:
++ He buscado como funciona la jerarquía de componentes en React y revisado múltiples alternativas para finalmente decidir
+que use/createContext era la más adecuada para mi programa.
++ Alex me ha ayudado con el testing y me ha enseñado los atajos.
++ El proyecto estaba lo suficientemente desarrollado para probar las funciones implementadas.
++ Porque poco a poco noto que voy conociendo más cosas y me motiva a seguir aprendiendo nuevas tecnologías desconocidas.
 ______________________________________________________________________________________________________________________________________
 
 ------------------------¬
