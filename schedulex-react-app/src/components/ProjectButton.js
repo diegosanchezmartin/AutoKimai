@@ -1,11 +1,15 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import UserServiceFetch from "../services/UserServiceFetch";
 import classes from "./ProjectButton.module.css";
+import { ProjectContext } from "../App";
 
 const ProjectButton = () => {
 
     const [proyectos, setProyectos] = useState([]);
     const [errorBackend, setErrorBackend] = useState(false);
+    const [selectedProject, setSelectedProject] = useContext(ProjectContext);
+
+    console.log(selectedProject);
 
     useEffect(() => {
         UserServiceFetch.getProyects().then((proyectos) => {
@@ -26,11 +30,11 @@ const ProjectButton = () => {
         )
     }
     return (
-        <select defaultValue={'valorPorDefecto'} className={classes.proyctbton} >
+        <select defaultValue={'valorPorDefecto'} className={classes.proyctbton} onChange={selected => setSelectedProject(selected.target.value)}>
             <option value="valorPorDefecto">Proyecto</option>
             {proyectos.map(
                 proyecto => 
-                <option value={proyecto.parentTitle}>{proyecto.name}</option>
+                <option value={proyecto.id}>{proyecto.name}</option>
             )}
         </select>
     )

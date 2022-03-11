@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import UserServiceFetch from "../services/UserServiceFetch";
 import classes from "./ActivityButton.module.css";
+import { ActivityContext } from "../App";
 
 const ActivityButton = () => {
 
     const [actividades, setActividades] = useState([]);
     const [errorBackend, setErrorBackend] = useState(false);
+    const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
+
+    console.log(selectedActivity);
 
     useEffect(() => {
         UserServiceFetch.getActivities().then((actividades) => { 
@@ -27,11 +31,11 @@ const ActivityButton = () => {
     }
         
     return (
-        <select defaultValue={'ValorPorDefecto'} className={classes.actybton} >
+        <select defaultValue={'ValorPorDefecto'} className={classes.actybton} onChange={selected => setSelectedActivity(selected.target.value)}>
             <option value="ValorPorDefecto" >Actividad</option>
             {actividades.map(
                 actividad => 
-                <option value={actividad.parentTitle}>{actividad.name}</option>
+                <option value={actividad.id}>{actividad.name}</option>
             )}
         </select>
     )

@@ -5,12 +5,12 @@ import iconoPerfil from '../assets/images/iconoPerfil.png';
 import ProjectButton from '../components/ProjectButton';
 import ActivityButton from '../components/ActivityButton';
 
-function BarraSuperior () {
+function BarraSuperior ({setSelectedProject, setSelectedActivity}) {
     return (
         <header className={classes.header}>
             <section className={classes.selectbtons}>
-                <ProjectButton />
-                <ActivityButton />
+                <ProjectButton setSelectedProject={setSelectedProject}/>
+                <ActivityButton setSelectedActivity={setSelectedActivity}/>
             </section>
             <section className={classes.logo}>
                 <div className={classes.image}>

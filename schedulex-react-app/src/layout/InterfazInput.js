@@ -1,18 +1,23 @@
-import { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import Usuario from '../components/Usuario';
 import classes from './InterfazInput.module.css';
+import { ProjectContext, ActivityContext } from '../App';
 
-function InterfazInput () {
+function InterfazInput (props) {
     const fechaInicio = useRef();
     const fechaFin = useRef();
 
+    const [selectedProject, setSelectedProject] = useContext(ProjectContext);
+    const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
+    
+    
     function confirmarFechas(event) {
         event.preventDefault();
 
         const begin = fechaInicio.current.value;
         const end = fechaFin.current.value;
-        const project = 1;
-        const activity = 1;
+        const project = selectedProject;
+        const activity = selectedActivity;
         const description = "string"
         const fixedRate = 0
         const hourlyRate = 0
