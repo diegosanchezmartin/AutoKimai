@@ -16,4 +16,6 @@ public interface KimaiApi {
     List<Projects> getProjects();
 
     List<Activities> getActivities();
+
+    List<TimeSheetGet> getRecentSchedules();
 }

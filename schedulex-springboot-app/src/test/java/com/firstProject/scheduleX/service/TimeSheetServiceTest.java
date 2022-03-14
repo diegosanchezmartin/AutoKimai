@@ -35,6 +35,11 @@ class TimeSheetServiceTest {
         public List<Activities> getActivities() {
             return Collections.emptyList();
         }
+
+        @Override
+        public List<TimeSheetGet> getRecentSchedules() {
+            return Collections.emptyList();
+        }
     }
 
 

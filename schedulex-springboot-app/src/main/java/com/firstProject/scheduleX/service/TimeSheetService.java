@@ -127,10 +127,11 @@ public class TimeSheetService {
     }
 
     private boolean askConfirmation() {
+        return true;
     }
 
     private boolean checkRepeatedDays(TimeSheet newSchedule) {
-
+        return true;
     }
 
     private boolean checkHolidays(TimeSheet newSchedule) {
@@ -158,6 +159,10 @@ public class TimeSheetService {
 
         return true;
 
+    }
+
+    public List<TimeSheetGet> getRecentSchedules() {
+        return apiKimai.getRecentSchedules();
     }
 
     public List<TimeSheetGet> getSchedules() {
