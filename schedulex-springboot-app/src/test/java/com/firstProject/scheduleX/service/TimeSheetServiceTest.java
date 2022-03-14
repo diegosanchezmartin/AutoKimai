@@ -106,6 +106,38 @@ class TimeSheetServiceTest {
         Mockito.verify(timeSheetService.apiKimai,Mockito.times(0)).addHoursAPi(Mockito.any());
     }
 
+    @Test
+    void when_register_on_holidays_then_no_events() {
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        TimeSheet newSchedule = new TimeSheet();
+        newSchedule.setBegin(LocalDate.of(2022, 1, 1));
+        newSchedule.setEnd(LocalDate.of(2022, 1, 1));
+        timeSheetService.checkDays(newSchedule);
+        newSchedule.setBegin(LocalDate.of(2022, 1, 6));
+        newSchedule.setEnd(LocalDate.of(2022, 1, 6));
+        timeSheetService.checkDays(newSchedule);
+        newSchedule.setBegin(LocalDate.of(2022, 4, 15));
+        newSchedule.setEnd(LocalDate.of(2022, 4, 15));
+        timeSheetService.checkDays(newSchedule);
+        newSchedule.setBegin(LocalDate.of(2022, 8, 15));
+        newSchedule.setEnd(LocalDate.of(2022, 8, 15));
+        timeSheetService.checkDays(newSchedule);
+        newSchedule.setBegin(LocalDate.of(2022, 10, 12));
+        newSchedule.setEnd(LocalDate.of(2022, 10, 12));
+        timeSheetService.checkDays(newSchedule);
+        newSchedule.setBegin(LocalDate.of(2022, 11, 1));
+        newSchedule.setEnd(LocalDate.of(2022, 11, 1));
+        timeSheetService.checkDays(newSchedule);
+        newSchedule.setBegin(LocalDate.of(2022, 12, 6));
+        newSchedule.setEnd(LocalDate.of(2022, 12, 6));
+        timeSheetService.checkDays(newSchedule);
+        newSchedule.setBegin(LocalDate.of(2022, 12, 8));
+        newSchedule.setEnd(LocalDate.of(2022, 12, 8));
+        timeSheetService.checkDays(newSchedule);
+        Mockito.verify(timeSheetService.apiKimai,Mockito.times(0)).addHoursAPi(Mockito.any());
+    }
+
 
     @Test
     void getSchedules() {

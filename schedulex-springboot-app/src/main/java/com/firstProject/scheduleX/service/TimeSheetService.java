@@ -1,5 +1,7 @@
 package com.firstProject.scheduleX.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,11 +111,53 @@ public class TimeSheetService {
     }
 
     public void checkDays(TimeSheet newSchedule) {
-        if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
-            checkOneDay(newSchedule);
-        } else {
-            checkMoreThanOneDay(newSchedule);
+        if(checkHolidays(newSchedule)) {
+            if(checkRepeatedDays(newSchedule)) {
+                if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
+                    checkOneDay(newSchedule);
+                } else {
+                    checkMoreThanOneDay(newSchedule);
+                }
+            } else {
+                if(askConfirmation()){
+
+                }
+            }
         }
+    }
+
+    private boolean askConfirmation() {
+    }
+
+    private boolean checkRepeatedDays(TimeSheet newSchedule) {
+
+    }
+
+    private boolean checkHolidays(TimeSheet newSchedule) {
+        List<LocalDate> holidays = new ArrayList<>();
+        LocalDate january1 = LocalDate.of(2022, 1, 1);
+        holidays.add(january1);
+        LocalDate january6 = LocalDate.of(2022, 1, 6);
+        holidays.add(january6);
+        LocalDate april15 = LocalDate.of(2022, 4, 15);
+        holidays.add(april15);
+        LocalDate august15 = LocalDate.of(2022, 8, 15);
+        holidays.add(august15);
+        LocalDate october12 = LocalDate.of(2022, 10, 12);
+        holidays.add(october12);
+        LocalDate november1 = LocalDate.of(2022, 11, 1);
+        holidays.add(november1);
+        LocalDate december6 = LocalDate.of(2022, 12, 6);
+        holidays.add(december6);
+        LocalDate december8 = LocalDate.of(2022, 12, 8);
+        holidays.add(december8);
+
+        if(holidays.contains(newSchedule.getBegin())){
+            return false;
+        }
+
+        return true;
+
     }
 
     public List<TimeSheetGet> getSchedules() {

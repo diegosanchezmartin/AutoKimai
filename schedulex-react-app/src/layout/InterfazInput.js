@@ -13,7 +13,7 @@ function InterfazInput (props) {
     function confirmarFechas(event) {
         event.preventDefault();
 
-        const begin = fechaInicio.current.value;
+        const begin = fechaInicio.current.value; 
         const end = fechaFin.current.value; 
         const project = selectedProject;
         const activity = selectedActivity;
