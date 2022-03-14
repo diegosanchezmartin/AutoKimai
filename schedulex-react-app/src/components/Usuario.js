@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserServiceFetch from "../services/UserServiceFetch";
 
-class Usuario extends React.Component {
+
+const Usuario = () => {
+
+    const [timeSheets, setTimeSheets] = useState([]);
+    const [errorBackend, setErrorBackend] = useState(false);
+
+/*class Usuario extends React.Component {
     constructor(props){
         super(props)
         this.state = {
             timesheets:[],
             errorBackend: false
         }
-    }
+    }*/
+
+    useEffect(() => {
+        UserServiceFetch.getTimeSheets().then((res) => {
+            setTimeSheets(res);
+            setErrorBackend(false);
+            /*this.setState({timesheets: res, errorBackend:false});*/
+        }).catch(err => {
+            console.log(err.message + "\nEl backend está caido");
+            setTimeSheets([]);
+            setErrorBackend(true);
+            /*this.setState({errorBackend: true, timesheets:[]});*/
+        });
+    }, []);
     
+    /*
     componentDidMount(){
         UserServiceFetch.getTimeSheets().then((res) => {
             this.setState({timesheets: res, errorBackend:false});
@@ -17,10 +37,11 @@ class Usuario extends React.Component {
             console.log(err.message + "\nEl backend está caido");
             this.setState({errorBackend: true, timesheets:[]});
         });
-    }
+    }*/
 
-    render (){
-        if(this.state.errorBackend){
+    /*render (){
+        if(this.state.errorBackend){*/
+        if(errorBackend){
             return (
                 <div>
                     <h1>Error al ejecutar fetch()</h1>
@@ -40,7 +61,7 @@ class Usuario extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.timesheets.map(
+                            timeSheets.map(
                                 timesheet => 
                                 <tr key = {timesheet.id}>
                                     <td>{timesheet.begin}</td>
@@ -52,7 +73,7 @@ class Usuario extends React.Component {
                 </table>
             </div>
         )
-    }
+    /*}*/
 }
 
 export default Usuario;
