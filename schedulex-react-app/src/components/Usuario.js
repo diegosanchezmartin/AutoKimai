@@ -40,7 +40,7 @@ const Usuario = () => {
                     {
                         timeSheets.map(
                             timesheet => 
-                            <tr key = {timesheet.id}>
+                            <tr key = {timesheet.id.toString()}>
                                 <td>{timesheet.begin}</td>
                                 <td>{timesheet.end}</td>
                             </tr>
