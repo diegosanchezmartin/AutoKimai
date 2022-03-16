@@ -35,7 +35,7 @@ const ActivityButton = () => {
             <option value="ValorPorDefecto" >Actividad</option>
             {actividades.map(
                 actividad => 
-                <option key={actividad.id} value={actividad.name}>{actividad.name}</option>
+                <option key={actividad.id} value={actividad.id}>{actividad.name}</option>
             )}
         </select>
     )

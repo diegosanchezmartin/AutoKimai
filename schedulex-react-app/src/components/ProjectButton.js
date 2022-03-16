@@ -34,7 +34,7 @@ const ProjectButton = () => {
             <option value="valorPorDefecto">Proyecto</option>
             {proyectos.map(
                 proyecto => 
-                <option key={proyecto.id} value={proyecto.name}>{proyecto.name}</option>
+                <option key={proyecto.id} value={proyecto.id}>{proyecto.name}</option>
             )}
         </select>
     )

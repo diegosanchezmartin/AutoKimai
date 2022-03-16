@@ -37,7 +37,7 @@ class TimeSheetServiceTest {
         }
 
         @Override
-        public List<TimeSheetGet> getRecentSchedules() {
+        public List<TimeSheetGet> getRecentSchedules(String begin, String end) {
             return Collections.emptyList();
         }
     }

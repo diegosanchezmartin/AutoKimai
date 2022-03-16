@@ -26,14 +26,14 @@ public class TimeSheetService {
         TimeSheetPost morningSchedule;
         if (dayOfTheWeek != 5) {
             morningSchedule = new TimeSheetPost(newSchedule.getBegin().toString() + "T08:00:00",
-                newSchedule.getEnd().toString() + "T16:00:00", newSchedule.getProject(), newSchedule.getActivity(),
-                newSchedule.getDescription(), newSchedule.getFixedRate(), newSchedule.getHourlyRate(),
-                newSchedule.getUser(), newSchedule.isExported(), newSchedule.isBillable(), newSchedule.getTags());
+                    newSchedule.getEnd().toString() + "T16:00:00", newSchedule.getProject(), newSchedule.getActivity(),
+                    newSchedule.getDescription(), newSchedule.getFixedRate(), newSchedule.getHourlyRate(),
+                    newSchedule.getUser(), newSchedule.isExported(), newSchedule.isBillable(), newSchedule.getTags());
         } else {
             morningSchedule = new TimeSheetPost(newSchedule.getBegin().toString() + "T08:00:00",
-                newSchedule.getEnd().toString() + "T15:00:00", newSchedule.getProject(), newSchedule.getActivity(),
-                newSchedule.getDescription(), newSchedule.getFixedRate(), newSchedule.getHourlyRate(),
-                newSchedule.getUser(), newSchedule.isExported(), newSchedule.isBillable(), newSchedule.getTags());
+                    newSchedule.getEnd().toString() + "T15:00:00", newSchedule.getProject(), newSchedule.getActivity(),
+                    newSchedule.getDescription(), newSchedule.getFixedRate(), newSchedule.getHourlyRate(),
+                    newSchedule.getUser(), newSchedule.isExported(), newSchedule.isBillable(), newSchedule.getTags());
         }
 
         return morningSchedule;
@@ -42,9 +42,9 @@ public class TimeSheetService {
     private TimeSheetPost createAfternoonDay(TimeSheet newSchedule) {
         TimeSheetPost afternoonSchedule;
         afternoonSchedule = new TimeSheetPost(newSchedule.getBegin().toString() + "T16:00:00",
-            newSchedule.getEnd().toString() + "T16:15:00", newSchedule.getProject(), newSchedule.getActivity(),
-            newSchedule.getDescription(), newSchedule.getFixedRate(), newSchedule.getHourlyRate(),
-            newSchedule.getUser(), newSchedule.isExported(), newSchedule.isBillable(), newSchedule.getTags());
+                newSchedule.getEnd().toString() + "T16:15:00", newSchedule.getProject(), newSchedule.getActivity(),
+                newSchedule.getDescription(), newSchedule.getFixedRate(), newSchedule.getHourlyRate(),
+                newSchedule.getUser(), newSchedule.isExported(), newSchedule.isBillable(), newSchedule.getTags());
         return afternoonSchedule;
     }
 
@@ -111,26 +111,42 @@ public class TimeSheetService {
     }
 
     public void checkDays(TimeSheet newSchedule) {
-        if(checkHolidays(newSchedule)) {
-            if(checkRepeatedDays(newSchedule)) {
-                if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
+        if (checkHolidays(newSchedule)) {
+            if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
+                if(checkRepeatedDay(newSchedule)) {
                     checkOneDay(newSchedule);
-                } else {
-                    checkMoreThanOneDay(newSchedule);
                 }
             } else {
-                if(askConfirmation()){
-
+                if(checkRepeatedDays(newSchedule)) {
+                    checkMoreThanOneDay(newSchedule);
                 }
+            }
+            if (askConfirmation()) {
+
             }
         }
     }
 
-    private boolean askConfirmation() {
+    private boolean checkRepeatedDay(TimeSheet newSchedule) {
+        List<TimeSheetGet> registeredSchedules;
+        System.out.println("Timesheets devueltos: ");
+        registeredSchedules = this.getRecentSchedules(newSchedule.getBegin(), newSchedule.getEnd());
+        if(!registeredSchedules.isEmpty()){
+            System.out.println("Warning: Registered Schedules Discovered: ");
+            for(TimeSheetGet registeredSchedule : registeredSchedules) {
+                System.out.println("From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd());
+            }
+            return false;
+        }
         return true;
     }
 
     private boolean checkRepeatedDays(TimeSheet newSchedule) {
+
+        return true;
+    }
+
+    private boolean askConfirmation() {
         return true;
     }
 
@@ -153,16 +169,26 @@ public class TimeSheetService {
         LocalDate december8 = LocalDate.of(2022, 12, 8);
         holidays.add(december8);
 
-        if(holidays.contains(newSchedule.getBegin())){
+        if (holidays.contains(newSchedule.getBegin())) {
             return false;
         }
-
         return true;
-
     }
 
-    public List<TimeSheetGet> getRecentSchedules() {
-        return apiKimai.getRecentSchedules();
+    public List<TimeSheetGet> getRecentSchedules(LocalDate begin, LocalDate end) {
+        String beginWithoutZero = null;
+        String endWithoutZero = null;
+        if(begin.toString().substring(5,6).equals("0")){
+            beginWithoutZero = begin.toString().substring(0,5) + begin.toString().substring(6,10) + "T08:00:00";
+        }else{
+            beginWithoutZero = begin + "T08:00:00";
+        }
+        if(end.toString().substring(5,6).equals("0")){
+            endWithoutZero = end.toString().substring(0,5) + end.toString().substring(6,10) + "T16:15:00";
+        } else{
+            endWithoutZero = end.toString() + "T16:15:00";
+        }
+        return apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
     }
 
     public List<TimeSheetGet> getSchedules() {

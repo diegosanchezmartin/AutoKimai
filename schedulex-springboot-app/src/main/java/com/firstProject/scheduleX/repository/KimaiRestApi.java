@@ -65,9 +65,12 @@ public class KimaiRestApi implements KimaiApi {
                 .block();
     }
 
-    public List<TimeSheetGet> getRecentSchedules() {
+    public List<TimeSheetGet> getRecentSchedules(String begin, String end) {
         return webClient.get()
-                .uri("/api/timesheets/recent")
+                .uri(uriBuilder -> uriBuilder.path("/api/timesheets")
+                        .queryParam("begin", begin)
+                        .queryParam("end", end)
+                        .build())
                 .header("X-AUTH-USER","admin@kimai.local")
                 .header("X-AUTH-TOKEN", "password")
                 .accept(MediaType.APPLICATION_JSON)
