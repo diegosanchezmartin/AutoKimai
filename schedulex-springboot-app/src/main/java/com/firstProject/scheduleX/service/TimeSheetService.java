@@ -115,21 +115,21 @@ public class TimeSheetService {
             if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
                 if(checkRepeatedDay(newSchedule)) {
                     checkOneDay(newSchedule);
+                } else {
+                    this.askConfirmation();
                 }
             } else {
                 if(checkRepeatedDays(newSchedule)) {
                     checkMoreThanOneDay(newSchedule);
+                } else {
+                    this.askConfirmation();
                 }
-            }
-            if (askConfirmation()) {
-
             }
         }
     }
 
     private boolean checkRepeatedDay(TimeSheet newSchedule) {
         List<TimeSheetGet> registeredSchedules;
-        System.out.println("Timesheets devueltos: ");
         registeredSchedules = this.getRecentSchedules(newSchedule.getBegin(), newSchedule.getEnd());
         if(!registeredSchedules.isEmpty()){
             System.out.println("Warning: Registered Schedules Discovered: ");
@@ -142,12 +142,25 @@ public class TimeSheetService {
     }
 
     private boolean checkRepeatedDays(TimeSheet newSchedule) {
+        long daysOfDifference;
+        boolean repeatedDays = false;
+        daysOfDifference = DAYS.between(newSchedule.getBegin(), newSchedule.getEnd());
 
+        for(int i=0; i<=daysOfDifference; i++){
+            newSchedule.setEnd(LocalDate.of(newSchedule.getBegin().getYear(), newSchedule.getBegin().getMonth(), newSchedule.getBegin().getDayOfMonth()));
+            if(!this.checkRepeatedDay(newSchedule)){
+                repeatedDays = true;
+            }
+           newSchedule.setBegin(newSchedule.getBegin().plusDays(1));
+        }
+        if(repeatedDays){
+            return false;
+        }
         return true;
     }
 
-    private boolean askConfirmation() {
-        return true;
+    private void askConfirmation() {
+        System.out.println("Are you sure to register the hours ?");
     }
 
     private boolean checkHolidays(TimeSheet newSchedule) {
