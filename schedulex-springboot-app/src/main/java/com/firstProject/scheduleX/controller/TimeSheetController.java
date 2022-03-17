@@ -6,6 +6,7 @@ import com.firstProject.scheduleX.model.TimeSheet;
 import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.service.TimeSheetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +36,8 @@ public class TimeSheetController {
         return timeSheetService.getSchedules();
     }
     @PostMapping("api/v1/user")
-    public void registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
-        timeSheetService.checkDays(newSchedule);
+    public ResponseEntity registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
+        return timeSheetService.checkDays(newSchedule);
     }
 
 }

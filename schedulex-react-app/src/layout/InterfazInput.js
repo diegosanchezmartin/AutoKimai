@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Usuario from '../components/Usuario';
 import classes from './InterfazInput.module.css';
 import { ProjectContext, ActivityContext } from '../App';
@@ -9,6 +9,7 @@ function InterfazInput (props) {
 
     const [selectedProject, setSelectedProject] = useContext(ProjectContext);
     const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
+    const [registeredSchedules, setRegisteredSchedules] = useState([]);
     
     function confirmarFechas(event) {
         event.preventDefault();
@@ -45,8 +46,17 @@ function InterfazInput (props) {
                 method: "POST",
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify(horario)
-            }).then(() => {
-                console.log("Nuevo horario registrado")
+            }).then(res => { 
+                if(res.status === 200){
+                    console.log("Nuevo horario registrado")
+                } else if(res.status === 409){
+                    res.json().then(schedule => {
+                        setRegisteredSchedules(schedule);
+                        alert(JSON.stringify(schedule));
+                        console.log(schedule);
+                    })
+                }
+                
             })
         }else{
             if(horario.activity == null){

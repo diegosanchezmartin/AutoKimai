@@ -143,6 +143,22 @@ class TimeSheetServiceTest {
         Mockito.verify(timeSheetService.apiKimai,Mockito.times(0)).addHoursAPi(Mockito.any());
     }
 
+    @Test
+    void when_register_a_repeated_day_then_no_events() {
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        TimeSheet newSchedule = new TimeSheet();
+        newSchedule.setBegin(LocalDate.of(2022, 3, 16));
+        newSchedule.setEnd(LocalDate.of(2022, 3, 16));
+        //Mock
+        timeSheetService.checkDays(newSchedule);
+        TimeSheet repeatedSchedule = new TimeSheet();
+        repeatedSchedule.setBegin(LocalDate.of(2022, 3, 16));
+        repeatedSchedule.setEnd(LocalDate.of(2022, 3, 16));
+        timeSheetService.checkDays(repeatedSchedule);
+        Mockito.verify(timeSheetService.apiKimai,Mockito.times(2)).addHoursAPi(Mockito.any());
+    }
+
 
     @Test
     void getSchedules() {

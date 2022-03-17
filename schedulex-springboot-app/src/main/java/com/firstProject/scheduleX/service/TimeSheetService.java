@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.firstProject.scheduleX.model.Activities;
@@ -48,26 +50,26 @@ public class TimeSheetService {
         return afternoonSchedule;
     }
 
-    private void checkOneDay(TimeSheet newSchedule) {
+    private ResponseEntity<List<TimeSheetGet>> checkOneDay(TimeSheet newSchedule) {
         TimeSheetPost registeredDay;
         int dayOfTheWeek = newSchedule.getBegin().getDayOfWeek().getValue();
         switch (dayOfTheWeek) {
             case 5:
                 registeredDay = createMorningDay(dayOfTheWeek, newSchedule);
                 apiKimai.addHoursAPi(registeredDay);
-                break;
+                return new ResponseEntity(HttpStatus.OK);
             case 6:
                 System.out.println("Dia introcido incorrecto: El sábado no se trabaja");
-                break;
+                return new ResponseEntity(HttpStatus.CONFLICT);
             case 7:
                 System.out.println("Dia introcido incorrecto: El domingo no se trabaja");
-                break;
+                return new ResponseEntity(HttpStatus.CONFLICT);
             default:
                 registeredDay = createMorningDay(dayOfTheWeek, newSchedule);
                 apiKimai.addHoursAPi(registeredDay);
                 registeredDay = createAfternoonDay(newSchedule);
                 apiKimai.addHoursAPi(registeredDay);
-                break;
+                return new ResponseEntity(HttpStatus.OK);
         }
     }
 
@@ -110,25 +112,24 @@ public class TimeSheetService {
         }
     }
 
-    public void checkDays(TimeSheet newSchedule) {
+    public ResponseEntity checkDays(TimeSheet newSchedule) {
         if (checkHolidays(newSchedule)) {
             if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
-                if(checkRepeatedDay(newSchedule)) {
-                    checkOneDay(newSchedule);
-                } else {
-                    this.askConfirmation();
-                }
+                return checkRepeatedDay(newSchedule);
             } else {
                 if(checkRepeatedDays(newSchedule)) {
                     checkMoreThanOneDay(newSchedule);
+                    return new ResponseEntity(HttpStatus.OK);
                 } else {
                     this.askConfirmation();
+                    return new ResponseEntity(HttpStatus.CONFLICT);
                 }
             }
         }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    private boolean checkRepeatedDay(TimeSheet newSchedule) {
+    private ResponseEntity<List<TimeSheetGet>> checkRepeatedDay(TimeSheet newSchedule) {
         List<TimeSheetGet> registeredSchedules;
         registeredSchedules = this.getRecentSchedules(newSchedule.getBegin(), newSchedule.getEnd());
         if(!registeredSchedules.isEmpty()){
@@ -136,9 +137,10 @@ public class TimeSheetService {
             for(TimeSheetGet registeredSchedule : registeredSchedules) {
                 System.out.println("From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd());
             }
-            return false;
+            this.askConfirmation();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(registeredSchedules);
         }
-        return true;
+        return checkOneDay(newSchedule);
     }
 
     private boolean checkRepeatedDays(TimeSheet newSchedule) {
@@ -148,9 +150,9 @@ public class TimeSheetService {
 
         for(int i=0; i<=daysOfDifference; i++){
             newSchedule.setEnd(LocalDate.of(newSchedule.getBegin().getYear(), newSchedule.getBegin().getMonth(), newSchedule.getBegin().getDayOfMonth()));
-            if(!this.checkRepeatedDay(newSchedule)){
+            /*if(!this.checkRepeatedDay(newSchedule)){
                 repeatedDays = true;
-            }
+            }*/
            newSchedule.setBegin(newSchedule.getBegin().plusDays(1));
         }
         if(repeatedDays){

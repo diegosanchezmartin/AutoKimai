@@ -4,6 +4,7 @@ import com.firstProject.scheduleX.model.Activities;
 import com.firstProject.scheduleX.model.Projects;
 import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.model.TimeSheetPost;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,12 @@ import java.util.List;
 @Service
 public class KimaiRestApi implements KimaiApi {
 
+/*    @Value("${api.kimai.url}")
+    private String urlApi;
+
+    private WebClient webClient = WebClient.create(urlApi);*/
     private WebClient webClient = WebClient.create("http://localhost:8001");
+
 
     public void addHoursAPi(TimeSheetPost horarioNuevo) {
         ResponseEntity<String> block = webClient.post()
