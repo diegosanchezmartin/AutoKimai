@@ -52,7 +52,15 @@ function InterfazInput (props) {
                 } else if(res.status === 409){
                     res.json().then(schedule => {
                         setRegisteredSchedules(schedule);
-                        alert(JSON.stringify(schedule));
+                        alert(
+                            schedule.map(discoveredSchedule => 
+                            "Warning: Registered Schedules Discovered: \n" +
+                            "From: " + 
+                                JSON.stringify(discoveredSchedule.begin) + "\n" +
+                            "To: " +
+                                JSON.stringify(discoveredSchedule.end) + "\n"))
+                            
+                            //JSON.stringify(schedule));
                         console.log(schedule);
                     })
                 }
