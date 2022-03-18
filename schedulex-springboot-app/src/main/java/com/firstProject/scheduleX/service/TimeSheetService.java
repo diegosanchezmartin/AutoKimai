@@ -21,7 +21,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Service
 public class TimeSheetService {
 
-    @Autowired
+/*    @Autowired
     KimaiApi apiKimai;
 
     private TimeSheetPost createMorningDay(int dayOfTheWeek, TimeSheet newSchedule) {
@@ -150,9 +150,9 @@ public class TimeSheetService {
 
         for(int i=0; i<=daysOfDifference; i++){
             newSchedule.setEnd(LocalDate.of(newSchedule.getBegin().getYear(), newSchedule.getBegin().getMonth(), newSchedule.getBegin().getDayOfMonth()));
-            /*if(!this.checkRepeatedDay(newSchedule)){
-                repeatedDays = true;
-            }*/
+            //if(!this.checkRepeatedDay(newSchedule)){
+               // repeatedDays = true;
+            //}
            newSchedule.setBegin(newSchedule.getBegin().plusDays(1));
         }
         if(repeatedDays){
@@ -217,5 +217,5 @@ public class TimeSheetService {
     public List<Activities> getActivities() {
         return apiKimai.getActivities();
     }
-
+*/
 }

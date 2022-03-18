@@ -1,6 +1,7 @@
 # Retrospectiva Diego
+
 ------------------------¬
-| Viernes 18/03/2022: |
+| Viernes 25/03/2022: |
 -------------------------
 
     - Cosas que pueden mejorar:
@@ -10,6 +11,45 @@
     - Cosas que han salido bien:
 
     * Por qué han salido bien:
+______________________________________________________________________________________________________________________________________
+
+------------------------¬
+| Viernes 18/03/2022: |
+-------------------------
+
+    - Cosas que pueden mejorar:
++ Mejorar el testing en el sentido de empezar la nueva funcionalidad e ir añadiendo poco a poco nuevas características a la vez que desarrollando
+nuevas funciones de test para probarlas, no realizar mucha lógica sin antes realizar su correspondiente prueba.
++ Definir más tareas en GitHub y asignarles tiempo, esta semana la estimación fue demasiado corta, desarrollar tareas despacio y con un tiempo 
+asequible.
++ No declarar atributos innecesarios en las clases de Spring, por ejemplo TimeSheet actualmente tiene 4 y antes muchos más, lo que hace más
+complicado el código y menos manejable.
++ Usar los returns en las funciones para poder comprobar en el testing que se devuelve y así mejorar este aspecto, al usar void las comprobaciones
+se hacen mucho más complicadas.
++ Colocar cada función en su capa correspondiente, por ejemplo he aprendido a usar ResponseEntity pero lo uso dentro de la capa equivocada.
+
+    * Como se va a mejorar:
++ Creando más tareas en GitHub y consultado más amenudo cosas que estén pendientes y definir con más claridad los tiempos de realización.
++ Acostumbrándome al ciclo, nueva característica, realización de correspondientes test, desarrollo de nueva carácteristica, sin implementar más
+de lo necesario (test rojos, test verdes, refactor).
++ Usando más los returns en las funciones y dejando de usar void cuando no sea necesario. 
+
+    - Cosas que han salido bien:
++ He aprendido a comunicar el Backend con el Frontend mediante envío de ResponseEntity y correspondiente manejadora en la parte de React.
++ Mejor comprensión de el testing TDD, cómo usarlo y en qué medida es útil.
++ He comenzado la refactorización de mi código mejorando la clase TimeSheetService y entendido el por qué de las mejoras y por qué han de
+realizarse y no dejar el código realizado con la primera versión desarrollada.
++ He corregido pequeños errores que seguía cometiendo y seguro me acompañaran hasta que domine estás tecnologías (barra / en direcciones url
+(solucionado con PostMan), ) 
++ He aprendido a "correr" el código implementado con debug y no la función "run" del IDE, para poder hacer hotfixes en caliente y recargar con F9
++ Manejo mucho mejor los atajos de teclado y he ahorrado bastantes caracteres.
+
+    * Por qué han salido bien:
++ He leído bastantes artículos para documentarme bien sobre los temas comentados y las buenas prácticas de los mismos.
++ Porque era necesario empezar a refactorizar el código al haber realizado bastantes funciones y tener mucha lógica agrupada, así 
+compruebo qué está mal y por qué.
++ Es mucho más rapido hacer control+shift+F9 que estar recargando el servidor cada vez que cambio el código.
++ Ahorro tiempo con los atajos de teclado.
 ______________________________________________________________________________________________________________________________________
 
 ------------------------¬
