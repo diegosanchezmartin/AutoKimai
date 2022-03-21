@@ -322,33 +322,33 @@ class NewTimeSheetServiceTest {
         timeSheetGet.setEnd(now.atTime(16,0,0).toInstant(ZoneOffset.UTC));
         return timeSheetGet;
     }
-/*
+
     @Test
     void getSchedules() {
-        TimeSheetService timeSheetService = new TimeSheetService();
-        timeSheetService.apiKimai = new KimaiApiTest();
+        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
+        timeSheetService2.apiKimai = new KimaiApiTest();
         //timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         //Mockito.when(timeSheetService.apiKimai.getSchedules()).thenReturn(Collections.emptyList());
-        assertEquals(Collections.emptyList(),timeSheetService.getSchedules());
+        assertEquals(Collections.emptyList(),timeSheetService2.getSchedules());
     }
 
     @Test
     void getProjects() {
-        TimeSheetService timeSheetService = new TimeSheetService();
-        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getProjects()).thenReturn(Collections.emptyList());
-        timeSheetService.getProjects();
-        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getProjects();
+        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
+        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService2.apiKimai.getProjects()).thenReturn(Collections.emptyList());
+        timeSheetService2.getProjects();
+        Mockito.verify(timeSheetService2.apiKimai,Mockito.times(1)).getProjects();
     }
 
     @Test
     void getActivities() {
-        TimeSheetService timeSheetService = new TimeSheetService();
-        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getActivities()).thenReturn(Collections.emptyList());
-        timeSheetService.getActivities();
-        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getActivities();
+        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
+        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService2.apiKimai.getActivities()).thenReturn(Collections.emptyList());
+        timeSheetService2.getActivities();
+        Mockito.verify(timeSheetService2.apiKimai,Mockito.times(1)).getActivities();
     }
 
- */
+
 }
