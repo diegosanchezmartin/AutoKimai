@@ -290,7 +290,8 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        Mockito.verify(timeSheetService2.apiKimai, Mockito.times(0)).addHoursAPi(Mockito.any());
+        List<TimeSheetPost> timeSheetPosts = timeSheetService2.registerOneDay(day);
+        assertEquals(Collections.emptyList(), timeSheetPosts);
     }
 
     @Test
