@@ -43,7 +43,7 @@ public class TimeSheetService2 {
     private boolean checkDay(TimeSheet day) {
         if(checkWeekends(day)){
             if(checkHolidays(day)){
-                if(checkHours(day)){
+                if(checkHours(day).isEmpty()){
                     return true;
                 }
             }
@@ -51,7 +51,7 @@ public class TimeSheetService2 {
         return false;
     }
 
-    private boolean checkHours(TimeSheet day) {
+    private List<TimeSheetGet> checkHours(TimeSheet day) {
         String beginWithoutZero;
         String endWithoutZero;
         if(day.getBegin().toString().substring(5,6).equals("0")){
@@ -66,7 +66,6 @@ public class TimeSheetService2 {
         }
 
         List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
-        //registeredSchedules = this.getRecentSchedules(beginWithoutZero, endWithoutZero);
         if(!registeredSchedules.isEmpty()){
             System.out.println("Warning: Registered Schedules Discovered: ");
             for(TimeSheetGet registeredSchedule : registeredSchedules) {
@@ -74,9 +73,9 @@ public class TimeSheetService2 {
             }
             //this.askConfirmation();
             //return ResponseEntity.status(HttpStatus.CONFLICT).body(registeredSchedules);
-            return false;
+            return registeredSchedules;
         }
-        return true;
+        return Collections.emptyList();
     }
 
     private boolean checkHolidays(TimeSheet day) {
