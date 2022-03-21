@@ -25,23 +25,20 @@ public class TimeSheetController {
     @GetMapping("api/v1/projects")
     public List<Projects> getProjects() {
         return timeSheetService2.getProjects();
-        //return null;
     }
 
     @GetMapping("api/v1/activities")
     public List<Activities> getActivities() {
         return timeSheetService2.getActivities();
-        //return null;
     }
 
     @GetMapping("api/timesheets")
     public List<TimeSheetGet> getHorarios(){
        return timeSheetService2.getSchedules();
-       //return null;
     }
     @PostMapping("api/v1/user")
     public ResponseEntity registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
-        timeSheetService2.checkDays(newSchedule);
+        timeSheetService2.checkDate(newSchedule);
         return null;
     }
 

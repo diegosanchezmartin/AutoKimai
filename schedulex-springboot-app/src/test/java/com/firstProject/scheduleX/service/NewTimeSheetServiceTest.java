@@ -44,6 +44,21 @@ class NewTimeSheetServiceTest {
     }
 
     @Test
+    void when_register_earlier_end_date_than_begin_date() {
+        final KimaiApiTest apiKimai = new KimaiApiTest();
+        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
+        timeSheetService2.apiKimai = apiKimai;
+        TimeSheet day = new TimeSheet(
+                LocalDate.of(2022, 3, 22),
+                LocalDate.of(2022, 3, 21),
+                1,
+                1
+        );
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
+        assertEquals(Collections.emptyList(), registeredDay);
+    }
+
+    @Test
     void when_register_a_day_between_monday_and_thursday() {
         final KimaiApiTest apiKimai = new KimaiApiTest();
         TimeSheetService2 timeSheetService2 = new TimeSheetService2();
@@ -69,7 +84,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDayExpected.add(registeredDayExpectedAfternoon);
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerOneDay(day);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
         assertEquals(registeredDayExpected, registeredDay);
     }
 
@@ -92,7 +107,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDayExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerOneDay(day);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
         assertEquals(registeredDayExpected, registeredDay);
     }
 
@@ -107,7 +122,7 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerOneDay(day);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
         assertEquals(Collections.emptyList(), registeredDay);
     }
 
@@ -139,7 +154,7 @@ class NewTimeSheetServiceTest {
             );
             registeredDaysExpected.add(registeredDayExpectedAfternoon);
         }
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerMoreThanOneDay(days);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -178,7 +193,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerMoreThanOneDay(days);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -217,7 +232,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerMoreThanOneDay(days);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -232,7 +247,7 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerOneDay(day);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
         assertEquals(Collections.emptyList(), registeredDay);
     }
 
@@ -273,7 +288,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerMoreThanOneDay(days);
+        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -290,7 +305,7 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        List<TimeSheetPost> timeSheetPosts = timeSheetService2.registerOneDay(day);
+        List<TimeSheetPost> timeSheetPosts = timeSheetService2.checkDate(day);
         assertEquals(Collections.emptyList(), timeSheetPosts);
     }
 
@@ -304,7 +319,7 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        timeSheetService2.registerOneDay(day);
+        timeSheetService2.checkDate(day);
         Mockito.verify(timeSheetService2.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any());
     }
 

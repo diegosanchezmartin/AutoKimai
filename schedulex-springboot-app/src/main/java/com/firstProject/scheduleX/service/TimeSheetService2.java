@@ -18,7 +18,7 @@ public class TimeSheetService2 {
     @Autowired
     KimaiApi apiKimai;
 
-    public List<TimeSheetPost> checkDays(TimeSheet newSchedule) {
+    public List<TimeSheetPost> checkDate(TimeSheet newSchedule) {
         if (newSchedule.getEnd().isAfter(newSchedule.getBegin())) {
             return registerMoreThanOneDay(newSchedule);
         } else if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
@@ -61,9 +61,9 @@ public class TimeSheetService2 {
     }
 
     private List<TimeSheetGet> checkHours(TimeSheet day) {
-        String beginWithoutZero;
-        String endWithoutZero;
-        if (day.getBegin().toString().substring(5, 6).equals("0")) {
+        String beginWithoutZero = day.getBegin().toString().substring(0, 5) + day.getBegin().toString().substring(6, 10) + "T08:00:00";
+        String endWithoutZero = day.getEnd().toString().substring(0, 5) + day.getEnd().toString().substring(6, 10) + "T16:15:00";
+        /*if (day.getBegin().toString().substring(5, 6).equals("0")) {
             beginWithoutZero = day.getBegin().toString().substring(0, 5) + day.getBegin().toString().substring(6, 10) + "T08:00:00";
         } else {
             beginWithoutZero = day.getBegin() + "T08:00:00";
@@ -72,7 +72,7 @@ public class TimeSheetService2 {
             endWithoutZero = day.getEnd().toString().substring(0, 5) + day.getEnd().toString().substring(6, 10) + "T16:15:00";
         } else {
             endWithoutZero = day.getEnd().toString() + "T16:15:00";
-        }
+        }*/
 
         List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
         if (!registeredSchedules.isEmpty()) {
