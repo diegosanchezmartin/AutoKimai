@@ -18,12 +18,13 @@ public class TimeSheetService2 {
     @Autowired
     KimaiApi apiKimai;
 
-    public void checkDays(TimeSheet newSchedule) {
-        if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
-            registerOneDay(newSchedule);
-        } else {
-            registerMoreThanOneDay(newSchedule);
+    public List<TimeSheetPost> checkDays(TimeSheet newSchedule) {
+        if (newSchedule.getEnd().isAfter(newSchedule.getBegin())) {
+            return registerMoreThanOneDay(newSchedule);
+        } else if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
+            return registerOneDay(newSchedule);
         }
+        return Collections.emptyList();
     }
 
     public List<TimeSheetPost> registerOneDay(TimeSheet day) {
