@@ -1,6 +1,7 @@
 package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.TimeSheet;
+import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.model.TimeSheetPost;
 import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,18 @@ public class TimeSheetService2 {
         } else{
             endWithoutZero = day.getEnd().toString() + "T16:15:00";
         }
-        //apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
+
+        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
+        //registeredSchedules = this.getRecentSchedules(beginWithoutZero, endWithoutZero);
+        if(!registeredSchedules.isEmpty()){
+            System.out.println("Warning: Registered Schedules Discovered: ");
+            for(TimeSheetGet registeredSchedule : registeredSchedules) {
+                System.out.println("From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd());
+            }
+            //this.askConfirmation();
+            //return ResponseEntity.status(HttpStatus.CONFLICT).body(registeredSchedules);
+            return false;
+        }
         return true;
     }
 

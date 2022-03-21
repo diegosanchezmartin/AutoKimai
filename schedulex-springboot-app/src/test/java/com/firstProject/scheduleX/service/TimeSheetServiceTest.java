@@ -7,6 +7,8 @@ import org.mockito.Mockito;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSheetServiceTest {
 
-    static class KimaiApiTest implements  KimaiApi {
+    static class KimaiApiTest implements KimaiApi {
         List<TimeSheetPost> list = new ArrayList<>();
         @Override
         public void addHoursAPi(TimeSheetPost horarioNuevo) {
@@ -395,18 +397,35 @@ class TimeSheetServiceTest {
     }
 
     @Test
-    void when_register_repeated_schedule_then_call_api_2_times_only() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
+    void when_register_repeated_schedule_then_dont_call_api() {
         TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService2.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+                List.of(getTimeSheetGetMorning(), getTimeSheetGetAfternoon())
+        );
         TimeSheet day = new TimeSheet(
-                LocalDate.of(2022, 3, 19),
-                LocalDate.of(2022, 3, 19),
+                LocalDate.now(),
+                LocalDate.now(),
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService2.registerOneDay(day);
-        assertEquals(Collections.emptyList(), registeredDay);
+        Mockito.verify(timeSheetService2.apiKimai, Mockito.times(0)).addHoursAPi(Mockito.any());
+    }
+
+    private TimeSheetGet getTimeSheetGetAfternoon() {
+        LocalDate now = LocalDate.now();
+        TimeSheetGet timeSheetGet = new TimeSheetGet();
+        timeSheetGet.setBegin(now.atTime(16, 0, 0).toInstant(ZoneOffset.UTC));
+        timeSheetGet.setEnd(now.atTime(16,15,0).toInstant(ZoneOffset.UTC));
+        return timeSheetGet;
+    }
+
+    private TimeSheetGet getTimeSheetGetMorning() {
+        LocalDate now = LocalDate.now();
+        TimeSheetGet timeSheetGet = new TimeSheetGet();
+        timeSheetGet.setBegin(now.atTime(8, 0, 0).toInstant(ZoneOffset.UTC));
+        timeSheetGet.setEnd(now.atTime(16,0,0).toInstant(ZoneOffset.UTC));
+        return timeSheetGet;
     }
 /*
     @Test
