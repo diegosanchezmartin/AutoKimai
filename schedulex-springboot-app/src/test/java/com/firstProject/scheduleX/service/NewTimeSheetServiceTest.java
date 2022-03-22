@@ -2,6 +2,7 @@ package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
+import com.firstProject.scheduleX.repository.KimaiRestApi;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -15,39 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NewTimeSheetServiceTest {
 
-    static class KimaiApiTest implements KimaiApi {
-        List<TimeSheetPost> list = new ArrayList<>();
-        @Override
-        public void addHoursAPi(TimeSheetPost horarioNuevo) {
-            list.add(horarioNuevo);
-        }
-
-        @Override
-        public List<TimeSheetGet> getSchedules() {
-            return Collections.emptyList();
-        }
-
-        @Override
-        public List<Projects> getProjects() {
-            return Collections.emptyList();
-        }
-
-        @Override
-        public List<Activities> getActivities() {
-            return Collections.emptyList();
-        }
-
-        @Override
-        public List<TimeSheetGet> getRecentSchedules(String begin, String end) {
-            return Collections.emptyList();
-        }
+    private TimeSheetService2 getTimeSheetService() {
+        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
+        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
+        return timeSheetService2;
     }
 
     @Test
     void when_register_earlier_end_date_than_begin_date() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 22),
                 LocalDate.of(2022, 3, 21),
@@ -60,9 +37,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_a_day_between_monday_and_thursday() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 17),
                 LocalDate.of(2022, 3, 17),
@@ -90,9 +65,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_a_friday() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 18),
                 LocalDate.of(2022, 3, 18),
@@ -113,9 +86,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_a_saturday_or_sunday_then_expect_empty_list() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 19),
                 LocalDate.of(2022, 3, 19),
@@ -128,9 +99,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_more_than_one_day_between_monday_and_thursday() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 3, 14),
                 LocalDate.of(2022, 3, 17),
@@ -160,9 +129,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_more_than_one_day_between_monday_and_friday() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 3, 14),
                 LocalDate.of(2022, 3, 18),
@@ -199,9 +166,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_more_than_one_day_including_saturdays_and_sundays() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 3, 14),
                 LocalDate.of(2022, 3, 20),
@@ -238,9 +203,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_a_holiday_then_expect_empty_list() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 1, 1),
                 LocalDate.of(2022, 1, 1),
@@ -253,9 +216,7 @@ class NewTimeSheetServiceTest {
 
     @Test
     void when_register_more_than_one_day_including_holidays() {
-        final KimaiApiTest apiKimai = new KimaiApiTest();
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = apiKimai;
+        TimeSheetService2 timeSheetService2 = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 1, 3),
                 LocalDate.of(2022, 1, 7),
@@ -342,7 +303,7 @@ class NewTimeSheetServiceTest {
     @Test
     void getSchedules() {
         TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = new KimaiApiTest();
+        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
         //timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         //Mockito.when(timeSheetService.apiKimai.getSchedules()).thenReturn(Collections.emptyList());
         assertEquals(Collections.emptyList(),timeSheetService2.getSchedules());
