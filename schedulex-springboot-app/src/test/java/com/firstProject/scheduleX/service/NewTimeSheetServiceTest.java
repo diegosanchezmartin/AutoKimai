@@ -2,7 +2,6 @@ package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
-import com.firstProject.scheduleX.repository.KimaiRestApi;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -16,28 +15,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NewTimeSheetServiceTest {
 
-    private TimeSheetService2 getTimeSheetService() {
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
-        return timeSheetService2;
+    private TimeSheetService getTimeSheetService() {
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        return timeSheetService;
     }
 
     @Test
     void when_register_earlier_end_date_than_begin_date() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 22),
                 LocalDate.of(2022, 3, 21),
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
         assertEquals(Collections.emptyList(), registeredDay);
     }
 
     @Test
     void when_register_a_day_between_monday_and_thursday() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 17),
                 LocalDate.of(2022, 3, 17),
@@ -59,13 +58,13 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDayExpected.add(registeredDayExpectedAfternoon);
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
         assertEquals(registeredDayExpected, registeredDay);
     }
 
     @Test
     void when_register_a_friday() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 18),
                 LocalDate.of(2022, 3, 18),
@@ -80,26 +79,26 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDayExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
         assertEquals(registeredDayExpected, registeredDay);
     }
 
     @Test
     void when_register_a_saturday_or_sunday_then_expect_empty_list() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 19),
                 LocalDate.of(2022, 3, 19),
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
         assertEquals(Collections.emptyList(), registeredDay);
     }
 
     @Test
     void when_register_more_than_one_day_between_monday_and_thursday() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 3, 14),
                 LocalDate.of(2022, 3, 17),
@@ -123,13 +122,13 @@ class NewTimeSheetServiceTest {
             );
             registeredDaysExpected.add(registeredDayExpectedAfternoon);
         }
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
     @Test
     void when_register_more_than_one_day_between_monday_and_friday() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 3, 14),
                 LocalDate.of(2022, 3, 18),
@@ -160,13 +159,13 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
     @Test
     void when_register_more_than_one_day_including_saturdays_and_sundays() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 3, 14),
                 LocalDate.of(2022, 3, 20),
@@ -197,26 +196,26 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
     @Test
     void when_register_a_holiday_then_expect_empty_list() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 1, 1),
                 LocalDate.of(2022, 1, 1),
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
         assertEquals(Collections.emptyList(), registeredDay);
     }
 
     @Test
     void when_register_more_than_one_day_including_holidays() {
-        TimeSheetService2 timeSheetService2 = getTimeSheetService();
+        TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet days = new TimeSheet(
                 LocalDate.of(2022, 1, 3),
                 LocalDate.of(2022, 1, 7),
@@ -249,15 +248,15 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService2.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
     @Test
     void when_register_repeated_schedule_then_dont_call_api() {
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService2.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
                 List.of(getTimeSheetGetMorning(), getTimeSheetGetAfternoon())
         );
         TimeSheet day = new TimeSheet(
@@ -266,22 +265,22 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        List<TimeSheetPost> timeSheetPosts = timeSheetService2.checkDate(day);
+        List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
         assertEquals(Collections.emptyList(), timeSheetPosts);
     }
 
     @Test
     void when_register_non_repeated_schedule_then_call_api_2_times() {
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         TimeSheet day = new TimeSheet(
                 LocalDate.now(),
                 LocalDate.now(),
                 1,
                 1
         );
-        timeSheetService2.checkDate(day);
-        Mockito.verify(timeSheetService2.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any());
+        timeSheetService.checkDate(day);
+        Mockito.verify(timeSheetService.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any());
     }
 
     private TimeSheetGet getTimeSheetGetAfternoon() {
@@ -302,29 +301,29 @@ class NewTimeSheetServiceTest {
 
     @Test
     void getSchedules() {
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         //timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         //Mockito.when(timeSheetService.apiKimai.getSchedules()).thenReturn(Collections.emptyList());
-        assertEquals(Collections.emptyList(),timeSheetService2.getSchedules());
+        assertEquals(Collections.emptyList(), timeSheetService.getSchedules());
     }
 
     @Test
     void getProjects() {
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService2.apiKimai.getProjects()).thenReturn(Collections.emptyList());
-        timeSheetService2.getProjects();
-        Mockito.verify(timeSheetService2.apiKimai,Mockito.times(1)).getProjects();
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService.apiKimai.getProjects()).thenReturn(Collections.emptyList());
+        timeSheetService.getProjects();
+        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getProjects();
     }
 
     @Test
     void getActivities() {
-        TimeSheetService2 timeSheetService2 = new TimeSheetService2();
-        timeSheetService2.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService2.apiKimai.getActivities()).thenReturn(Collections.emptyList());
-        timeSheetService2.getActivities();
-        Mockito.verify(timeSheetService2.apiKimai,Mockito.times(1)).getActivities();
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService.apiKimai.getActivities()).thenReturn(Collections.emptyList());
+        timeSheetService.getActivities();
+        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getActivities();
     }
 
 
