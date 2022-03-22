@@ -35,9 +35,11 @@ public class TimeSheetController {
     public List<TimeSheetGet> getHorarios(){
        return timeSheetService.getSchedules();
     }
+
     @PostMapping("api/v1/user")
     public ResponseEntity registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
-        timeSheetService.checkDate(newSchedule);
+        System.out.println(timeSheetService.checkDate(newSchedule));
+
         return null;
     }
 

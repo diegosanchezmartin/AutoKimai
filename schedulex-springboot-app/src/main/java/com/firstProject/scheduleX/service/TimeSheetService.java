@@ -50,8 +50,8 @@ public class TimeSheetService {
     }
 
     private boolean checkDay(LocalDate begin, LocalDate end) {
-        if (checkWeekends(begin)) {
-            if (checkHolidays(begin)) {
+        if (isWeekend(begin)) {
+            if (!isHolidays(begin)) {
                 if (checkHours(begin, end).isEmpty()) {
                     return true;
                 }
@@ -76,7 +76,7 @@ public class TimeSheetService {
         return Collections.emptyList();
     }
 
-    private boolean checkHolidays(LocalDate begin) {
+    private boolean isHolidays(LocalDate begin) {
         List<LocalDate> holidays = new ArrayList<>();
         holidays.add(LocalDate.of(2022, 1, 1));
         holidays.add(LocalDate.of(2022, 1, 6));
@@ -90,7 +90,7 @@ public class TimeSheetService {
         return holidays.contains(begin);
     }
 
-    private boolean checkWeekends(LocalDate begin) {
+    private boolean isWeekend(LocalDate begin) {
         if (begin.getDayOfWeek().getValue() == 6 ||
                 begin.getDayOfWeek().getValue() == 7) {
             return false;
