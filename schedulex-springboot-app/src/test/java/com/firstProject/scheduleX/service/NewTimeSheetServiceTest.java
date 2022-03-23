@@ -22,7 +22,7 @@ class NewTimeSheetServiceTest {
     }
 
     @Test
-    void when_register_earlier_end_date_than_begin_date() {
+    void when_register_earlier_end_date_than_begin_date_then_throw_IllegalArgumentException() {
         TimeSheetService timeSheetService = getTimeSheetService();
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 22),

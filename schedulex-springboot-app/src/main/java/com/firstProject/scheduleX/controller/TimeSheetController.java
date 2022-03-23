@@ -41,7 +41,7 @@ public class TimeSheetController {
             return new ResponseEntity(HttpStatus.OK);
         } catch (IllegalArgumentException exception) {
             exception.printStackTrace();
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(newSchedule);
         }
     }
 
