@@ -50,7 +50,16 @@ function InterfazInput (props) {
                 if(res.status === 200){
                     console.log("Nuevo horario registrado")
                 } else if(res.status === 409){
-                    res.json().then(schedule => {
+                    console.log(res.json());
+                    alert( 
+                        "Error: Begin date is later than End date: \n" +
+                        "From: " + 
+                            JSON.stringify(begin) + "\n" +
+                        "To: " +
+                            JSON.stringify(end) + "\n")
+                        
+                        //JSON.stringify(schedule));
+                    /*res.json().then(schedule => {
                         setRegisteredSchedules(schedule);
                         alert(
                             schedule.map(discoveredSchedule => 
@@ -62,7 +71,7 @@ function InterfazInput (props) {
                             
                             //JSON.stringify(schedule));
                         console.log(schedule);
-                    })
+                    })*/
                 }
                 
             })
