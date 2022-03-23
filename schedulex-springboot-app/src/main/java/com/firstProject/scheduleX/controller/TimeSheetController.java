@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -39,9 +40,12 @@ public class TimeSheetController {
         try {
             timeSheetService.checkDate(newSchedule);
             return new ResponseEntity(HttpStatus.OK);
-        } catch (IllegalArgumentException exception) {
-            exception.printStackTrace();
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(newSchedule);
+        } catch (IllegalArgumentException datesException) {
+            datesException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(newSchedule);
+        } catch (OwnExceptions.RegisteredSchedulesException scheduleException) {
+            scheduleException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(scheduleException.getMessage());
         }
     }
 

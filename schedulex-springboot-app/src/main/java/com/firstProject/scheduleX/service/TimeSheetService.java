@@ -5,8 +5,9 @@ import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.security.InvalidParameterException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -61,18 +62,29 @@ public class TimeSheetService {
         return false;
     }
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-M-dd'T'HH:mm:ss");
     private List<TimeSheetGet> checkHours(LocalDate begin, LocalDate end) {
-        String beginWithoutZero = begin.toString().substring(0, 5) + begin.toString().substring(6, 10) + "T08:00:00";
-        String endWithoutZero = end.toString().substring(0, 5) + end.toString().substring(6, 10) + "T16:15:00";
+        final LocalDateTime beginDateTime = begin.atTime(LocalTime.of(8,0,0));
+        final LocalDateTime endDateTime = end.atTime(LocalTime.of(16,15,0));
+        String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
+        String endWithoutZero = DATE_TIME_FORMATTER.format(endDateTime);
+
         registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
         if (!registeredSchedules.isEmpty()) {
-            System.out.println("Warning: Registered Schedules Discovered: ");
+            String error = null; // = "Warning: Registered Schedules Discovered: \n";
             for (TimeSheetGet registeredSchedule : registeredSchedules) {
-                System.out.println("From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd());
+                if (registeredSchedule.getBegin().
+                        equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC)) && (registeredSchedule.getEnd().
+                        equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC))) || (
+                        registeredSchedule.getBegin().equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC)) && (registeredSchedule.getEnd().
+                                equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC))))) {
+                    error += registeredSchedule; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
+                    throw new OwnExceptions.RegisteredSchedulesException(error);
+                } else {
+                    error += registeredSchedule + "\nDoy you want to record schedules anyway?"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
+                    throw new OwnExceptions.RegisteredSchedulesException(error);
+                }
             }
-            //this.askConfirmation();
-            //return ResponseEntity.status(HttpStatus.CONFLICT).body(registeredSchedules);
-            return registeredSchedules;
         }
         return Collections.emptyList();
     }
@@ -138,9 +150,5 @@ public class TimeSheetService {
 
     public List<Activities> getActivities() {
         return apiKimai.getActivities();
-    }
-
-    public List<TimeSheetGet> getRegisteredSchedules() {
-        return registeredSchedules;
     }
 }
