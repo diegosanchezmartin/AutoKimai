@@ -5,9 +5,11 @@ import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -17,14 +19,13 @@ public class TimeSheetService {
 
     @Autowired
     KimaiApi apiKimai;
+    public List<TimeSheetGet> registeredSchedules;
 
     public List<TimeSheetPost> checkDate(TimeSheet newSchedule) {
-        if (newSchedule.getEnd().isAfter(newSchedule.getBegin())) {
-            return registerMoreThanOneDay(newSchedule);
-        } else if (newSchedule.getBegin().equals(newSchedule.getEnd())) {
-            return registerOneDay(newSchedule);
+        if (newSchedule.getEnd().isBefore(newSchedule.getBegin())) {
+            throw new IllegalArgumentException("Error: Begin is before End: " + newSchedule);
         }
-        return Collections.emptyList();
+        return checkNumberOfDates(newSchedule);
     }
 
     public List<TimeSheetPost> registerOneDay(TimeSheet day) {
@@ -50,7 +51,7 @@ public class TimeSheetService {
     }
 
     private boolean checkDay(LocalDate begin, LocalDate end) {
-        if (isWeekend(begin)) {
+        if (!isWeekend(begin)) {
             if (!isHolidays(begin)) {
                 if (checkHours(begin, end).isEmpty()) {
                     return true;
@@ -63,7 +64,7 @@ public class TimeSheetService {
     private List<TimeSheetGet> checkHours(LocalDate begin, LocalDate end) {
         String beginWithoutZero = begin.toString().substring(0, 5) + begin.toString().substring(6, 10) + "T08:00:00";
         String endWithoutZero = end.toString().substring(0, 5) + end.toString().substring(6, 10) + "T16:15:00";
-        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
+        registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
         if (!registeredSchedules.isEmpty()) {
             System.out.println("Warning: Registered Schedules Discovered: ");
             for (TimeSheetGet registeredSchedule : registeredSchedules) {
@@ -90,12 +91,9 @@ public class TimeSheetService {
         return holidays.contains(begin);
     }
 
+    private static final EnumSet<DayOfWeek> WEEKEND = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
     private boolean isWeekend(LocalDate begin) {
-        if (begin.getDayOfWeek().getValue() == 6 ||
-                begin.getDayOfWeek().getValue() == 7) {
-            return false;
-        }
-        return true;
+        return WEEKEND.contains(begin.getDayOfWeek());
     }
 
     private TimeSheetPost createMorningDay(int dayOfTheWeek, TimeSheet newSchedule) {
@@ -118,24 +116,15 @@ public class TimeSheetService {
         return afternoonSchedule;
     }
 
-    public List<TimeSheetPost> registerMoreThanOneDay(TimeSheet days) {
-        long daysOfDifference;
+    public List<TimeSheetPost> checkNumberOfDates(TimeSheet days) {
         List<TimeSheetPost> registeredDays = new ArrayList<>();
-        List<TimeSheetPost> oneDaySchedules;
-        daysOfDifference = DAYS.between(days.getBegin(), days.getEnd());
-        days.setEnd(days.getBegin());
+        long daysOfDifference = DAYS.between(days.getBegin(), days.getEnd());
+        LocalDate beginDate = days.getBegin();
 
         for (int i = 0; i <= daysOfDifference; i++) {
-            oneDaySchedules = registerOneDay(days);
-            if (!oneDaySchedules.isEmpty()) {
-                for (TimeSheetPost schedule : oneDaySchedules) {
-                    registeredDays.add((schedule));
-                }
-            }
-            days.setBegin(days.getBegin().plusDays(1));
-            days.setEnd(days.getEnd().plusDays(1));
+            TimeSheet newDay = new TimeSheet(beginDate.plusDays(i), beginDate.plusDays(i), days.getProject(), days.getActivity());
+            registeredDays.addAll(registerOneDay(newDay));
         }
-
         return registeredDays;
     }
 
@@ -149,5 +138,9 @@ public class TimeSheetService {
 
     public List<Activities> getActivities() {
         return apiKimai.getActivities();
+    }
+
+    public List<TimeSheetGet> getRegisteredSchedules() {
+        return registeredSchedules;
     }
 }

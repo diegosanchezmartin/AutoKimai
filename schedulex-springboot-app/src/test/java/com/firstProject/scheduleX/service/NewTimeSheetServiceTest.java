@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NewTimeSheetServiceTest {
 
@@ -30,8 +30,13 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
-        assertEquals(Collections.emptyList(), registeredDay);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
+        });
+
+        String expectedMessage = "Error: Begin is before End: TimeSheet(begin=2022-03-22, end=2022-03-21, project=1, activity=1)";
+        String receivedMessage = exception.getMessage();
+        assertTrue(receivedMessage.contains(expectedMessage));
     }
 
     @Test
