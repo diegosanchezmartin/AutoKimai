@@ -5,12 +5,30 @@
 -------------------------
 
     - Cosas que pueden mejorar:
++ A la hora de añadir tareas en GitHub, tratar de hacer bien la medición del tiempo, aunque siempre pueden salir subtareas más adelante, añadir 
+el tiempo de la nueva implementación más el correspondiente testing.
++ Tratar de hacer el código con los menores recursos posibles, y si tiene pinta de que lo implementado es un poco 'chapucilla' revisarlo bien.
++ Hacer buenas prácticas de TDD eleborando código.
++ Acostumbrarse a declarar variables cuando se usen, no 'arriba del todo'.
++ Entender bien las etiquetas de Spring y las ventajas de usarlas
 
     * Como se va a mejorar:
++ Habituarse a la rutina : test rojos, test verdes, refactor para nuevas implementaciones.
++ A base de práctica y conociemiento poco a poco de la duración de implementar un nuevo componente y su test.
++ Usando atajos de teclado como los de refactor, recargar la app en modo debug, shift para seleccionar código ...
 
     - Cosas que han salido bien:
++ He aprendido a usar muchos atajos de teclado, poco a poco voy manejando el código sin tener que seleccionar a mano las cosas, ahorro
+mucho tiempo y mucho código.
++ He visto como puedo hacer lo mismo que he implementado con mucho menos código.
++ Noto que voy mejorando en cuánto a elaboración de nuevos componentes y su correspondiente testing.
 
     * Por qué han salido bien:
++ Porque la refactorización me ha dejado ver cómo elaborar el código de forma más óptima y eficiente.
++ Gracias a algunos consejos y webs que Alex me ha enviado.
++ Al tener ya casi la versión 1 terminada, tengo que implementar en ocasiones cosas nuevas que no conozco y por ello, aprendo nuevos
+conceptos.
++ Por entender bien el concepto de testing a la hora de volver a elaborar la clase service en mi proyecto.
 ______________________________________________________________________________________________________________________________________
 
 ------------------------¬
