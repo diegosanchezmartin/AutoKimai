@@ -9,8 +9,6 @@ const ActivityButton = () => {
     const [errorBackend, setErrorBackend] = useState(false);
     const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
 
-    console.log(selectedActivity);
-
     useEffect(() => {
         UserServiceFetch.getActivities().then((actividades) => { 
             setActividades(actividades);

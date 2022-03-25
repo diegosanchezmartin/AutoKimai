@@ -1,0 +1,23 @@
+.modalResponse {
+  position: relative;
+  top: -550px;
+  left: 31%;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  width: 35%;
+  border-radius: 10px;
+  padding: 10px;
+  border: 10px solid darkred;
+}
+
+.buttonsDistance {
+  display: flex;
+  justify-content: space-around;
+}
+
+.buttonModal {
+  border: 6px solid grey;
+  border-radius: 20px;
+  cursor: pointer;
+}

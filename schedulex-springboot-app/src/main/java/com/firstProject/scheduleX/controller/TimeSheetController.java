@@ -46,6 +46,9 @@ public class TimeSheetController {
         } catch (OwnExceptions.RegisteredSchedulesException scheduleException) {
             scheduleException.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(scheduleException.getMessage());
+        } catch (OwnExceptions.RegisteredSchedulesDiscoveredException schedulesDiscoveredException) {
+            schedulesDiscoveredException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.LOCKED).body(schedulesDiscoveredException.getMessage());
         }
     }
 

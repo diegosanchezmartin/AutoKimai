@@ -6,4 +6,9 @@ public class OwnExceptions {
             super(errorMessage);
         }
     }
+    public static class RegisteredSchedulesDiscoveredException extends RuntimeException {
+        public RegisteredSchedulesDiscoveredException(String errorMessage) {
+            super(errorMessage);
+        }
+    }
 }

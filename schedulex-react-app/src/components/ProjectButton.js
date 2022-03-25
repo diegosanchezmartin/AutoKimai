@@ -9,8 +9,6 @@ const ProjectButton = () => {
     const [errorBackend, setErrorBackend] = useState(false);
     const [selectedProject, setSelectedProject] = useContext(ProjectContext);
 
-    console.log(selectedProject);
-
     useEffect(() => {
         UserServiceFetch.getProyects().then((proyectos) => {
             setProyectos(proyectos);

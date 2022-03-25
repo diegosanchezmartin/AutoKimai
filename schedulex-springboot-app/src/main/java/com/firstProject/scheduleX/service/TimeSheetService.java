@@ -63,26 +63,29 @@ public class TimeSheetService {
     }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-M-dd'T'HH:mm:ss");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER_Z = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
     private List<TimeSheetGet> checkHours(LocalDate begin, LocalDate end) {
         final LocalDateTime beginDateTime = begin.atTime(LocalTime.of(8,0,0));
         final LocalDateTime endDateTime = end.atTime(LocalTime.of(16,15,0));
         String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
         String endWithoutZero = DATE_TIME_FORMATTER.format(endDateTime);
+        final String eightAM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(8,0,0)));
+        final String fourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16,0,0)));
+        final String quarterPastFourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16,15,0)));
 
         registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
         if (!registeredSchedules.isEmpty()) {
             String error = null; // = "Warning: Registered Schedules Discovered: \n";
             for (TimeSheetGet registeredSchedule : registeredSchedules) {
-                if (registeredSchedule.getBegin().
-                        equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC)) && (registeredSchedule.getEnd().
-                        equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC))) || (
-                        registeredSchedule.getBegin().equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC)) && (registeredSchedule.getEnd().
-                                equals(LocalDateTime.ofInstant(registeredSchedule.getBegin(), ZoneOffset.UTC))))) {
+                if ((registeredSchedule.getBegin().equals(Instant.parse(eightAM)) &&
+                        (registeredSchedule.getEnd().equals(Instant.parse(fourPM)))) ||
+                        (registeredSchedule.getBegin().equals(Instant.parse(fourPM)) &&
+                                (registeredSchedule.getEnd().equals(Instant.parse(quarterPastFourPM))))) {
                     error += registeredSchedule; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
                     throw new OwnExceptions.RegisteredSchedulesException(error);
                 } else {
-                    error += registeredSchedule + "\nDoy you want to record schedules anyway?"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
-                    throw new OwnExceptions.RegisteredSchedulesException(error);
+                    error += registeredSchedule + "\nDo you want to record schedules anyway?"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
+                    throw new OwnExceptions.RegisteredSchedulesDiscoveredException(error);
                 }
             }
         }
