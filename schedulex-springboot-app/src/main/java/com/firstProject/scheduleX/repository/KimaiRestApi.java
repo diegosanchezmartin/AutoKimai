@@ -4,14 +4,15 @@ import com.firstProject.scheduleX.model.Activities;
 import com.firstProject.scheduleX.model.Projects;
 import com.firstProject.scheduleX.model.TimeSheetGet;
 import com.firstProject.scheduleX.model.TimeSheetPost;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class KimaiRestApi implements KimaiApi {
@@ -83,6 +84,16 @@ public class KimaiRestApi implements KimaiApi {
                 .retrieve()
                 .bodyToFlux(TimeSheetGet.class)
                 .collectList()
+                .block();
+    }
+
+    public void deleteSchedule(int id){
+        webClient.delete()
+                .uri("/api/timesheets/" + String.valueOf(id))
+                .header("X-AUTH-USER","admin@kimai.local")
+                .header("X-AUTH-TOKEN", "password")
+                .retrieve()
+                .bodyToMono(Void.class)
                 .block();
     }
 }

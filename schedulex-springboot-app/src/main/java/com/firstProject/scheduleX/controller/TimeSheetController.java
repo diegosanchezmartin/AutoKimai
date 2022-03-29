@@ -35,7 +35,7 @@ public class TimeSheetController {
        return timeSheetService.getSchedules();
     }
 
-    @PostMapping("api/v1/user")
+    @PostMapping("api/v1/createSchedule")
     public ResponseEntity registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
         try {
             timeSheetService.checkDate(newSchedule);
@@ -45,11 +45,16 @@ public class TimeSheetController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(newSchedule);
         } catch (OwnExceptions.RegisteredSchedulesException scheduleException) {
             scheduleException.printStackTrace();
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(scheduleException.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(scheduleException);
         } catch (OwnExceptions.RegisteredSchedulesDiscoveredException schedulesDiscoveredException) {
             schedulesDiscoveredException.printStackTrace();
-            return ResponseEntity.status(HttpStatus.LOCKED).body(schedulesDiscoveredException.getMessage());
+            return ResponseEntity.status(HttpStatus.LOCKED).body(schedulesDiscoveredException);
         }
+    }
+
+    @PostMapping("api/v1/modifySchedule")
+    public void modifyUserHoursAPI(@RequestBody TimeSheet newSchedule){
+        timeSheetService.modifyDate(newSchedule);
     }
 
 }

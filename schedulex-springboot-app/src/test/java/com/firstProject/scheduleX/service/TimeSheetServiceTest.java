@@ -2,18 +2,11 @@ package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import reactor.core.publisher.Mono;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSheetServiceTest {
 
@@ -42,6 +35,10 @@ class TimeSheetServiceTest {
         @Override
         public List<TimeSheetGet> getRecentSchedules(String begin, String end) {
             return Collections.emptyList();
+        }
+
+        @Override
+        public void deleteSchedule(int id) {
         }
     }
 

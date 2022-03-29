@@ -4,8 +4,8 @@ import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
-import java.security.InvalidParameterException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -64,28 +64,41 @@ public class TimeSheetService {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-M-dd'T'HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMATTER_Z = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
     private List<TimeSheetGet> checkHours(LocalDate begin, LocalDate end) {
-        final LocalDateTime beginDateTime = begin.atTime(LocalTime.of(8,0,0));
-        final LocalDateTime endDateTime = end.atTime(LocalTime.of(16,15,0));
+        final LocalDateTime beginDateTime = begin.atTime(LocalTime.of(8, 0, 0));
+        final LocalDateTime endDateTime = end.atTime(LocalTime.of(16, 15, 0));
         String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
         String endWithoutZero = DATE_TIME_FORMATTER.format(endDateTime);
-        final String eightAM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(8,0,0)));
-        final String fourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16,0,0)));
-        final String quarterPastFourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16,15,0)));
+        final String eightAM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(8, 0, 0)));
+        final String threePM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(15, 0, 0)));
+        final String fourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16, 0, 0)));
+        final String quarterPastFourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16, 15, 0)));
 
-        registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
+        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
         if (!registeredSchedules.isEmpty()) {
-            String error = null; // = "Warning: Registered Schedules Discovered: \n";
             for (TimeSheetGet registeredSchedule : registeredSchedules) {
                 if ((registeredSchedule.getBegin().equals(Instant.parse(eightAM)) &&
                         (registeredSchedule.getEnd().equals(Instant.parse(fourPM)))) ||
+                        (registeredSchedule.getBegin().equals(Instant.parse(eightAM)) &&
+                                (registeredSchedule.getEnd().equals(Instant.parse(threePM)))) ||
                         (registeredSchedule.getBegin().equals(Instant.parse(fourPM)) &&
                                 (registeredSchedule.getEnd().equals(Instant.parse(quarterPastFourPM))))) {
-                    error += registeredSchedule; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
-                    throw new OwnExceptions.RegisteredSchedulesException(error);
+                    /*String error = "{" +
+                            "\"activity \": " + registeredSchedule.getActivity() + "," +
+                            "\"project \": " + registeredSchedule.getProject() + "," +
+                            "\"begin \": " + "\"" + registeredSchedule.getBegin() + "\""  + "," +
+                            "\"end \": " + "\"" + registeredSchedule.getEnd() + "\"" +
+                            "}"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();*/
+                    throw new OwnExceptions.RegisteredSchedulesException(registeredSchedule);
                 } else {
-                    error += registeredSchedule + "\nDo you want to record schedules anyway?"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
-                    throw new OwnExceptions.RegisteredSchedulesDiscoveredException(error);
+                    String error = "{" +
+                            "\"activity \": " + registeredSchedule.getActivity() + "," +
+                            "\"project \": " + registeredSchedule.getProject() + "," +
+                            "\"begin \": " + "\"" + registeredSchedule.getBegin() + "\""  + "," +
+                            "\"end \": " + "\"" + registeredSchedule.getEnd() + "\"" +
+                            "}"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
+                    throw new OwnExceptions.RegisteredSchedulesDiscoveredException(registeredSchedule);
                 }
             }
         }
@@ -107,6 +120,7 @@ public class TimeSheetService {
     }
 
     private static final EnumSet<DayOfWeek> WEEKEND = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
+
     private boolean isWeekend(LocalDate begin) {
         return WEEKEND.contains(begin.getDayOfWeek());
     }
@@ -141,6 +155,18 @@ public class TimeSheetService {
             registeredDays.addAll(registerOneDay(newDay));
         }
         return registeredDays;
+    }
+
+    public void modifyDate(TimeSheet newSchedule) {
+        final LocalDateTime beginDateTime = newSchedule.getBegin().atTime(LocalTime.of(8, 0, 0));
+        final LocalDateTime endDateTime = newSchedule.getEnd().atTime(LocalTime.of(16, 15, 0));
+        String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
+        String endWithoutZero = DATE_TIME_FORMATTER.format(endDateTime);
+        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
+        for (TimeSheetGet registeredSchedule : registeredSchedules) {
+            apiKimai.deleteSchedule(registeredSchedule.getId());
+            this.checkDate(newSchedule);
+        }
     }
 
     public List<TimeSheetGet> getSchedules() {

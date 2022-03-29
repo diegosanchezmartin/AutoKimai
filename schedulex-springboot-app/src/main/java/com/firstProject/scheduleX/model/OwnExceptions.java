@@ -1,14 +1,24 @@
 package com.firstProject.scheduleX.model;
 
+import lombok.Getter;
+
 public class OwnExceptions {
     public static class RegisteredSchedulesException extends RuntimeException {
-        public RegisteredSchedulesException(String errorMessage) {
-            super(errorMessage);
+        @Getter
+        TimeSheetGet error;
+        public RegisteredSchedulesException(TimeSheetGet errorMessage) {
+            super();
+            this.error = errorMessage;
         }
     }
     public static class RegisteredSchedulesDiscoveredException extends RuntimeException {
-        public RegisteredSchedulesDiscoveredException(String errorMessage) {
-            super(errorMessage);
+        @Getter
+        TimeSheetGet error;
+        public RegisteredSchedulesDiscoveredException(TimeSheetGet errorMessage) {
+            super();
+            this.error = errorMessage;
         }
     }
+
+
 }

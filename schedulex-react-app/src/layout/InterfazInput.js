@@ -12,8 +12,8 @@ function InterfazInput({setOpenModalResponse}) {
   const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
   const [openModal, setOpenModal] = useContext(ModalOpenContext);
   const [registeredSchedules, setRegisteredSchedules] = useState([]);
-  const [beginSchedule, setBeginSchedule] = useState([]);
-  const [endSchedule, setEndSchedule] = useState([]);
+  const [beginSchedule, setBeginSchedule] = useState();
+  const [endSchedule, setEndSchedule] = useState();
 
   function confirmarFechas(event) {
     event.preventDefault();
@@ -32,7 +32,7 @@ function InterfazInput({setOpenModalResponse}) {
     console.log(horario);
 
     if (horario.activity != null && horario.project != null) {
-      fetch("http://localhost:8080/api/v1/user", {
+      fetch("http://localhost:8080/api/v1/createSchedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(horario),
@@ -40,41 +40,36 @@ function InterfazInput({setOpenModalResponse}) {
         if (res.status === 200) {
           console.log("Nuevo horario registrado");
         } else if (res.status === 409) {
-          console.log(res.json());
-          alert(
-            "Warning: Registered Schedules Discovered: \n" +
-              "From: " +
-              JSON.stringify(begin) +
-              "\n" +
-              "To: " +
-              JSON.stringify(end) +
-              "\n"
-          );
+          res.json().then(body => {
+            alert(
+              "Peligro: Horarios registrados encontrados: \n" +
+                "Desde: " +
+                JSON.stringify(body.error.begin) +
+                "\n" +
+                "Hasta: " +
+                JSON.stringify(body.error.end) +
+                "\n"
+            );
+          }) 
         } else if (res.status === 422) {
           console.log(res.json());
           alert(
-            "Error: Begin date is later than End date: \n" +
-              "From: " +
+            "Error: Fecha de inicio es posterior a la fecha fin: \n" +
+              "Desde: " +
               JSON.stringify(begin) +
               "\n" +
-              "To: " +
+              "Hasta: " +
               JSON.stringify(end) +
               "\n"
           );
         } else if (res.status === 423) {
-          console.log(res.json());
-          setBeginSchedule(JSON.stringify(begin));
-          setEndSchedule(JSON.stringify(end));
+          //console.log(res.json());
+          res.json().then(body => {
+            console.log(body.error)
+            setBeginSchedule(body.error.begin);
+            setEndSchedule(body.error.end);
+          })
           setOpenModal(true);
-          /*alert(
-            "Warning: Registered Schedules Discovered \n" +
-              "From: " +
-              JSON.stringify(begin) +
-              "\n" +
-              "To: " +
-              JSON.stringify(end) +
-              "\n"
-          );*/
         }
       });
     } else {
@@ -102,12 +97,7 @@ function InterfazInput({setOpenModalResponse}) {
         </div>
         <div className={classes.control}>
           <label htmlFor="fechaInicio">Introduce la fecha de inicio: </label>
-          <input
-            type="date"
-            required
-            id="fechaInicio"
-            ref={fechaInicio}
-          ></input>
+          <input type="date" required id="fechaInicio" ref={fechaInicio}></input>
         </div>
         <div className={classes.control}>
           <label htmlFor="fechaFin">Introduce la fecha de fin: </label>
