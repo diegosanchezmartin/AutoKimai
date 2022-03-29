@@ -2,6 +2,7 @@ package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -257,21 +258,80 @@ class NewTimeSheetServiceTest {
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
-    @Test
-    void when_register_repeated_schedule_then_dont_call_api() {
+    @Test()
+    void when_register_repeated_schedule_between_monday_and_thursday_then_expect_RegisteredSchedulesException() {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
-                List.of(getTimeSheetGetMorning(), getTimeSheetGetAfternoon())
+                List.of(getTimeSheetGetMorningMonToThurs(), getTimeSheetGetAfternoonMonToThurs())
         );
         TimeSheet day = new TimeSheet(
-                LocalDate.now(),
-                LocalDate.now(),
+                LocalDate.of(2022, 3, 29),
+                LocalDate.of(2022, 3, 29),
                 1,
                 1
         );
-        List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
-        assertEquals(Collections.emptyList(), timeSheetPosts);
+
+        Assertions.assertThrows(OwnExceptions.RegisteredSchedulesException.class, () -> {
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+        });
+    }
+
+    @Test()
+    void when_register_repeated_schedule_on_friday_then_expect_RegisteredSchedulesException() {
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+                List.of(getTimeSheetGetMorningFri())
+        );
+        TimeSheet day = new TimeSheet(
+                LocalDate.of(2022, 4, 1),
+                LocalDate.of(2022, 4, 1),
+                1,
+                1
+        );
+
+        Assertions.assertThrows(OwnExceptions.RegisteredSchedulesException.class, () -> {
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+        });
+    }
+
+    @Test()
+    void when_register_repeated_schedule_between_monday_and_thursday_and_discover_registered_schedules_then_expect_RegisteredSchedulesDiscoveredException() {
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+                List.of(getIncompleteTimeSheetGetMorningMonToThur(), getTimeIncompleteSheetGetAfternoonMonToThur())
+        );
+        TimeSheet day = new TimeSheet(
+                LocalDate.of(2022, 3, 29),
+                LocalDate.of(2022, 3, 29),
+                1,
+                1
+        );
+
+        Assertions.assertThrows(OwnExceptions.RegisteredSchedulesDiscoveredException.class, () -> {
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+        });
+    }
+
+    @Test()
+    void when_register_repeated_schedule_on_friday_and_discover_registered_schedules_then_expect_RegisteredSchedulesDiscoveredException() {
+        TimeSheetService timeSheetService = new TimeSheetService();
+        timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+                List.of(getIncompleteTimeSheetGetMorningFri())
+        );
+        TimeSheet day = new TimeSheet(
+                LocalDate.of(2022, 4, 1),
+                LocalDate.of(2022, 4, 1),
+                1,
+                1
+        );
+
+        Assertions.assertThrows(OwnExceptions.RegisteredSchedulesDiscoveredException.class, () -> {
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+        });
     }
 
     @Test
@@ -288,20 +348,81 @@ class NewTimeSheetServiceTest {
         Mockito.verify(timeSheetService.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any());
     }
 
-    private TimeSheetGet getTimeSheetGetAfternoon() {
-        LocalDate now = LocalDate.now();
+    private TimeSheetGet getTimeSheetGetAfternoonMonToThurs() {
+        LocalDate now = LocalDate.of(2022, 3, 29);
         TimeSheetGet timeSheetGet = new TimeSheetGet();
         timeSheetGet.setBegin(now.atTime(16, 0, 0).toInstant(ZoneOffset.UTC));
         timeSheetGet.setEnd(now.atTime(16,15,0).toInstant(ZoneOffset.UTC));
         return timeSheetGet;
     }
 
-    private TimeSheetGet getTimeSheetGetMorning() {
-        LocalDate now = LocalDate.now();
+    private TimeSheetGet getTimeSheetGetMorningMonToThurs() {
+        LocalDate now = LocalDate.of(2022, 3, 29);
         TimeSheetGet timeSheetGet = new TimeSheetGet();
         timeSheetGet.setBegin(now.atTime(8, 0, 0).toInstant(ZoneOffset.UTC));
         timeSheetGet.setEnd(now.atTime(16,0,0).toInstant(ZoneOffset.UTC));
         return timeSheetGet;
+    }
+
+    private TimeSheetGet getTimeSheetGetMorningFri() {
+        LocalDate now = LocalDate.of(2022, 4, 1);
+        TimeSheetGet timeSheetGet = new TimeSheetGet();
+        timeSheetGet.setBegin(now.atTime(8, 0, 0).toInstant(ZoneOffset.UTC));
+        timeSheetGet.setEnd(now.atTime(16,0,0).toInstant(ZoneOffset.UTC));
+        return timeSheetGet;
+    }
+
+    private TimeSheetGet getTimeIncompleteSheetGetAfternoonMonToThur() {
+        LocalDate now = LocalDate.now();
+        TimeSheetGet timeSheetGet = new TimeSheetGet();
+        timeSheetGet.setBegin(now.atTime(16, 1, 0).toInstant(ZoneOffset.UTC));
+        timeSheetGet.setEnd(now.atTime(16,13,0).toInstant(ZoneOffset.UTC));
+        return timeSheetGet;
+    }
+
+    private TimeSheetGet getIncompleteTimeSheetGetMorningMonToThur() {
+        LocalDate now = LocalDate.now();
+        TimeSheetGet timeSheetGet = new TimeSheetGet();
+        timeSheetGet.setBegin(now.atTime(9, 0, 0).toInstant(ZoneOffset.UTC));
+        timeSheetGet.setEnd(now.atTime(13,0,0).toInstant(ZoneOffset.UTC));
+        return timeSheetGet;
+    }
+
+    private TimeSheetGet getIncompleteTimeSheetGetMorningFri() {
+        LocalDate now = LocalDate.now();
+        TimeSheetGet timeSheetGet = new TimeSheetGet();
+        timeSheetGet.setBegin(now.atTime(9, 0, 0).toInstant(ZoneOffset.UTC));
+        timeSheetGet.setEnd(now.atTime(13,0,0).toInstant(ZoneOffset.UTC));
+        return timeSheetGet;
+    }
+
+    @Test
+    void when_user_click_continue_the_delete_schedule_and_create_new_one() {
+        TimeSheetService timeSheetService = getTimeSheetService();
+        TimeSheet day = new TimeSheet(
+                LocalDate.of(2022, 3, 29),
+                LocalDate.of(2022, 3, 29),
+                1,
+                1
+        );
+        List<TimeSheetPost> registeredDayExpected = new ArrayList<>();
+        TimeSheetPost registeredDayExpectedMorning = new TimeSheetPost(
+                LocalDate.of(2022, 3, 29).toString() + "T08:00:00",
+                LocalDate.of(2022, 3, 29).toString() + "T16:00:00",
+                1,
+                1
+        );
+        registeredDayExpected.add(registeredDayExpectedMorning);
+        TimeSheetPost registeredDayExpectedAfternoon = new TimeSheetPost(
+                LocalDate.of(2022, 3, 29).toString() + "T16:00:00",
+                LocalDate.of(2022, 3, 29).toString() + "T16:15:00",
+                1,
+                1
+        );
+
+        registeredDayExpected.add(registeredDayExpectedAfternoon);
+        List<TimeSheetPost> registeredDay = timeSheetService.modifyDate(day);
+        assertEquals(registeredDayExpected, registeredDay);
     }
 
     @Test

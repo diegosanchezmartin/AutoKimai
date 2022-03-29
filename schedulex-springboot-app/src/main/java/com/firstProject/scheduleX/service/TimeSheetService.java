@@ -157,7 +157,7 @@ public class TimeSheetService {
         return registeredDays;
     }
 
-    public void modifyDate(TimeSheet newSchedule) {
+    public List<TimeSheetPost> modifyDate(TimeSheet newSchedule) {
         final LocalDateTime beginDateTime = newSchedule.getBegin().atTime(LocalTime.of(8, 0, 0));
         final LocalDateTime endDateTime = newSchedule.getEnd().atTime(LocalTime.of(16, 15, 0));
         String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
@@ -165,8 +165,9 @@ public class TimeSheetService {
         List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
         for (TimeSheetGet registeredSchedule : registeredSchedules) {
             apiKimai.deleteSchedule(registeredSchedule.getId());
-            this.checkDate(newSchedule);
         }
+        List<TimeSheetPost> timeSheetPosts = checkDate(newSchedule);
+        return timeSheetPosts;
     }
 
     public List<TimeSheetGet> getSchedules() {
