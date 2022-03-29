@@ -1,6 +1,4 @@
 import { createContext, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import TimeTracker from "./pages/TimeTracker";
 import BarraSuperior from "./layout/BarraSuperior";
 import InterfazInput from "./layout/InterfazInput";
 
@@ -23,9 +21,6 @@ function App() {
           </ModalOpenContext.Provider>
         </ActivityContext.Provider>
       </ProjectContext.Provider>
-      <Routes>
-        <Route exact path="/" element={<TimeTracker />} />
-      </Routes>
     </div>
   );
 }
