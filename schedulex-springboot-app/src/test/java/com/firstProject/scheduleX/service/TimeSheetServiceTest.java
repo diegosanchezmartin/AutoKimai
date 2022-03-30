@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 class TimeSheetServiceTest {
 
@@ -39,6 +40,11 @@ class TimeSheetServiceTest {
 
         @Override
         public void deleteSchedule(int id) {
+        }
+
+        @Override
+        public List<Projects> login(UserData userData) {
+            return null;
         }
     }
 

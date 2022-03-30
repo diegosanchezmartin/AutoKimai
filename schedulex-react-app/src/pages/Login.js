@@ -1,28 +1,37 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
 
-async function loginUser(credentials) {
-  return fetch('http://localhost:8080/login', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-  })
-  .then(data => data.json())
+async function loginUser(credentials, navigate) {
+  return fetch("http://localhost:8080/api/v1/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  }).then((res) => {
+    if (res.status === 200) {
+      console.log("Inicio de sesión correcto");
+      console.log("Bienvenido " + credentials.username);
+      navigate("/app");
+    }
+  });
 }
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUserName] = useState();
   const [token, setUserToken] = useState();
 
-  const handleSubmit = async e => {
-      e.preventDefault();
-      await loginUser({
-          username,
-          token
-      });
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const userData = {
+      username,
+      token,
+    };
+    console.log(userData);
+    await loginUser(userData, navigate);
+  };
 
   return (
     <div className={classes.loginWrapper}>

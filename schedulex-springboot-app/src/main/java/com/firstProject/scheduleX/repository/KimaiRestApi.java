@@ -1,9 +1,6 @@
 package com.firstProject.scheduleX.repository;
 
-import com.firstProject.scheduleX.model.Activities;
-import com.firstProject.scheduleX.model.Projects;
-import com.firstProject.scheduleX.model.TimeSheetGet;
-import com.firstProject.scheduleX.model.TimeSheetPost;
+import com.firstProject.scheduleX.model.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,8 +8,10 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class KimaiRestApi implements KimaiApi {
@@ -53,6 +52,18 @@ public class KimaiRestApi implements KimaiApi {
                 .uri("/api/projects")
                 .header("X-AUTH-USER","admin@kimai.local")
                 .header("X-AUTH-TOKEN", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(Projects.class)
+                .collectList()
+                .block();
+    }
+
+    public List<Projects> login(UserData userData) {
+        return webClient.get()
+                .uri("/api/projects")
+                .header("X-AUTH-USER", userData.getUsername())
+                .header("X-AUTH-TOKEN", userData.getToken())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(Projects.class)

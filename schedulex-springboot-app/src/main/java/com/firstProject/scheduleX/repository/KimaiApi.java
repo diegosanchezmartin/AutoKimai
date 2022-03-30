@@ -4,6 +4,7 @@ import com.firstProject.scheduleX.model.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Set;
 
 public interface KimaiApi {
 
@@ -18,4 +19,6 @@ public interface KimaiApi {
     List<TimeSheetGet> getRecentSchedules(String begin, String end);
 
     void deleteSchedule(int id);
+
+    List<Projects> login(UserData userData);
 }

@@ -8,7 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -55,6 +58,16 @@ public class TimeSheetController {
     @PostMapping("api/v1/modifySchedule")
     public void modifyUserHoursAPI(@RequestBody TimeSheet newSchedule){
         timeSheetService.modifyDate(newSchedule);
+    }
+
+    @PostMapping("api/v1/login")
+    public ResponseEntity login(@RequestBody UserData userData){
+        System.out.println(userData);
+        List<Projects> login = timeSheetService.login(userData);
+        if(login.isEmpty()){
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

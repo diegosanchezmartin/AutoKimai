@@ -8,10 +8,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -174,6 +171,10 @@ public class TimeSheetService {
         }
         List<TimeSheetPost> timeSheetPosts = checkDate(newSchedule);
         return timeSheetPosts;
+    }
+
+    public List<Projects> login(UserData userData) {
+        return apiKimai.login(userData);
     }
 
     public List<TimeSheetGet> getSchedules() {
