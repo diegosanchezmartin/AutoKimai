@@ -87,12 +87,12 @@ public class TimeSheetService {
                             "}"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();*/
                     throw new OwnExceptions.RegisteredSchedulesException(registeredSchedule);
                 } else {
-                    String error = "{" +
+                    /*String error = "{" +
                             "\"activity \": " + registeredSchedule.getActivity() + "," +
                             "\"project \": " + registeredSchedule.getProject() + "," +
                             "\"begin \": " + "\"" + registeredSchedule.getBegin() + "\""  + "," +
                             "\"end \": " + "\"" + registeredSchedule.getEnd() + "\"" +
-                            "}"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();
+                            "}"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();*/
                     throw new OwnExceptions.RegisteredSchedulesDiscoveredException(registeredSchedule);
                 }
             }

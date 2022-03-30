@@ -10,7 +10,7 @@ class UserServiceFetch {
     getActivities(){
         return fetch(ACTIVITIES_REST_API_URL).then(res => res.json());
     }
-    getProyects(){
+    getProjects(){
         return fetch(PROJECTS_REST_API_URL).then(res => res.json());
     }
 }

@@ -10,7 +10,7 @@ const ProjectButton = () => {
     const [selectedProject, setSelectedProject] = useContext(ProjectContext);
 
     useEffect(() => {
-        UserServiceFetch.getProyects().then((proyectos) => {
+        UserServiceFetch.getProjects().then((proyectos) => {
             setProyectos(proyectos);
             setErrorBackend(false);
         }).catch(err => {
