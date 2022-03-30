@@ -78,12 +78,7 @@ public class TimeSheetService {
         List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
         if (!registeredSchedules.isEmpty()) {
             for (TimeSheetGet registeredSchedule : registeredSchedules) {
-                if ((registeredSchedule.getBegin().equals(Instant.parse(eightAM)) &&
-                        (registeredSchedule.getEnd().equals(Instant.parse(fourPM)))) ||
-                        (registeredSchedule.getBegin().equals(Instant.parse(eightAM)) &&
-                                (registeredSchedule.getEnd().equals(Instant.parse(threePM)))) ||
-                        (registeredSchedule.getBegin().equals(Instant.parse(fourPM)) &&
-                                (registeredSchedule.getEnd().equals(Instant.parse(quarterPastFourPM))))) {
+                if (isCompleteSchedule(eightAM, threePM, fourPM, quarterPastFourPM, registeredSchedule)) {
                     /*String error = "{" +
                             "\"activity \": " + registeredSchedule.getActivity() + "," +
                             "\"project \": " + registeredSchedule.getProject() + "," +
@@ -103,6 +98,17 @@ public class TimeSheetService {
             }
         }
         return Collections.emptyList();
+    }
+
+    private boolean isCompleteSchedule(String eightAM, String threePM, String fourPM, String quarterPastFourPM, TimeSheetGet registeredSchedule) {
+        return (checkScheduleBounds(eightAM, fourPM, registeredSchedule) ||
+                checkScheduleBounds(eightAM, threePM, registeredSchedule) ||
+                checkScheduleBounds(fourPM, quarterPastFourPM, registeredSchedule));
+    }
+
+    private boolean checkScheduleBounds(String start, String end, TimeSheetGet registeredSchedule) {
+        return registeredSchedule.getBegin().equals(Instant.parse(start)) &&
+                (registeredSchedule.getEnd().equals(Instant.parse(end)));
     }
 
     private boolean isHolidays(LocalDate begin) {

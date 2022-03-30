@@ -368,7 +368,7 @@ class NewTimeSheetServiceTest {
         LocalDate now = LocalDate.of(2022, 4, 1);
         TimeSheetGet timeSheetGet = new TimeSheetGet();
         timeSheetGet.setBegin(now.atTime(8, 0, 0).toInstant(ZoneOffset.UTC));
-        timeSheetGet.setEnd(now.atTime(16,0,0).toInstant(ZoneOffset.UTC));
+        timeSheetGet.setEnd(now.atTime(15,0,0).toInstant(ZoneOffset.UTC));
         return timeSheetGet;
     }
 
@@ -399,6 +399,9 @@ class NewTimeSheetServiceTest {
     @Test
     void when_user_click_continue_the_delete_schedule_and_create_new_one() {
         TimeSheetService timeSheetService = getTimeSheetService();
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+                List.of(getIncompleteTimeSheetGetMorningMonToThur())
+        ).thenReturn(Collections.emptyList());
         TimeSheet day = new TimeSheet(
                 LocalDate.of(2022, 3, 29),
                 LocalDate.of(2022, 3, 29),
