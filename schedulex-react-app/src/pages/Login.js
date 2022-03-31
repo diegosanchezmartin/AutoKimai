@@ -35,21 +35,21 @@ const Login = () => {
 
   return (
     <div className={classes.loginWrapper}>
-      <h1>Please Log In</h1>
+      <h1>Iniciar sesión</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          <p>Username</p>
+          <p>Nombre de usuario: </p>
           <input type="text" onChange={(e) => setUserName(e.target.value)} />
         </label>
         <label>
-          <p>Password</p>
+          <p>Contraseña</p>
           <input
             type="password"
             onChange={(e) => setUserToken(e.target.value)}
           />
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <button type="submit">Continuar</button>
         </div>
       </form>
     </div>

@@ -3,7 +3,10 @@ package com.firstProject.scheduleX.service;
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 
 import java.time.*;
@@ -17,6 +20,7 @@ public class TimeSheetService {
 
     @Autowired
     KimaiApi apiKimai;
+
     public List<TimeSheetGet> registeredSchedules;
 
     public List<TimeSheetPost> checkDate(TimeSheet newSchedule) {

@@ -1,6 +1,9 @@
 package com.firstProject.scheduleX.repository;
 
 import com.firstProject.scheduleX.model.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -8,6 +11,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,14 +20,18 @@ import java.util.Set;
 @Service
 public class KimaiRestApi implements KimaiApi {
 
-/*    @Value("${api.kimai.url}")
-    private String urlApi;
+    @Value( "${api.kimai.url}" )
+    private String api;
 
-    private WebClient webClient = WebClient.create(urlApi);*/
-    private WebClient webClient = WebClient.create("http://localhost:8001");
+    private WebClient webClient;
 
+    @PostConstruct
+    public void assignWebClient(){
+        webClient = WebClient.create("http://localhost:8001");
+    }
 
     public void addHoursAPi(TimeSheetPost horarioNuevo) {
+        //webClient = WebClient.create(api);
         ResponseEntity<String> block = webClient.post()
                 .uri("/api/timesheets")
                 .header("X-AUTH-USER","admin@kimai.local")
@@ -36,6 +44,7 @@ public class KimaiRestApi implements KimaiApi {
     }
 
     public List<TimeSheetGet> getSchedules() {
+        //webClient = WebClient.create(api);
         return webClient.get()
                 .uri("/api/timesheets")
                 .header("X-AUTH-USER","admin@kimai.local")
@@ -48,6 +57,7 @@ public class KimaiRestApi implements KimaiApi {
     }
 
     public List<Projects> getProjects() {
+        //webClient = WebClient.create(api);
         return webClient.get()
                 .uri("/api/projects")
                 .header("X-AUTH-USER","admin@kimai.local")
@@ -60,6 +70,7 @@ public class KimaiRestApi implements KimaiApi {
     }
 
     public List<Projects> login(UserData userData) {
+        //webClient = WebClient.create(api);
         return webClient.get()
                 .uri("/api/projects")
                 .header("X-AUTH-USER", userData.getUsername())
@@ -72,6 +83,7 @@ public class KimaiRestApi implements KimaiApi {
     }
 
     public List<Activities> getActivities() {
+        //webClient = WebClient.create(api);
         return webClient.get()
                 .uri("/api/activities")
                 .header("X-AUTH-USER","admin@kimai.local")
@@ -84,6 +96,7 @@ public class KimaiRestApi implements KimaiApi {
     }
 
     public List<TimeSheetGet> getRecentSchedules(String begin, String end) {
+        //webClient = WebClient.create(api);
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/api/timesheets")
                         .queryParam("begin", begin)
@@ -99,6 +112,7 @@ public class KimaiRestApi implements KimaiApi {
     }
 
     public void deleteSchedule(int id){
+        //webClient = WebClient.create(api);
         webClient.delete()
                 .uri("/api/timesheets/" + String.valueOf(id))
                 .header("X-AUTH-USER","admin@kimai.local")
