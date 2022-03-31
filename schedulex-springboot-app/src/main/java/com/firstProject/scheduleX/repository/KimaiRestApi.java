@@ -27,7 +27,7 @@ public class KimaiRestApi implements KimaiApi {
 
     @PostConstruct
     public void assignWebClient(){
-        webClient = WebClient.create("http://localhost:8001");
+        webClient = WebClient.create(api);
     }
 
     public void addHoursAPi(TimeSheetPost horarioNuevo) {
