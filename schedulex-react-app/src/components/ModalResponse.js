@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import classes from "./ModalResponse.module.css";
-import { ProjectContext, ActivityContext, ModalOpenContext } from "../App";
+import { ProjectContext, ActivityContext, ModalOpenContext } from "../pages//App";
 
 const ModalRespuesta = ({ begin, end }) => {
   const [openModal, setOpenModal] = useContext(ModalOpenContext);

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
+import { AuthContext } from "../Windows"
 
-async function loginUser(credentials, navigate) {
+const LoginUser = (credentials, navigate, setAuth) => {
   return fetch("http://localhost:8080/api/v1/login", {
     method: "POST",
     headers: {
@@ -13,6 +14,7 @@ async function loginUser(credentials, navigate) {
     if (res.status === 200) {
       console.log("Inicio de sesión correcto");
       console.log("Bienvenido " + credentials.username);
+      setAuth(true);
       navigate("/app");
     }
   });
@@ -22,6 +24,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUserName] = useState();
   const [token, setUserToken] = useState();
+  const [auth, setAuth] = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +32,10 @@ const Login = () => {
       username,
       token,
     };
-    console.log(userData);
-    await loginUser(userData, navigate);
+    console.log(userData); 
+    console.log(auth);
+    LoginUser(userData, navigate, setAuth);
+    console.log(auth);
   };
 
   return (

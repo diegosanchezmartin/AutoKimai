@@ -1,16 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import Windows from "./Windows";
 import "./index.css";
-import App from "./App";
-import Login from "./pages/Login";
+
 
 ReactDOM.render(
   <BrowserRouter>
-    <Routes>
-      <Route path="*" element={<Login />} />
-      <Route path="/app" element={<App />}/>
-    </Routes>
+    <Windows />
   </BrowserRouter>,
   document.getElementById("root")
 );

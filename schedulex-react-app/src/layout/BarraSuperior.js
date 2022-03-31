@@ -9,8 +9,8 @@ function BarraSuperior ({setSelectedProject, setSelectedActivity}) {
     return (
         <header className={classes.header}>
             <section className={classes.selectbtons}>
-                <ProjectButton setSelectedProject={setSelectedProject}/>
-                <ActivityButton setSelectedActivity={setSelectedActivity}/>
+                <ProjectButton />
+                <ActivityButton />
             </section>
             <section className={classes.logo}>
                 <div className={classes.image}>

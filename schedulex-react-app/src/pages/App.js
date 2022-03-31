@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import BarraSuperior from "./layout/BarraSuperior";
-import InterfazInput from "./layout/InterfazInput";
+import BarraSuperior from "../layout/BarraSuperior";
+import InterfazInput from "../layout/InterfazInput";
 
 export const ActivityContext = createContext("Default activity");
 export const ProjectContext = createContext("Default project");
@@ -12,7 +12,7 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <div class="separadorPrincipal">
+    <div >
       <ProjectContext.Provider value={[projectChosen, setProjectChosen]}>
         <ActivityContext.Provider value={[activityChosen, setActivityChosen]}>
           <ModalOpenContext.Provider value={[modalOpen, setModalOpen]}>

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import UserServiceFetch from "../services/UserServiceFetch";
 import classes from "./ProjectButton.module.css";
-import { ProjectContext } from "../App";
+import { ProjectContext } from "../pages/App";
 
 const ProjectButton = () => {
 

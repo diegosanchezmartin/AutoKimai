@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 import Usuario from "../components/Usuario";
 import classes from "./InterfazInput.module.css";
-import { ProjectContext, ActivityContext, ModalOpenContext } from "../App";
+import { ProjectContext, ActivityContext, ModalOpenContext } from "../pages/App";
 import ModalResponse from "../components/ModalResponse";
 
 function InterfazInput({setOpenModalResponse}) {
@@ -107,7 +107,7 @@ function InterfazInput({setOpenModalResponse}) {
           <button>Fichar horas</button>
         </div>
       </form>
-      {openModal && <ModalResponse begin={beginSchedule} end={endSchedule} setOpenModal={setOpenModalResponse}/>}
+      {openModal && <ModalResponse begin={beginSchedule} end={endSchedule}/>}
     </div>
   );
 }

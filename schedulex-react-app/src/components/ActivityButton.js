@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import UserServiceFetch from "../services/UserServiceFetch";
 import classes from "./ActivityButton.module.css";
-import { ActivityContext } from "../App";
+import { ActivityContext } from "../pages/App";
 
 const ActivityButton = () => {
 

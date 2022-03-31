@@ -1,6 +1,7 @@
 package com.firstProject.scheduleX.repository;
 
 import com.firstProject.scheduleX.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
@@ -20,13 +21,10 @@ import java.util.Set;
 @Service
 public class KimaiRestApi implements KimaiApi {
 
-    @Value( "${api.kimai.url}" )
-    private String api;
+    private final WebClient webClient;
 
-    private WebClient webClient;
-
-    @PostConstruct
-    public void assignWebClient(){
+    @Autowired
+    public KimaiRestApi(@Value( "${api.kimai.url}") final String api) {
         webClient = WebClient.create(api);
     }
 
