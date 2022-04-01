@@ -1,6 +1,34 @@
 # Retrospectiva Diego
 
 ------------------------¬
+| Viernes 01/04/2022: |
+-------------------------
+
+    - Cosas que pueden mejorar:
++ Las estimaciones temporales de las tareas en Github, ser constante con ellas y crear cualquier subtarea que surja.
++ Dar el paso a intentar no hacer código 'extraño', mejorando la escritura del código hacia una versión más limpia.
++ Tratar de entender mejor los beans de Spring, las anotaciones y ciertas herramientas que me pueden ayudar mucho.
++ Repatir bien el código en el proyecto, por ejemplo en Java hay ciertos métodos que no están donde corresponden con respecto a las clases.
+
+    * Como se va a mejorar:
++ Cada vez que una subtarea esté a punto de crearse, apuntarla en github aumentando el tiempo de la tarea a realizar y subdividiendo el trabajo en tareas más pequeñas.
++ Pensar el código de forma un poco más optima según lo vayamos escribiendo.
+
+    - Cosas que han salido bien:
++ He mejorado en cuanto a conceptos sobre los beans de Spring, he conseguido usar parámetros con el fichero application.properties.
++ Prácticamente ya tengo la versión 1 de mi aplicación.
++ He conseguido que mi app funcione con la url de Qindel.
++ He solventado fallos que hace semanas me parecerían imposibles de resolver, debugeando y elimando warnings con conceptos que he aprendido
+durante los 2 meses que llevo.
+
+    * Por qué han salido bien:
++ Cada día conozco más cosas, cosas que he aprendido ya sea porque me las ha enseñado Alex, las he aprendido en webs o porque a base de errores y repetición 
+me van sonando más cada día.
++ Me motiva el seguir aprendiendo cosas tras 2 meses de trabajo y de conocimeiento.
++ He conseguido realizar las tareas que tenía pendientes en GitHub y añadido otras nuevas.
+______________________________________________________________________________________________________________________________________
+
+------------------------¬
 | Viernes 25/03/2022: |
 -------------------------
 
