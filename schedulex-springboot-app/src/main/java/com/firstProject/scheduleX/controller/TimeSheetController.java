@@ -33,7 +33,7 @@ public class TimeSheetController {
         return timeSheetService.getActivities();
     }
 
-    @GetMapping("api/timesheets")
+    @GetMapping("api/v1/timesheets")
     public List<TimeSheetGet> getHorarios(){
        return timeSheetService.getSchedules();
     }

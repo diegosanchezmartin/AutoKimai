@@ -1,5 +1,5 @@
 
-const USER_REST_API_URL = 'http://localhost:8080/api/timesheets';
+const USER_REST_API_URL = 'http://localhost:8080/api/v1/timesheets';
 const ACTIVITIES_REST_API_URL = 'http://localhost:8080/api/v1/activities';
 const PROJECTS_REST_API_URL = 'http://localhost:8080/api/v1/projects';
 
