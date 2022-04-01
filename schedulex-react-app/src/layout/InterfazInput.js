@@ -39,6 +39,7 @@ function InterfazInput({setOpenModalResponse}) {
       }).then((res) => {
         if (res.status === 200) {
           console.log("Nuevo horario registrado");
+          window.location.reload();
         } else if (res.status === 409) {
           res.json().then(body => {
             alert(

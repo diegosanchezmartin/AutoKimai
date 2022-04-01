@@ -29,6 +29,7 @@ const ModalRespuesta = ({ begin, end }) => {
         body: JSON.stringify(horario),
       }).then(() => {
           console.log("Nuevo horario registrado");
+          window.location.reload();
       });
   });
 
