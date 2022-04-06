@@ -3,16 +3,12 @@ package com.firstProject.scheduleX.repository;
 import com.firstProject.scheduleX.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.*;
 
@@ -26,12 +22,13 @@ public class KimaiRestApi implements KimaiApi {
         webClient = WebClient.create(api);
     }
 
-    public void addHoursAPi(TimeSheetPost horarioNuevo) {
+    public void addHoursAPi(TimeSheetPost horarioNuevo, UserData credentials) {
         //webClient = WebClient.create(api);
+        System.out.println(credentials);
         ResponseEntity<String> block = webClient.post()
                 .uri("/api/timesheets")
-                .header("X-AUTH-USER","dsanchezm")
-                .header("X-AUTH-TOKEN", "123456")
+                .header("X-AUTH-USER",credentials.getUsername())
+                .header("X-AUTH-TOKEN", credentials.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(horarioNuevo))
                 .retrieve()

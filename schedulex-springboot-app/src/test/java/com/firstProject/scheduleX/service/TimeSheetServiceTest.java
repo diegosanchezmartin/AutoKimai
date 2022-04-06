@@ -2,19 +2,17 @@ package com.firstProject.scheduleX.service;
 
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 class TimeSheetServiceTest {
 
     static class KimaiApiTest implements KimaiApi {
         List<TimeSheetPost> list = new ArrayList<>();
         @Override
-        public void addHoursAPi(TimeSheetPost horarioNuevo) {
+        public void addHoursAPi(TimeSheetPost horarioNuevo, UserData credentials) {
             list.add(horarioNuevo);
         }
 

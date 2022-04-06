@@ -3,11 +3,7 @@ package com.firstProject.scheduleX.service;
 import com.firstProject.scheduleX.model.*;
 import com.firstProject.scheduleX.repository.KimaiApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-import reactor.core.publisher.Mono;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -23,29 +19,29 @@ public class TimeSheetService {
 
     public List<TimeSheetGet> registeredSchedules;
 
-    public List<TimeSheetPost> checkDate(TimeSheet newSchedule) {
+    public List<TimeSheetPost> checkDate(TimeSheet newSchedule, UserData credentials) {
         if (newSchedule.getEnd().isBefore(newSchedule.getBegin())) {
             throw new IllegalArgumentException("Error: Begin is before End: " + newSchedule);
         }
-        return checkNumberOfDates(newSchedule);
+        return checkNumberOfDates(newSchedule, credentials);
     }
 
-    public List<TimeSheetPost> registerOneDay(TimeSheet day) {
+    public List<TimeSheetPost> registerOneDay(TimeSheet day, UserData credentials) {
         if (checkDay(day.getBegin(), day.getEnd())) {
             TimeSheetPost schedule;
             List<TimeSheetPost> registeredDay = new ArrayList<>();
             if (day.getBegin().getDayOfWeek().getValue() == 5) {
                 schedule = createMorningDay(day.getBegin().getDayOfWeek().getValue(), day);
                 registeredDay.add(schedule);
-                apiKimai.addHoursAPi(schedule);
+                apiKimai.addHoursAPi(schedule, credentials);
                 return registeredDay;
             } else {
                 schedule = createMorningDay(day.getBegin().getDayOfWeek().getValue(), day);
                 registeredDay.add(schedule);
-                apiKimai.addHoursAPi(schedule);
+                apiKimai.addHoursAPi(schedule, credentials);
                 schedule = createAfternoonDay(day);
                 registeredDay.add(schedule);
-                apiKimai.addHoursAPi(schedule);
+                apiKimai.addHoursAPi(schedule, credentials);
                 return registeredDay;
             }
         }
@@ -152,19 +148,19 @@ public class TimeSheetService {
         return afternoonSchedule;
     }
 
-    public List<TimeSheetPost> checkNumberOfDates(TimeSheet days) {
+    public List<TimeSheetPost> checkNumberOfDates(TimeSheet days, UserData credentials) {
         List<TimeSheetPost> registeredDays = new ArrayList<>();
         long daysOfDifference = DAYS.between(days.getBegin(), days.getEnd());
         LocalDate beginDate = days.getBegin();
 
         for (int i = 0; i <= daysOfDifference; i++) {
             TimeSheet newDay = new TimeSheet(beginDate.plusDays(i), beginDate.plusDays(i), days.getProject(), days.getActivity());
-            registeredDays.addAll(registerOneDay(newDay));
+            registeredDays.addAll(registerOneDay(newDay, credentials));
         }
         return registeredDays;
     }
 
-    public List<TimeSheetPost> modifyDate(TimeSheet newSchedule) {
+    public List<TimeSheetPost> modifyDate(TimeSheet newSchedule, UserData credentials) {
         final LocalDateTime beginDateTime = newSchedule.getBegin().atTime(LocalTime.of(8, 0, 0));
         final LocalDateTime endDateTime = newSchedule.getEnd().atTime(LocalTime.of(16, 15, 0));
         String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
@@ -173,7 +169,7 @@ public class TimeSheetService {
         for (TimeSheetGet registeredSchedule : registeredSchedules) {
             apiKimai.deleteSchedule(registeredSchedule.getId());
         }
-        List<TimeSheetPost> timeSheetPosts = checkDate(newSchedule);
+        List<TimeSheetPost> timeSheetPosts = checkDate(newSchedule, credentials);
         return timeSheetPosts;
     }
 

@@ -1,14 +1,12 @@
 package com.firstProject.scheduleX.repository;
 
 import com.firstProject.scheduleX.model.*;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Set;
 
 public interface KimaiApi {
 
-    void addHoursAPi(TimeSheetPost horarioNuevo);
+    void addHoursAPi(TimeSheetPost horarioNuevo, UserData credentials);
 
     List<TimeSheetGet> getSchedules();
 

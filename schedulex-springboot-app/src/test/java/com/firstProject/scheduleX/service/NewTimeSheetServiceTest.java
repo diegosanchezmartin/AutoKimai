@@ -22,6 +22,8 @@ class NewTimeSheetServiceTest {
         return timeSheetService;
     }
 
+    UserData credentials = new UserData("dsanchezm", "123456");
+
     @Test
     void when_register_earlier_end_date_than_begin_date_then_throw_IllegalArgumentException() {
         TimeSheetService timeSheetService = getTimeSheetService();
@@ -32,7 +34,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
+            List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day, credentials);
         });
 
         String expectedMessage = "Error: Begin is before End: TimeSheet(begin=2022-03-22, end=2022-03-21, project=1, activity=1)";
@@ -64,7 +66,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDayExpected.add(registeredDayExpectedAfternoon);
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day, credentials);
         assertEquals(registeredDayExpected, registeredDay);
     }
 
@@ -85,7 +87,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDayExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day, credentials);
         assertEquals(registeredDayExpected, registeredDay);
     }
 
@@ -98,7 +100,7 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day, credentials);
         assertEquals(Collections.emptyList(), registeredDay);
     }
 
@@ -128,7 +130,7 @@ class NewTimeSheetServiceTest {
             );
             registeredDaysExpected.add(registeredDayExpectedAfternoon);
         }
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days, credentials);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -165,7 +167,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days, credentials);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -202,7 +204,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days, credentials);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -215,7 +217,7 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(day, credentials);
         assertEquals(Collections.emptyList(), registeredDay);
     }
 
@@ -254,7 +256,7 @@ class NewTimeSheetServiceTest {
                 1
         );
         registeredDaysExpected.add(registeredDayExpectedMorning);
-        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days);
+        List<TimeSheetPost> registeredDay = timeSheetService.checkDate(days, credentials);
         assertEquals(registeredDaysExpected, registeredDay);
     }
 
@@ -273,7 +275,7 @@ class NewTimeSheetServiceTest {
         );
 
         Assertions.assertThrows(OwnExceptions.RegisteredSchedulesException.class, () -> {
-            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day, credentials);
         });
     }
 
@@ -292,7 +294,7 @@ class NewTimeSheetServiceTest {
         );
 
         Assertions.assertThrows(OwnExceptions.RegisteredSchedulesException.class, () -> {
-            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day, credentials);
         });
     }
 
@@ -311,7 +313,7 @@ class NewTimeSheetServiceTest {
         );
 
         Assertions.assertThrows(OwnExceptions.RegisteredSchedulesDiscoveredException.class, () -> {
-            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day, credentials);
         });
     }
 
@@ -330,7 +332,7 @@ class NewTimeSheetServiceTest {
         );
 
         Assertions.assertThrows(OwnExceptions.RegisteredSchedulesDiscoveredException.class, () -> {
-            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day);
+            List<TimeSheetPost> timeSheetPosts = timeSheetService.checkDate(day, credentials);
         });
     }
 
@@ -344,8 +346,8 @@ class NewTimeSheetServiceTest {
                 1,
                 1
         );
-        timeSheetService.checkDate(day);
-        Mockito.verify(timeSheetService.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any());
+        timeSheetService.checkDate(day, credentials);
+        Mockito.verify(timeSheetService.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any(), credentials);
     }
 
     private TimeSheetGet getTimeSheetGetAfternoonMonToThurs() {
@@ -424,7 +426,7 @@ class NewTimeSheetServiceTest {
         );
 
         registeredDayExpected.add(registeredDayExpectedAfternoon);
-        List<TimeSheetPost> registeredDay = timeSheetService.modifyDate(day);
+        List<TimeSheetPost> registeredDay = timeSheetService.modifyDate(day, credentials);
         assertEquals(registeredDayExpected, registeredDay);
     }
 

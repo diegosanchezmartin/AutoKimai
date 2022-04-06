@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
-import { AuthContext } from "../Windows";
+import { AuthContext, CredentialContext } from "../Windows";
 
 const LoginUser = (credentials, navigate, setAuth) => {
   return fetch("http://localhost:8080/api/v1/login", {
@@ -25,6 +25,7 @@ const Login = () => {
   const [username, setUserName] = useState();
   const [token, setUserToken] = useState();
   const [auth, setAuth] = useContext(AuthContext);
+  const [credentials, setCrendentials] = useContext(CredentialContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const Login = () => {
       username,
       token,
     };
+    setCrendentials(userData);
     console.log(userData);
     console.log(auth);
     LoginUser(userData, navigate, setAuth);

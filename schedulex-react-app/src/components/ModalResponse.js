@@ -1,11 +1,13 @@
 import React, { useCallback, useContext } from "react";
 import classes from "./ModalResponse.module.css";
 import { ProjectContext, ActivityContext, ModalOpenContext } from "../pages//App";
+import { CredentialContext } from "../Windows";
 
 const ModalRespuesta = ({ begin, end }) => {
   const [openModal, setOpenModal] = useContext(ModalOpenContext);
   const [selectedProject, setSelectedProject] = useContext(ProjectContext);
   const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
+  const [credentials, setCredentials] = useContext(CredentialContext);
 
   const project = selectedProject;
   const activity = selectedActivity;
@@ -26,7 +28,7 @@ const ModalRespuesta = ({ begin, end }) => {
     fetch("http://localhost:8080/api/v1/modifySchedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(horario),
+        body: JSON.stringify(horario, credentials),
       }).then(() => {
           console.log("Nuevo horario registrado");
           window.location.reload();

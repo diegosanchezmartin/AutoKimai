@@ -39,13 +39,15 @@ public class TimeSheetController {
     }
 
     @PostMapping("api/v1/createSchedule")
-    public ResponseEntity registerUserHoursAPI(@RequestBody TimeSheet newSchedule){
+    public ResponseEntity registerUserHoursAPI(@RequestBody Request request){
+        System.out.println(request);
+        System.out.println(request.getCredentials());
         try {
-            timeSheetService.checkDate(newSchedule);
+            timeSheetService.checkDate(request.getNewSchedule(), request.getCredentials());
             return new ResponseEntity(HttpStatus.OK);
         } catch (IllegalArgumentException datesException) {
             datesException.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(newSchedule);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(request.getNewSchedule());
         } catch (OwnExceptions.RegisteredSchedulesException scheduleException) {
             scheduleException.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(scheduleException);
@@ -56,8 +58,8 @@ public class TimeSheetController {
     }
 
     @PostMapping("api/v1/modifySchedule")
-    public void modifyUserHoursAPI(@RequestBody TimeSheet newSchedule){
-        timeSheetService.modifyDate(newSchedule);
+    public void modifyUserHoursAPI(@RequestBody TimeSheet newSchedule, UserData credentials){
+        timeSheetService.modifyDate(newSchedule, credentials);
     }
 
     @PostMapping("api/v1/login")

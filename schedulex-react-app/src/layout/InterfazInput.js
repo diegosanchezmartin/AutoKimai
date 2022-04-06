@@ -1,19 +1,28 @@
 import React, { useContext, useRef, useState } from "react";
 import Usuario from "../components/Usuario";
 import classes from "./InterfazInput.module.css";
-import { ProjectContext, ActivityContext, ModalOpenContext } from "../pages/App";
+import {
+  ProjectContext,
+  ActivityContext,
+  ModalOpenContext,
+} from "../pages/App";
 import ModalResponse from "../components/ModalResponse";
+import UserServiceFetch from "../services/UserServiceFetch";
+import { CredentialContext } from "../Windows";
 
-function InterfazInput({setOpenModalResponse}) {
+function InterfazInput({ setOpenModalResponse }) {
   const fechaInicio = useRef();
   const fechaFin = useRef();
 
   const [selectedProject, setSelectedProject] = useContext(ProjectContext);
   const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
   const [openModal, setOpenModal] = useContext(ModalOpenContext);
+  const [credentials, setCredentials] = useContext(CredentialContext);
   const [registeredSchedules, setRegisteredSchedules] = useState([]);
   const [beginSchedule, setBeginSchedule] = useState();
   const [endSchedule, setEndSchedule] = useState();
+  const [timeSheets, setTimeSheets] = useState([]);
+  const [errorBackend, setErrorBackend] = useState(false);
 
   function confirmarFechas(event) {
     event.preventDefault();
@@ -23,25 +32,41 @@ function InterfazInput({setOpenModalResponse}) {
     const project = selectedProject;
     const activity = selectedActivity;
 
-    const horario = {
+    const newSchedule = {
       begin,
       end,
       project,
       activity,
     };
-    console.log(horario);
+    console.log(newSchedule);
 
-    if (horario.activity != null && horario.project != null) {
+    if (newSchedule.activity != null && newSchedule.project != null) {
+      const request = {
+        newSchedule,
+        credentials,
+      };
+      console.log(credentials);
+      console.log(request);
       fetch("http://localhost:8080/api/v1/createSchedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(horario),
+        body: JSON.stringify(request),
       }).then((res) => {
         if (res.status === 200) {
           console.log("Nuevo horario registrado");
-          window.location.reload();
+          UserServiceFetch.getTimeSheets()
+            .then((res) => {
+              setTimeSheets(res);
+              setErrorBackend(false);
+            })
+            .catch((err) => {
+              console.log(err.message + "\nEl backend está caido");
+              setTimeSheets([]);
+              setErrorBackend(true);
+            });
+
         } else if (res.status === 409) {
-          res.json().then(body => {
+          res.json().then((body) => {
             alert(
               "Peligro: Horarios registrados encontrados: \n" +
                 "Desde: " +
@@ -51,7 +76,7 @@ function InterfazInput({setOpenModalResponse}) {
                 JSON.stringify(body.error.end) +
                 "\n"
             );
-          }) 
+          });
         } else if (res.status === 422) {
           console.log(res.json());
           alert(
@@ -65,17 +90,17 @@ function InterfazInput({setOpenModalResponse}) {
           );
         } else if (res.status === 423) {
           //console.log(res.json());
-          res.json().then(body => {
-            console.log(body.error)
+          res.json().then((body) => {
+            console.log(body.error);
             setBeginSchedule(body.error.begin);
             setEndSchedule(body.error.end);
-          })
+          });
           setOpenModal(true);
         }
       });
     } else {
-      if (horario.activity == null) {
-        if (horario.project == null) {
+      if (newSchedule.activity == null) {
+        if (newSchedule.project == null) {
           alert(
             "Debes elegir un proyecto y una actividad para el nuevo horario"
           );
@@ -83,7 +108,7 @@ function InterfazInput({setOpenModalResponse}) {
           alert("Debes elegir una actividad para el nuevo horario");
         }
       } else {
-        if (horario.project == null) {
+        if (newSchedule.project == null) {
           alert("Debes elegir un proyecto para el nuevo horario");
         }
       }
@@ -94,11 +119,16 @@ function InterfazInput({setOpenModalResponse}) {
     <div>
       <form className={classes.form} onSubmit={confirmarFechas}>
         <div className={classes.tablaContenido}>
-          <Usuario />
+          <Usuario horarios={timeSheets} error={errorBackend}/>
         </div>
         <div className={classes.control}>
           <label htmlFor="fechaInicio">Introduce la fecha de inicio: </label>
-          <input type="date" required id="fechaInicio" ref={fechaInicio}></input>
+          <input
+            type="date"
+            required
+            id="fechaInicio"
+            ref={fechaInicio}
+          ></input>
         </div>
         <div className={classes.control}>
           <label htmlFor="fechaFin">Introduce la fecha de fin: </label>
@@ -108,7 +138,7 @@ function InterfazInput({setOpenModalResponse}) {
           <button>Fichar horas</button>
         </div>
       </form>
-      {openModal && <ModalResponse begin={beginSchedule} end={endSchedule}/>}
+      {openModal && <ModalResponse begin={beginSchedule} end={endSchedule} />}
     </div>
   );
 }
