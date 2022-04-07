@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from "react";
-import UserServiceFetch from "../services/UserServiceFetch";
+import React from "react";
 import classes from "./Usuario.module.css";
 
 const Usuario = ({ horarios, error }) => {
-  const [timeSheets, setTimeSheets] = useState([]);
-  const [errorBackend, setErrorBackend] = useState(false);
 
-  useEffect(() => {
-    UserServiceFetch.getTimeSheets()
-      .then((res) => {
-        setTimeSheets(res);
-        setErrorBackend(false);
-      })
-      .catch((err) => {
-        console.log(err.message + "\nEl backend está caido");
-        setTimeSheets([]);
-        setErrorBackend(true);
-      });
-  }, []);
+  
 
   if (error) {
     return (

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import Usuario from "../components/Usuario";
 import classes from "./InterfazInput.module.css";
 import {
@@ -10,7 +10,7 @@ import ModalResponse from "../components/ModalResponse";
 import UserServiceFetch from "../services/UserServiceFetch";
 import { CredentialContext } from "../Windows";
 
-function InterfazInput({ setOpenModalResponse }) {
+const InterfazInput = ({ setOpenModalResponse }) => {
   const fechaInicio = useRef();
   const fechaFin = useRef();
 
@@ -23,6 +23,19 @@ function InterfazInput({ setOpenModalResponse }) {
   const [endSchedule, setEndSchedule] = useState();
   const [timeSheets, setTimeSheets] = useState([]);
   const [errorBackend, setErrorBackend] = useState(false);
+
+  useEffect(() => {
+    UserServiceFetch.getTimeSheets()
+      .then((res) => {
+        setTimeSheets(res);
+        setErrorBackend(false);
+      })
+      .catch((err) => {
+        console.log(err.message + "\nEl backend está caido");
+        setTimeSheets([]);
+        setErrorBackend(true);
+      });
+  }, []);
 
   function confirmarFechas(event) {
     event.preventDefault();
@@ -89,7 +102,6 @@ function InterfazInput({ setOpenModalResponse }) {
               "\n"
           );
         } else if (res.status === 423) {
-          //console.log(res.json());
           res.json().then((body) => {
             console.log(body.error);
             setBeginSchedule(body.error.begin);

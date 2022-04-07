@@ -4,8 +4,13 @@ import logoScheduleX from '../assets/images/ScheduleXlogoHorizontal.png';
 import iconoPerfil from '../assets/images/iconoPerfil.png';
 import ProjectButton from '../components/ProjectButton';
 import ActivityButton from '../components/ActivityButton';
+import { CredentialContext } from "../Windows";
+import { useContext } from "react";
 
-function BarraSuperior ({setSelectedProject, setSelectedActivity}) {
+const BarraSuperior = () => {
+
+    const [credentials, setCredentials] = useContext(CredentialContext);
+
     return (
         <header className={classes.header}>
             <section className={classes.selectbtons}>
@@ -23,7 +28,7 @@ function BarraSuperior ({setSelectedProject, setSelectedActivity}) {
                 <div className={classes.actions}>
                     <button>
                         <img src={iconoPerfil} alt="iconoDePerfil"/>
-                        <p>@user</p>
+                        <p>@{credentials.username}</p>
                     </button>
                 </div>
             </section>
