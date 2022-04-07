@@ -3,8 +3,6 @@ import classes from "./Usuario.module.css";
 
 const Usuario = ({ horarios, error }) => {
 
-  
-
   if (error) {
     return (
       <div>

@@ -24,6 +24,11 @@ const InterfazInput = ({ setOpenModalResponse }) => {
   const [timeSheets, setTimeSheets] = useState([]);
   const [errorBackend, setErrorBackend] = useState(false);
 
+  var url = new URL('http://localhost:8080/api/v1/timesheets');
+  Object.keys(credentials).forEach((key) =>
+    url.searchParams.append(key, credentials[key])
+  );
+
   useEffect(() => {
     UserServiceFetch.getTimeSheets()
       .then((res) => {
@@ -67,8 +72,9 @@ const InterfazInput = ({ setOpenModalResponse }) => {
       }).then((res) => {
         if (res.status === 200) {
           console.log("Nuevo horario registrado");
-          UserServiceFetch.getTimeSheets()
-            .then((res) => {
+          fetch(url)
+          .then(res => res.json()
+          ).then((res) => {
               setTimeSheets(res);
               setErrorBackend(false);
             })
