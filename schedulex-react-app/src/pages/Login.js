@@ -49,7 +49,7 @@ const Login = () => {
             <p>Nombre de usuario: </p>
             <input type="text" onChange={(e) => setUserName(e.target.value)} />
           </label>
-          <label className={classes.constrasena}>
+          <label className={classes.password}>
             <p>Contraseña</p>
             <input
               type="password"
