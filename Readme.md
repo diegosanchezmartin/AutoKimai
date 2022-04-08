@@ -4,9 +4,9 @@ Auto Kimai is a tool which allows you to log your hours automatically on a serve
 
 ## Final Design
 
-![Login](./doc/Diseño final/Login.png)
+![Login](./doc/finalDesign/Login.png)
 
-![App](./doc/Diseño final/App.png)
+![App](./doc/finalDesign/App.png)
 ## Architecture Design
 
 ![Arquitectura](./doc/EsquemaArquitectura.PNG)
