@@ -1,6 +1,26 @@
 # Retrospectiva Diego
 
 ------------------------¬
+| Viernes 08/04/2022: |
+-------------------------
+
+    - Cosas que pueden mejorar:
++ Muchas cosas, el proyecto funciona pero falta pulir conceptos, seguir implementando TDD cada vez que hagamos una
+nueva funcionalidad, intentar ser preciso y breve, seguir creciendo.
+
+    * Como se va a mejorar:
++ Con los consejos que he recibido esta semana, sobre todo hoy viernes.
+
+    - Cosas que han salido bien:
++ He conseguido que mi aplicación funcione prácticamente entera con el API de Qindel, y se podría decir que tengo la versión
+V1.0. (Mayor logro de la semana) He estado toda la semana puliendo el código, corrigiendo fallos y viendo nuevas ideas (Credenciales
+como parámetro, login funciona perfectamente, salvaguarda para no entrar sin pasar por el login).
+
+    * Por qué han salido bien:
++ La motivación de aprender cada día más y porque hoy se va Alex y quería tener el proyecto lo más perfecto posible.
+______________________________________________________________________________________________________________________________________
+
+------------------------¬
 | Viernes 01/04/2022: |
 -------------------------
 
