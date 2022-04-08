@@ -10,12 +10,14 @@ const ProjectButton = () => {
   const [selectedProject, setSelectedProject] = useContext(ProjectContext);
   const [credentials, setCredentials] = useContext(CredentialContext);
 
-  var url = new URL("http://localhost:8080/api/v1/projects");
-  Object.keys(credentials).forEach((key) =>
-    url.searchParams.append(key, credentials[key])
-  );
-
   useEffect(() => {
+    var url = new URL("http://localhost:8080/api/v1/projects");
+
+    url.searchParams.append("username", credentials.username);
+    url.searchParams.append("token", credentials.token);
+
+    console.log(credentials);
+    console.log(url);
     fetch(url)
       .then((res) => res.json())
       .then((proyectos) => {

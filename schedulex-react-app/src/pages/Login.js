@@ -57,7 +57,9 @@ const Login = () => {
             />
           </label>
           <div className={classes.myButton}>
-            <button className={classes.buttonBorder} type="submit">Continuar</button>
+            <button className={classes.buttonBorder} type="submit">
+              Continuar
+            </button>
           </div>
         </form>
       </div>

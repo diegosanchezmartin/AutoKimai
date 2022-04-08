@@ -10,12 +10,11 @@ const ActivityButton = () => {
   const [selectedActivity, setSelectedActivity] = useContext(ActivityContext);
   const [credentials, setCredentials] = useContext(CredentialContext);
 
-  var url = new URL('http://localhost:8080/api/v1/activities');
-  Object.keys(credentials).forEach((key) =>
-    url.searchParams.append(key, credentials[key])
-  );
-
   useEffect(() => {
+    var url = new URL("http://localhost:8080/api/v1/activities");
+
+    url.searchParams.append("username", credentials.username);
+    url.searchParams.append("token", credentials.token);
     fetch(url)
       .then((res) => res.json())
       .then((actividades) => {

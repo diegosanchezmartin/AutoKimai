@@ -12,7 +12,7 @@ const ModalRespuesta = ({ begin, end }) => {
   const project = selectedProject;
   const activity = selectedActivity;
 
-  const horario = {
+  const newSchedule = {
     begin,
     end,
     project,
@@ -25,13 +25,18 @@ const ModalRespuesta = ({ begin, end }) => {
 
   const continueOnClick = useCallback(async () => {
     setOpenModal(false);
+    const request = {
+      newSchedule,
+      credentials,
+    };
+    console.log(request);
     fetch("http://localhost:8080/api/v1/modifySchedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(horario, credentials),
+        body: JSON.stringify(request),
       }).then(() => {
           console.log("Nuevo horario registrado");
-          window.location.reload();
+          alert("Nuevo horario registrado");
       });
   });
 
