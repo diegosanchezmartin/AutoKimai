@@ -17,8 +17,6 @@ public class TimeSheetService {
     @Autowired
     KimaiApi apiKimai;
 
-    public List<TimeSheetGet> registeredSchedules;
-
     public List<TimeSheetPost> checkDate(TimeSheet newSchedule, UserData credentials) {
         if (newSchedule.getEnd().isBefore(newSchedule.getBegin())) {
             throw new IllegalArgumentException("Error: Begin is before End: " + newSchedule);
@@ -26,8 +24,8 @@ public class TimeSheetService {
         return checkNumberOfDates(newSchedule, credentials);
     }
 
-    public List<TimeSheetPost> registerOneDay(TimeSheet day, UserData credentials) {
-        if (checkDay(day.getBegin(), day.getEnd())) {
+    public List<TimeSheetPost> registerOneDay(TimeSheet day, UserData credentials, long daysLeft) {
+        if (checkDay(day.getBegin(), day.getEnd(), credentials, daysLeft)) {
             TimeSheetPost schedule;
             List<TimeSheetPost> registeredDay = new ArrayList<>();
             if (day.getBegin().getDayOfWeek().getValue() == 5) {
@@ -48,10 +46,10 @@ public class TimeSheetService {
         return Collections.emptyList();
     }
 
-    private boolean checkDay(LocalDate begin, LocalDate end) {
+    private boolean checkDay(LocalDate begin, LocalDate end, UserData credentials, long daysLeft) {
         if (!isWeekend(begin)) {
             if (!isHolidays(begin)) {
-                if (checkHours(begin, end).isEmpty()) {
+                if (checkHours(begin, end, credentials, daysLeft).isEmpty()) {
                     return true;
                 }
             }
@@ -62,7 +60,7 @@ public class TimeSheetService {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-M-dd'T'HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMATTER_Z = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    private List<TimeSheetGet> checkHours(LocalDate begin, LocalDate end) {
+    private List<TimeSheetGet> checkHours(LocalDate begin, LocalDate end, UserData credentials, long daysLeft) {
         final LocalDateTime beginDateTime = begin.atTime(LocalTime.of(8, 0, 0));
         final LocalDateTime endDateTime = end.atTime(LocalTime.of(16, 15, 0));
         String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
@@ -72,24 +70,16 @@ public class TimeSheetService {
         final String fourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16, 0, 0)));
         final String quarterPastFourPM = DATE_TIME_FORMATTER_Z.format(begin.atTime(LocalTime.of(16, 15, 0)));
 
-        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
+        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero, credentials);
         if (!registeredSchedules.isEmpty()) {
             for (TimeSheetGet registeredSchedule : registeredSchedules) {
                 if (isCompleteSchedule(eightAM, threePM, fourPM, quarterPastFourPM, registeredSchedule)) {
-                    /*String error = "{" +
-                            "\"activity \": " + registeredSchedule.getActivity() + "," +
-                            "\"project \": " + registeredSchedule.getProject() + "," +
-                            "\"begin \": " + "\"" + registeredSchedule.getBegin() + "\""  + "," +
-                            "\"end \": " + "\"" + registeredSchedule.getEnd() + "\"" +
-                            "}"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();*/
-                    throw new OwnExceptions.RegisteredSchedulesException(registeredSchedule);
+                    //if(daysLeft == 0) {
+                        throw new OwnExceptions.RegisteredSchedulesException(registeredSchedule);
+                    /*} else {
+                        throw new OwnExceptions.RegisteredSchedulesDiscoveredButMustContinueException(registeredSchedule);
+                    }*/
                 } else {
-                    /*String error = "{" +
-                            "\"activity \": " + registeredSchedule.getActivity() + "," +
-                            "\"project \": " + registeredSchedule.getProject() + "," +
-                            "\"begin \": " + "\"" + registeredSchedule.getBegin() + "\""  + "," +
-                            "\"end \": " + "\"" + registeredSchedule.getEnd() + "\"" +
-                            "}"; //"From: " + registeredSchedule.getBegin() + " To " + registeredSchedule.getEnd();*/
                     throw new OwnExceptions.RegisteredSchedulesDiscoveredException(registeredSchedule);
                 }
             }
@@ -152,10 +142,12 @@ public class TimeSheetService {
         List<TimeSheetPost> registeredDays = new ArrayList<>();
         long daysOfDifference = DAYS.between(days.getBegin(), days.getEnd());
         LocalDate beginDate = days.getBegin();
+        long daysLeft;
 
         for (int i = 0; i <= daysOfDifference; i++) {
+            daysLeft = daysOfDifference - i;
             TimeSheet newDay = new TimeSheet(beginDate.plusDays(i), beginDate.plusDays(i), days.getProject(), days.getActivity());
-            registeredDays.addAll(registerOneDay(newDay, credentials));
+            registeredDays.addAll(registerOneDay(newDay, credentials, daysLeft));
         }
         return registeredDays;
     }
@@ -165,9 +157,9 @@ public class TimeSheetService {
         final LocalDateTime endDateTime = newSchedule.getEnd().atTime(LocalTime.of(16, 15, 0));
         String beginWithoutZero = DATE_TIME_FORMATTER.format(beginDateTime);
         String endWithoutZero = DATE_TIME_FORMATTER.format(endDateTime);
-        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero);
+        List<TimeSheetGet> registeredSchedules = apiKimai.getRecentSchedules(beginWithoutZero, endWithoutZero, credentials);
         for (TimeSheetGet registeredSchedule : registeredSchedules) {
-            apiKimai.deleteSchedule(registeredSchedule.getId());
+            apiKimai.deleteSchedule(registeredSchedule.getId(), credentials);
         }
         List<TimeSheetPost> timeSheetPosts = checkDate(newSchedule, credentials);
         return timeSheetPosts;
@@ -177,15 +169,15 @@ public class TimeSheetService {
         return apiKimai.login(userData);
     }
 
-    public List<TimeSheetGet> getSchedules() {
-        return apiKimai.getSchedules();
+    public List<TimeSheetGet> getSchedules(String username, String token) {
+        return apiKimai.getSchedules(username, token);
     }
 
-    public List<Projects> getProjects() {
-        return apiKimai.getProjects();
+    public List<Projects> getProjects(String username, String token) {
+        return apiKimai.getProjects(username, token);
     }
 
-    public List<Activities> getActivities() {
-        return apiKimai.getActivities();
+    public List<Activities> getActivities(String username, String token) {
+        return apiKimai.getActivities(username, token);
     }
 }

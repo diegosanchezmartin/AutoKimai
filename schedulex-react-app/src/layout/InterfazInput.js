@@ -24,22 +24,25 @@ const InterfazInput = ({ setOpenModalResponse }) => {
   const [timeSheets, setTimeSheets] = useState([]);
   const [errorBackend, setErrorBackend] = useState(false);
 
-  var url = new URL('http://localhost:8080/api/v1/timesheets');
-  Object.keys(credentials).forEach((key) =>
-    url.searchParams.append(key, credentials[key])
-  );
+  var url = new URL("http://localhost:8080/api/v1/timesheets");
+
+  url.searchParams.append("username", credentials.username);
+  url.searchParams.append("token", credentials.token);
 
   useEffect(() => {
-    UserServiceFetch.getTimeSheets()
-      .then((res) => {
-        setTimeSheets(res);
-        setErrorBackend(false);
-      })
-      .catch((err) => {
-        console.log(err.message + "\nEl backend está caido");
-        setTimeSheets([]);
-        setErrorBackend(true);
-      });
+    if (credentials.username !== undefined && credentials.token !== undefined) {
+      fetch(url)
+        .then((res) => res.json())
+        .then((res) => {
+          setTimeSheets(res);
+          setErrorBackend(false);
+        })
+        .catch((err) => {
+          console.log(err.message + "\nEl backend está caido");
+          setTimeSheets([]);
+          setErrorBackend(true);
+        });
+    }
   }, []);
 
   function confirmarFechas(event) {
@@ -72,9 +75,10 @@ const InterfazInput = ({ setOpenModalResponse }) => {
       }).then((res) => {
         if (res.status === 200) {
           console.log("Nuevo horario registrado");
+          alert("Nuevo horario registrado");
           fetch(url)
-          .then(res => res.json()
-          ).then((res) => {
+            .then((res) => res.json())
+            .then((res) => {
               setTimeSheets(res);
               setErrorBackend(false);
             })
@@ -83,7 +87,6 @@ const InterfazInput = ({ setOpenModalResponse }) => {
               setTimeSheets([]);
               setErrorBackend(true);
             });
-
         } else if (res.status === 409) {
           res.json().then((body) => {
             alert(
@@ -137,7 +140,7 @@ const InterfazInput = ({ setOpenModalResponse }) => {
     <div>
       <form className={classes.form} onSubmit={confirmarFechas}>
         <div className={classes.tablaContenido}>
-          <Usuario horarios={timeSheets} error={errorBackend}/>
+          <Usuario horarios={timeSheets} error={errorBackend} />
         </div>
         <div className={classes.control}>
           <label htmlFor="fechaInicio">Introduce la fecha de inicio: </label>
@@ -159,6 +162,6 @@ const InterfazInput = ({ setOpenModalResponse }) => {
       {openModal && <ModalResponse begin={beginSchedule} end={endSchedule} />}
     </div>
   );
-}
+};
 
 export default InterfazInput;

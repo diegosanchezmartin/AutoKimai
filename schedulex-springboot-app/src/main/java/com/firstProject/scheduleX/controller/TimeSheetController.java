@@ -24,24 +24,22 @@ public class TimeSheetController {
     }
 
     @GetMapping("api/v1/projects")
-    public List<Projects> getProjects() {
-        return timeSheetService.getProjects();
+    public List<Projects> getProjects(@RequestParam String username, String token) {
+        return timeSheetService.getProjects(username, token);
     }
 
     @GetMapping("api/v1/activities")
-    public List<Activities> getActivities() {
-        return timeSheetService.getActivities();
+    public List<Activities> getActivities(@RequestParam String username, String token) {
+        return timeSheetService.getActivities(username, token);
     }
 
     @GetMapping("api/v1/timesheets")
-    public List<TimeSheetGet> getHorarios(){
-       return timeSheetService.getSchedules();
+    public List<TimeSheetGet> getHorarios(@RequestParam String username, String token){
+       return timeSheetService.getSchedules(username, token);
     }
 
     @PostMapping("api/v1/createSchedule")
     public ResponseEntity registerUserHoursAPI(@RequestBody Request request){
-        System.out.println(request);
-        System.out.println(request.getCredentials());
         try {
             timeSheetService.checkDate(request.getNewSchedule(), request.getCredentials());
             return new ResponseEntity(HttpStatus.OK);
@@ -54,12 +52,15 @@ public class TimeSheetController {
         } catch (OwnExceptions.RegisteredSchedulesDiscoveredException schedulesDiscoveredException) {
             schedulesDiscoveredException.printStackTrace();
             return ResponseEntity.status(HttpStatus.LOCKED).body(schedulesDiscoveredException);
+        } catch (OwnExceptions.RegisteredSchedulesDiscoveredButMustContinueException scheduleDiscoverButContinueException) {
+            scheduleDiscoverButContinueException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED).body(scheduleDiscoverButContinueException);
         }
     }
 
     @PostMapping("api/v1/modifySchedule")
-    public void modifyUserHoursAPI(@RequestBody TimeSheet newSchedule, UserData credentials){
-        timeSheetService.modifyDate(newSchedule, credentials);
+    public void modifyUserHoursAPI(@RequestBody Request request){
+        timeSheetService.modifyDate(request.getNewSchedule(), request.getCredentials());
     }
 
     @PostMapping("api/v1/login")

@@ -20,5 +20,13 @@ public class OwnExceptions {
         }
     }
 
+    public static class RegisteredSchedulesDiscoveredButMustContinueException extends RuntimeException {
+        @Getter
+        TimeSheetGet error;
+        public RegisteredSchedulesDiscoveredButMustContinueException(TimeSheetGet errorMessage) {
+            super();
+            this.error = errorMessage;
+        }
+    }
 
 }

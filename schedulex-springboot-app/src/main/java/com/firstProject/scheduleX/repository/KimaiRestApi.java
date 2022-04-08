@@ -36,11 +36,11 @@ public class KimaiRestApi implements KimaiApi {
                 .block();
     }
 
-    public List<TimeSheetGet> getSchedules() {
+    public List<TimeSheetGet> getSchedules(String username, String token) {
         List<TimeSheetQindel> userSchedules = webClient.get()
                 .uri("/api/timesheets")
-                .header("X-AUTH-USER", "dsanchezm")
-                .header("X-AUTH-TOKEN", "123456")
+                .header("X-AUTH-USER", username)
+                .header("X-AUTH-TOKEN", token)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(TimeSheetQindel.class)
@@ -63,12 +63,12 @@ public class KimaiRestApi implements KimaiApi {
         return Collections.emptyList();
     }
 
-    public List<Projects> getProjects() {
+    public List<Projects> getProjects(String username, String token) {
         //webClient = WebClient.create(api);
         return webClient.get()
                 .uri("/api/projects")
-                .header("X-AUTH-USER","dsanchezm")
-                .header("X-AUTH-TOKEN", "123456")
+                .header("X-AUTH-USER", username)
+                .header("X-AUTH-TOKEN", token)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(Projects.class)
@@ -89,12 +89,12 @@ public class KimaiRestApi implements KimaiApi {
                 .block();
     }
 
-    public List<Activities> getActivities() {
+    public List<Activities> getActivities(String username, String token) {
         //webClient = WebClient.create(api);
         return webClient.get()
                 .uri("/api/activities")
-                .header("X-AUTH-USER","dsanchezm")
-                .header("X-AUTH-TOKEN", "123456")
+                .header("X-AUTH-USER", username)
+                .header("X-AUTH-TOKEN", token)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(Activities.class)
@@ -102,15 +102,15 @@ public class KimaiRestApi implements KimaiApi {
                 .block();
     }
 
-    public List<TimeSheetGet> getRecentSchedules(String begin, String end) {
+    public List<TimeSheetGet> getRecentSchedules(String begin, String end, UserData credentials) {
         //webClient = WebClient.create(api);
         List<TimeSheetQindel> userSchedules = webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/api/timesheets")
                         .queryParam("begin", begin)
                         .queryParam("end", end)
                         .build())
-                .header("X-AUTH-USER","dsanchezm")
-                .header("X-AUTH-TOKEN", "123456")
+                .header("X-AUTH-USER", credentials.getUsername())
+                .header("X-AUTH-TOKEN", credentials.getToken())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(TimeSheetQindel.class)
@@ -133,12 +133,12 @@ public class KimaiRestApi implements KimaiApi {
         return Collections.emptyList();
     }
 
-    public void deleteSchedule(int id){
+    public void deleteSchedule(int id, UserData credentials){
         //webClient = WebClient.create(api);
         webClient.delete()
                 .uri("/api/timesheets/" + String.valueOf(id))
-                .header("X-AUTH-USER","dsanchezm")
-                .header("X-AUTH-TOKEN", "123456")
+                .header("X-AUTH-USER",credentials.getUsername())
+                .header("X-AUTH-TOKEN", credentials.getToken())
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();

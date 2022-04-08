@@ -264,7 +264,7 @@ class NewTimeSheetServiceTest {
     void when_register_repeated_schedule_between_monday_and_thursday_then_expect_RegisteredSchedulesException() {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any(), Mockito.any())).thenReturn(
                 List.of(getTimeSheetGetMorningMonToThurs(), getTimeSheetGetAfternoonMonToThurs())
         );
         TimeSheet day = new TimeSheet(
@@ -283,7 +283,7 @@ class NewTimeSheetServiceTest {
     void when_register_repeated_schedule_on_friday_then_expect_RegisteredSchedulesException() {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any(), Mockito.any())).thenReturn(
                 List.of(getTimeSheetGetMorningFri())
         );
         TimeSheet day = new TimeSheet(
@@ -302,7 +302,7 @@ class NewTimeSheetServiceTest {
     void when_register_repeated_schedule_between_monday_and_thursday_and_discover_registered_schedules_then_expect_RegisteredSchedulesDiscoveredException() {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any(), Mockito.any())).thenReturn(
                 List.of(getIncompleteTimeSheetGetMorningMonToThur(), getTimeIncompleteSheetGetAfternoonMonToThur())
         );
         TimeSheet day = new TimeSheet(
@@ -321,7 +321,7 @@ class NewTimeSheetServiceTest {
     void when_register_repeated_schedule_on_friday_and_discover_registered_schedules_then_expect_RegisteredSchedulesDiscoveredException() {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any(), Mockito.any())).thenReturn(
                 List.of(getIncompleteTimeSheetGetMorningFri())
         );
         TimeSheet day = new TimeSheet(
@@ -341,13 +341,13 @@ class NewTimeSheetServiceTest {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         TimeSheet day = new TimeSheet(
-                LocalDate.now(),
-                LocalDate.now(),
+                LocalDate.of(2022, 4, 4),
+                LocalDate.of(2022, 4, 4),
                 1,
                 1
         );
         timeSheetService.checkDate(day, credentials);
-        Mockito.verify(timeSheetService.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any(), credentials);
+        Mockito.verify(timeSheetService.apiKimai, Mockito.times(2)).addHoursAPi(Mockito.any(), Mockito.any());
     }
 
     private TimeSheetGet getTimeSheetGetAfternoonMonToThurs() {
@@ -401,7 +401,7 @@ class NewTimeSheetServiceTest {
     @Test
     void when_user_click_continue_the_delete_schedule_and_create_new_one() {
         TimeSheetService timeSheetService = getTimeSheetService();
-        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any())).thenReturn(
+        Mockito.when(timeSheetService.apiKimai.getRecentSchedules(Mockito.any(),Mockito.any(), Mockito.any())).thenReturn(
                 List.of(getIncompleteTimeSheetGetMorningMonToThur())
         ).thenReturn(Collections.emptyList());
         TimeSheet day = new TimeSheet(
@@ -436,25 +436,25 @@ class NewTimeSheetServiceTest {
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         //timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
         //Mockito.when(timeSheetService.apiKimai.getSchedules()).thenReturn(Collections.emptyList());
-        assertEquals(Collections.emptyList(), timeSheetService.getSchedules());
+        assertEquals(Collections.emptyList(), timeSheetService.getSchedules(credentials.getUsername(), credentials.getToken()));
     }
 
     @Test
     void getProjects() {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getProjects()).thenReturn(Collections.emptyList());
-        timeSheetService.getProjects();
-        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getProjects();
+        Mockito.when(timeSheetService.apiKimai.getProjects(Mockito.any(),Mockito.any())).thenReturn(Collections.emptyList());
+        timeSheetService.getProjects(credentials.getUsername(), credentials.getToken());
+        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getProjects(Mockito.any(),Mockito.any());
     }
 
     @Test
     void getActivities() {
         TimeSheetService timeSheetService = new TimeSheetService();
         timeSheetService.apiKimai = Mockito.mock(KimaiApi.class);
-        Mockito.when(timeSheetService.apiKimai.getActivities()).thenReturn(Collections.emptyList());
-        timeSheetService.getActivities();
-        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getActivities();
+        Mockito.when(timeSheetService.apiKimai.getActivities(Mockito.any(),Mockito.any())).thenReturn(Collections.emptyList());
+        timeSheetService.getActivities(credentials.getUsername(), credentials.getToken());
+        Mockito.verify(timeSheetService.apiKimai,Mockito.times(1)).getActivities(Mockito.any(),Mockito.any());
     }
 
 

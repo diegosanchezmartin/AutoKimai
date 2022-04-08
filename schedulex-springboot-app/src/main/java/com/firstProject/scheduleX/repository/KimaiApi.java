@@ -8,15 +8,15 @@ public interface KimaiApi {
 
     void addHoursAPi(TimeSheetPost horarioNuevo, UserData credentials);
 
-    List<TimeSheetGet> getSchedules();
+    List<TimeSheetGet> getSchedules(String username, String token);
 
-    List<Projects> getProjects();
+    List<Projects> getProjects(String username, String token);
 
-    List<Activities> getActivities();
+    List<Activities> getActivities(String username, String token);
 
-    List<TimeSheetGet> getRecentSchedules(String begin, String end);
+    List<TimeSheetGet> getRecentSchedules(String begin, String end, UserData credentials);
 
-    void deleteSchedule(int id);
+    void deleteSchedule(int id, UserData credentials);
 
     List<Projects> login(UserData userData);
 }
